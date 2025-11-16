@@ -1,0 +1,77 @@
+<div id="home-section" class="section-content">
+  <div class="intro-content">
+    <h1>Mashooq ❤ Aayesha</h1>
+
+    <p>and a love that </p>
+    <p>Two hearts found each</p>
+    <p>a bond woven gently with,</p>
+    <p>and a love that blossom</p>
+
+    <!-- Divider -->
+    <div class="soft-divider">❧</div>
+
+    <!-- Romantic declaration -->
+    <h2>
+      “We hereby promise to walk hand in hand,
+      to cherish, support, and love one another
+      throughout this life we share together.”
+    </h2>
+
+    <!-- Signature Row -->
+    <div class="signatures-section">
+      <!-- Mashooq -->
+  <div class="signature-box" (click)="onSignatureBoxClick($event, 'mashooq')">
+        <img *ngIf="sigMashooq" [src]="sigMashooq" alt="Mashooq Signature" class="signature-img" />
+        <span *ngIf="!sigMashooq && !loadingMashooq">Mashooq’s Signature 💖</span>
+        <div *ngIf="loadingMashooq" class="signature-loading tiny">
+          <span class="spinner tiny"></span>
+          <span class="progress-text tiny" *ngIf="uploadProgressMashooq !== null">
+            {{ uploadProgressMashooq }}%
+          </span>
+        </div>
+        <div *ngIf="errorMashooq" class="signature-error">{{ errorMashooq }}</div>
+        <input id="file-mashooq" type="file" accept="image/*"
+               (change)="onFileSelected($event, 'mashooq')" hidden />
+      </div>
+
+      <!-- Aayesha -->
+  <div class="signature-box" (click)="onSignatureBoxClick($event, 'aayesha')">
+        <img *ngIf="sigAayesha" [src]="sigAayesha" alt="Aayesha Signature" class="signature-img" />
+        <button *ngIf="sigAayesha" class="bin-btn" (click)="$event.stopPropagation(); removeSignature('aayesha')" title="Delete signature">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="7" width="1" height="5" rx="0.5" />
+            <rect x="7.5" y="7" width="1" height="5" rx="0.5" />
+            <rect x="11" y="7" width="1" height="5" rx="0.5" />
+            <rect x="3" y="5" width="10" height="2" rx="1" />
+            <rect x="6" y="2" width="4" height="2" rx="1" />
+          </svg>
+        </button>
+        <span *ngIf="!sigAayesha && !loadingAayesha">Aayesha’s Signature 💕</span>
+        <div *ngIf="loadingAayesha" class="signature-loading tiny">
+          <span class="spinner tiny"></span>
+          <span class="progress-text tiny" *ngIf="uploadProgressAayesha !== null">
+            {{ uploadProgressAayesha }}%
+          </span>
+        </div>
+        <div *ngIf="errorAayesha" class="signature-error">{{ errorAayesha }}</div>
+        <input id="file-aayesha" type="file" accept="image/*"
+               (change)="onFileSelected($event, 'aayesha')" hidden />
+      </div>
+    </div>
+
+    <!-- Floating hearts decoration right -->
+    <div class="floating-hearts left">
+      <span>❤</span><span>❤</span><span>❤</span>
+    </div>
+
+    <!-- Animation moved to bottom -->
+    <div class="lottie-divider">
+      <div id="card-animation" class="card-lottie"></div>
+    </div>
+
+    <!-- Floating hearts decoration right -->
+    <div class="floating-hearts right">
+      <span>❤</span><span>❤</span><span>❤</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+/* Test: Random pink background for Gallery page */
+:host {
+					background: linear-gradient(135deg, #ffeaf4 0%, #ffd6e0 50%, #f8bbd0 100%);
+					width: 100%;
+					min-height: 100vh;
+					margin: 0 !important;
+					padding: 0 !important;
+					display: block;
+					box-sizing: border-box;
+}
+.gallery-root {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.section-content {
+  scroll-margin-top: 64px;
+  padding-top: 64px;
+}

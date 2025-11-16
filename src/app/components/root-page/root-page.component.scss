@@ -1,0 +1,26 @@
+.root-page-main.scrollable-root {
+	padding: 0 !important;
+	padding-top: 0 !important;
+	min-height: 100vh;
+	background: transparent;
+	scroll-behavior: smooth;
+	overflow-y: visible;
+}
+
+section {
+	min-height: 100vh;
+	display: block;
+	align-items: initial;
+	justify-content: initial;
+	margin-bottom: 0 !important;
+	padding: 0 !important;
+}
+
+section#home {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+  height: 100vh !important;
+  min-height: unset !important;
+  scroll-margin-top: 0 !important;
+}

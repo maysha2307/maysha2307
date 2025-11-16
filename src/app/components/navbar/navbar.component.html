@@ -1,0 +1,41 @@
+<nav class="romantic-navbar">
+  <div class="logo">
+    <!-- Full Romantic Logo SVG -->
+    <svg width="90" height="90" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+      <!-- Open Book Pages -->
+      <path d="M60 120 Q120 80 140 120 L140 200 Q120 160 60 180 Z" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round"/>
+      <path d="M220 120 Q160 80 140 120 L140 200 Q160 160 220 180 Z" fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round"/>
+      <!-- Center Fold -->
+      <line x1="140" y1="120" x2="140" y2="200" stroke="#ffffff" stroke-width="3" stroke-dasharray="4 3"/>
+      <!-- Gradient Heart -->
+      <defs>
+        <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ff8ac9"/>
+          <stop offset="100%" stop-color="#ff4ba0"/>
+        </linearGradient>
+      </defs>
+      <path d="M140 55 C132 40, 110 40, 110 60 C110 80, 140 100, 140 100 C140 100, 170 80, 170 60 C170 40, 148 40, 140 55 Z" fill="url(#heartGradient)" stroke="#fff" stroke-width="3" class="heart-shape"/>
+      <!-- Romantic Bold Handwriting Letters -->
+      <text x="78" y="155" font-size="46" fill="#ffffff" font-family="'Dancing Script', cursive" font-weight="600">M</text>
+      <text x="160" y="155" font-size="46" fill="#ffffff" font-family="'Dancing Script', cursive" font-weight="600">A</text>
+    </svg>
+  </div>
+  <div class="navbar-title">maysha</div>
+  <!-- Sparkle Heart Toggle -->
+  <div class="menu-toggle" [class.open]="menuOpen" (click)="toggleMenu()">
+    <span *ngIf="!menuOpen">💖</span>
+    <span *ngIf="menuOpen">❌</span>
+  </div>
+</nav>
+<!-- Fullscreen Romantic Overlay Menu -->
+<div *ngIf="menuOpen" class="romantic-overlay">
+  <ul>
+  <li class="float-in" style="animation-delay:0.2s"><a href="#home-section" (click)="onMenuClick($event, 'home-section')">Home</a></li>
+  <li class="float-in" style="animation-delay:0.4s"><a href="#thoughts-section" (click)="onMenuClick($event, 'thoughts-section')">Thoughts</a></li>
+  <li class="float-in" style="animation-delay:0.6s"><a href="#timeline-section" (click)="onMenuClick($event, 'timeline-section')">Timeline</a></li>
+  <li class="float-in" style="animation-delay:0.8s"><a href="#gallery-section" (click)="onMenuClick($event, 'gallery-section')">Gallery</a></li>
+  <li class="float-in" style="animation-delay:1s"><a href="#memory-recap-section" (click)="onMenuClick($event, 'memory-recap-section')">Memory Recap</a></li>
+  <li class="float-in" style="animation-delay:1.2s"><a href="#games-section" (click)="onMenuClick($event, 'games-section')">Games</a></li>
+  <li class="float-in" style="animation-delay:1.4s"><a href="#love-counter-section" (click)="onMenuClick($event, 'love-counter-section')">Love Counter</a></li>
+  </ul>
+</div>

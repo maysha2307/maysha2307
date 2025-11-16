@@ -1,0 +1,70 @@
+<div class="thoughts-wrapper">
+  <div class="board-head">
+    <h2>Thoughts 💌</h2>
+  </div>
+
+  <!-- Notes Grid -->
+  <div class="notes-grid">
+    <!-- Note Card -->
+    <div
+      class="note"
+      *ngFor="let note of thoughts$ | async; trackBy: trackById"
+
+      [class.editing]="isEditing(note.id)"
+      [style.transition]="'box-shadow 0.2s, transform 0.2s'"
+    >
+      <!-- Note body -->
+      <div
+        class="note-paper"
+        [class.editing]="isEditing(note.id)"
+      >
+        <pre *ngIf="!isEditing(note.id)" style="margin:0;background:none;border:none;font-family:'Dancing Script',cursive;font-size:1.18rem;color:#5a1130;line-height:1.7;text-indent:1.2em;white-space:pre-wrap;word-break:break-word;">
+          {{ note.text }}
+        </pre>
+        <textarea *ngIf="isEditing(note.id)"
+          class="note-textarea"
+          [(ngModel)]="draftText[note.id!]"
+          rows="5"
+          style="width:100%;font-family:'Dancing Script',cursive;font-size:1.18rem;color:#5a1130;background:#fffbe9;border:none;outline:2px dashed rgba(236,64,122,0.7);border-radius:10px;resize:vertical;padding:8px 12px 12px 12px;box-sizing:border-box;"
+        ></textarea>
+      </div>
+
+      <!-- Actions row -->
+      <div class="note-actions">
+  <button class="icon-btn" title="Edit" (click)="startEdit(note)">✏️</button>
+  <button *ngIf="!isEditing(note.id)" class="icon-btn danger" title="Delete" (click)="deleteNote(note)">🗑️</button>
+  <button *ngIf="isEditing(note.id)" class="icon-btn" title="Cancel" (click)="cancelEdit()">✖️</button>
+  <button class="icon-btn" title="Reply" (click)="toggleReply(note)" *ngIf="!isEditing(note.id)">💬</button>
+  <span *ngIf="isEditing(note.id)" title="Save" (click)="saveEdit(note)" style="cursor:pointer;">💾</span>
+      </div>
+
+      <!-- Reply -->
+  <div class="reply-paper" *ngIf="isReplyOpen(note.id)">
+        <div style="display: flex; align-items: flex-start;">
+          <div style="flex: 1;">
+            <pre *ngIf="replyEditingId !== note.id" style="margin:0;background:none;border:none;font-family:'Dancing Script',cursive;font-size:1.05rem;color:#5a1130;line-height:1.6;white-space:pre-wrap;word-break:break-word;">
+              {{ note.reply }}
+            </pre>
+            <textarea *ngIf="replyEditingId === note.id"
+              class="reply-textarea"
+              [(ngModel)]="draftReply[note.id!]"
+              rows="3"
+              style="width:100%;font-family:'Dancing Script',cursive;font-size:1.05rem;color:#5a1130;background:#fffbe9;border:none;outline:2px dashed rgba(236,64,122,0.7);border-radius:10px;resize:vertical;padding:8px 0px 8px 0px;box-sizing:border-box;"
+            ></textarea>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 22px; margin-left: 10px; margin-top:6px">
+            <button *ngIf="replyEditingId !== note.id" class="icon-btn" title="Edit reply" (click)="startReplyEdit(note)">✏️</button>
+            <button *ngIf="replyEditingId !== note.id" class="icon-btn danger" title="Delete reply" (click)="deleteReply(note)">🗑️</button>
+            <button *ngIf="replyEditingId === note.id" class="icon-btn save" title="Save reply" (click)="saveReply(note)">💾</button>
+            <button *ngIf="replyEditingId === note.id" class="icon-btn" title="Cancel" (click)="cancelReplyEdit(note)">✖️</button>
+          </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Button at bottom of notes grid -->
+  <div class="add-btn-row">
+    <button class="add-btn" (click)="addNote()" [disabled]="creating()">＋</button>
+  </div>
+</div>

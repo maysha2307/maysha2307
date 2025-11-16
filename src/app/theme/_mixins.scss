@@ -1,0 +1,12 @@
+// SCSS Mixins for Mysha Love Theme
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin mobile-only {
+  @media (max-width: 600px) {
+    @content;
+  }
+}

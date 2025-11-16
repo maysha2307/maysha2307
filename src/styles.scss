@@ -1,0 +1,27 @@
+section[id$='-section'] {
+  scroll-margin-top: 64px;
+}
+html {
+  scroll-behavior: smooth;
+}
+.app-content-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  z-index: 0;
+  background: transparent;
+}
+html, body, .app-content-root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  background: #fff;
+}

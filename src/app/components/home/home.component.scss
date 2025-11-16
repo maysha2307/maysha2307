@@ -1,0 +1,303 @@
+
+.signature-loading {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+  height: 32px;
+}
+.signature-loading.tiny {
+  height: 18px;
+}
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #ff8ac9;
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+.spinner.tiny {
+  width: 12px;
+  height: 12px;
+  border-width: 2px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.progress-text {
+  font-size: 0.85em;
+  color: #888;
+}
+.progress-text.tiny {
+  font-size: 0.7em;
+}
+.signature-error {
+  color: #ff4b4b;
+  font-size: 0.9em;
+  margin-top: 0.5em;
+}
+/* Test: Random pink background for Home page */
+:host {
+  background: linear-gradient(135deg, #ffeaf4 0%, #ffd6e0 50%, #f8bbd0 100%);
+  width: 100%;
+  min-height: 100vh;
+  margin:  0 !important;
+  padding: 0 !important;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  /* Try: force the Home section to start exactly below the navbar */
+  position: relative;
+}
+.signatures-section {
+  margin-top: 1.4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 1rem;
+}
+.floating-hearts {
+  position: absolute;
+  bottom: 18px;
+  pointer-events: none;
+}
+
+.floating-hearts span {
+  position: absolute;
+  color: rgba(255, 20, 147, 0.4);
+  font-size: 1.2rem;
+  animation: floatUp 6s linear infinite;
+}
+
+.floating-hearts.left {
+  left: 0;
+  width: 28%;
+}
+.floating-hearts.right {
+  right: 0;
+  width: 28%;
+}
+.floating-hearts.left span:nth-child(1) { left: 10px; animation-delay: 0s; }
+.floating-hearts.left span:nth-child(2) { left: 40px; animation-delay: 2s; }
+.floating-hearts.left span:nth-child(3) { left: 70px; animation-delay: 4s; }
+.floating-hearts.right span:nth-child(1) { right: 10px; animation-delay: 0s; }
+.floating-hearts.right span:nth-child(2) { right: 40px; animation-delay: 2s; }
+.floating-hearts.right span:nth-child(3) { right: 70px; animation-delay: 4s; }
+
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-60px) scale(1.2); opacity: 0; }
+}
+.main-home {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #3d2c41;
+}
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@400;600&display=swap');
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.page-wrapper {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ffe6f0, #fff0f5);
+  font-family: 'Quicksand', sans-serif;
+}
+
+.intro-content {
+  text-align: center;
+  background: radial-gradient(circle at top left, #fffdfc, #ffeef5);
+  border: 2px solid #f8bbd0;
+  border-radius: 22px;
+  box-shadow: 0 6px 18px rgba(255, 105, 180, 0.25),
+              0 0 25px rgba(255, 182, 193, 0.3);
+  padding: 1rem !important;
+  margin: 2.5rem 2rem 0 2rem !important;
+  height: auto;
+  max-width: 450px;
+  position: relative;
+  animation: floatCard 4s ease-in-out infinite alternate;
+}
+
+@keyframes floatCard {
+  from { transform: translateY(0); }
+  to { transform: translateY(-8px); }
+}
+
+.intro-content h1 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.4rem;
+  color: #b71c5c;
+  margin: 0 0 1rem 0;
+  text-shadow: 0 0 8px rgba(255, 20, 147, 0.3);
+}
+
+.intro-content p {
+  font-size: 1rem;
+  color: #5a1130;
+  margin: 0.4rem 0;
+  line-height: 1.5;
+}
+
+.intro-content h2 {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.4rem;
+  color: #8e245c;
+  margin: 1rem 0 0.4rem;
+  font-weight: 400;
+  text-shadow: 0 0 8px rgba(255, 105, 180, 0.35);
+}
+
+.soft-divider {
+  font-size: 1.2rem;
+  color: #c2185b;
+  margin: 0.8rem 0;
+  text-shadow: 0 0 6px rgba(255, 105, 180, 0.4);
+}
+
+.lottie-divider {
+  display: flex;
+  justify-content: center;
+  margin-bottom: -2rem;
+}
+
+.card-lottie {
+  width: 120px;
+  height: 120px;
+  filter: drop-shadow(0 0 6px rgba(255, 105, 180, 0.6));
+}
+
+.signature-box {
+  flex: 1;
+  max-width: 150px;
+  height: 90px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1.5px solid rgba(199, 21, 133, 0.35);
+  box-shadow: inset 0 2px 6px rgba(255, 182, 193, 0.25),
+              0 3px 8px rgba(255, 105, 180, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  /* Only the image inside will be tilted, not the box */
+}
+
+.signature-box span {
+  font-size: 0.8rem;
+  color: #a21b65;
+  font-style: italic;
+  text-align: center;
+  opacity: 0.75;
+  padding: 0.5rem;
+}
+
+.signature-img {
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+  background: transparent;
+  padding: 4px;
+  pointer-events: none;
+}
+.remove-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #fff0f6;
+  border: 1px solid #e91e63;
+  color: #e91e63;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(233, 30, 99, 0.12);
+  z-index: 2;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.remove-btn:hover {
+  background: #ffe4ec;
+}
+
+.floating-hearts {
+  position: absolute;
+  bottom: 18px;
+  pointer-events: none;
+  /* No width or flex here, only in specific position classes */
+}
+
+.floating-hearts span {
+  position: absolute;
+  color: rgba(255, 20, 147, 0.4);
+  font-size: 1.2rem;
+  animation: floatUp 6s linear infinite;
+}
+.floating-hearts.left span:nth-child(1) { left: 10px; animation-delay: 0s; }
+.floating-hearts.left span:nth-child(2) { left: 40px; animation-delay: 2s; }
+.floating-hearts.left span:nth-child(3) { left: 70px; animation-delay: 4s; }
+.floating-hearts.right span:nth-child(1) { right: 10px; animation-delay: 0s; }
+.floating-hearts.right span:nth-child(2) { right: 40px; animation-delay: 2s; }
+.floating-hearts.right span:nth-child(3) { right: 70px; animation-delay: 4s; }
+
+/* Right floating hearts */
+.floating-hearts.right {
+  position: absolute;
+  right: 0;
+  bottom: 16px;
+  width: 28%;
+  display: block;
+}
+
+/* Left floating hearts */
+.floating-hearts.left {
+  position: absolute;
+}
+
+.section-content {
+  scroll-margin-top: 64px;
+  padding-top: 64px;
+}
+
+@media (max-width: 480px) {
+  .intro-content {
+    padding: 1.6rem 1rem;
+  }
+
+  .intro-content h1 {
+    font-size: 2rem;
+  }
+
+  .card-lottie {
+    width: 100px;
+    height: 100px;
+  }
+
+  .signatures-section {
+    flex-direction: row;
+    gap: 0.6rem;
+  }
+
+  .signature-box {
+    height: 80px;
+    max-width: 130px;
+  }
+}
+
+.bin-btn svg rect {
+  fill: rgba(199, 21, 133, 0.35) !important; /* exact match to signature box border color */
+}

@@ -1,3 +1,99 @@
 <div id="love-counter-section" class="section-content">
-  <div class="love-counter-page">Love Counter works!</div>
+  <div class="love-counter-page">
+    
+    <!-- Floating Hearts Background -->
+    <div class="floating-hearts-bg">
+      <span 
+        *ngFor="let heart of floatingHearts"
+        class="float-heart"
+        [style.left.%]="heart.left"
+        [style.animation-delay.s]="heart.delay"
+        [style.animation-duration.s]="heart.duration"
+        [style.font-size.rem]="heart.size"
+      >💕</span>
+    </div>
+
+    <!-- Main Content -->
+    <div class="counter-content">
+      
+      <!-- Header with Hearts -->
+      <div class="counter-header">
+        <div class="heart-decoration left">💗</div>
+        <div class="title-area">
+          <h2>Forever & Counting</h2>
+          <p class="since-text">Since {{ formattedStartDate }}</p>
+        </div>
+        <div class="heart-decoration right">💗</div>
+      </div>
+
+      <!-- Main Counter Display -->
+      <div class="main-counter">
+        <!-- Big Number Display -->
+        <div class="big-number-row">
+          <div class="time-unit" *ngIf="years > 0">
+            <span class="number glow">{{ years }}</span>
+            <span class="label">{{ years === 1 ? 'Year' : 'Years' }}</span>
+          </div>
+          <div class="time-unit">
+            <span class="number glow">{{ months }}</span>
+            <span class="label">{{ months === 1 ? 'Month' : 'Months' }}</span>
+          </div>
+          <div class="time-unit">
+            <span class="number glow">{{ days }}</span>
+            <span class="label">{{ days === 1 ? 'Day' : 'Days' }}</span>
+          </div>
+        </div>
+
+        <!-- Separator -->
+        <div class="counter-divider">
+          <span class="divider-heart">💕</span>
+        </div>
+
+        <!-- Time Display -->
+        <div class="time-row">
+          <div class="time-box">
+            <span class="time-num">{{ hours.toString().padStart(2, '0') }}</span>
+            <span class="time-label">Hours</span>
+          </div>
+          <span class="time-colon">:</span>
+          <div class="time-box">
+            <span class="time-num">{{ minutes.toString().padStart(2, '0') }}</span>
+            <span class="time-label">Minutes</span>
+          </div>
+          <span class="time-colon blink">:</span>
+          <div class="time-box">
+            <span class="time-num pulse">{{ seconds.toString().padStart(2, '0') }}</span>
+            <span class="time-label">Seconds</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fun Stats -->
+      <div class="fun-stats">
+        <div class="stat-card">
+          <span class="stat-icon">📅</span>
+          <span class="stat-value">{{ formatNumber(totalDays) }}</span>
+          <span class="stat-label">Days of Love</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon">💓</span>
+          <span class="stat-value">{{ formatNumber(totalHeartbeats) }}</span>
+          <span class="stat-label">Heartbeats Together</span>
+        </div>
+      </div>
+
+      <!-- Romantic Quote -->
+      <div class="love-quote">
+        <span class="quote-mark">"</span>
+        <p>It all began on July 23rd — a heart poured out at 8:28, a dream answered at 9:02, and now every second brings us closer to our forever</p>
+        <span class="quote-mark closing">"</span>
+      </div>
+
+      <!-- Beating Heart -->
+      <div class="beating-heart">
+        <span class="heart">❤️</span>
+      </div>
+
+    </div>
+  </div>
 </div>

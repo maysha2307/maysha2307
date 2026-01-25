@@ -1,0 +1,260 @@
+.random-drawing-game {
+  padding: 0;
+}
+
+/* Back Button */
+.back-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  margin-bottom: 1rem;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #c4b5fd;
+  }
+}
+
+/* Game Header */
+.game-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+
+  .game-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    animation: wiggle 1s ease-in-out infinite;
+  }
+
+  h2 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.4rem;
+    color: #fff;
+    margin: 0;
+    font-weight: 700;
+  }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+/* Prompt Area */
+.prompt-area {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.prompt-card {
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.prompt-label {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.prompt-text {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.1rem;
+  color: #fff;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+}
+
+.timer {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  color: #c4b5fd;
+  font-weight: 600;
+
+  &.warning {
+    color: #ff6b8a;
+    animation: pulse 0.5s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.new-prompt-btn {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 100px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+  }
+}
+
+/* Canvas */
+.canvas-container {
+  background: #1a1a25;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  touch-action: none;
+
+  canvas {
+    display: block;
+    width: 100%;
+    cursor: crosshair;
+  }
+}
+
+/* Tools */
+.tools-area {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.tool-section {
+  flex: 1;
+}
+
+.tool-label {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.color-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.color-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.15);
+  }
+
+  &.active {
+    border-color: #fff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.size-options {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.size-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    background: rgba(139, 92, 246, 0.3);
+    border-color: rgba(139, 92, 246, 0.5);
+  }
+
+  .size-dot {
+    background: #fff;
+    border-radius: 50%;
+  }
+}
+
+/* Actions */
+.actions-area {
+  display: flex;
+  gap: 1rem;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 12px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &.clear {
+    background: rgba(255, 100, 100, 0.15);
+    border: 1px solid rgba(255, 100, 100, 0.3);
+    color: #ff8888;
+
+    &:hover {
+      background: rgba(255, 100, 100, 0.25);
+    }
+  }
+
+  &.save {
+    background: rgba(100, 200, 150, 0.15);
+    border: 1px solid rgba(100, 200, 150, 0.3);
+    color: #88ffaa;
+
+    &:hover {
+      background: rgba(100, 200, 150, 0.25);
+    }
+  }
+}
+
+/* Footer */
+.game-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+
+  .footer-tip {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+  }
+}

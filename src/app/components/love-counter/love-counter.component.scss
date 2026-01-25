@@ -1,20 +1,422 @@
-/* Test: Random pink background for Love Counter page */
+@import '../../theme/variables';
+
 :host {
-					background: linear-gradient(135deg, #ffeaf4 0%, #ffd6e0 50%, #f8bbd0 100%);
-					width: 100%;
-					min-height: 100vh;
-					margin: 0 !important;
-					padding: 0 !important;
-					display: block;
-					box-sizing: border-box;
+  display: block;
+  width: 100%;
+  background: linear-gradient(145deg, #0d0d0f 0%, #1a0a14 30%, #12080c 60%, #0a0612 100%);
 }
-.love-counter-root {
-  padding: 0 !important;
-  margin: 0 !important;
-  border: none !important;
-  box-shadow: none !important;
-}
+
 .section-content {
   scroll-margin-top: 64px;
-  padding-top: 64px;
+  padding-top: 0;
+}
+
+.love-counter-page {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  
+  // Ambient Glow Orbs
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 15%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 105, 135, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: pulse-glow 6s ease-in-out infinite;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 15%;
+    right: 10%;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(180, 100, 200, 0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(50px);
+    animation: pulse-glow 8s ease-in-out infinite reverse;
+  }
+}
+
+// Floating Hearts Background
+.floating-hearts-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.float-heart {
+  position: absolute;
+  bottom: -10%;
+  opacity: 0;
+  animation: float-up linear infinite;
+  filter: drop-shadow(0 0 8px rgba(255, 105, 135, 0.4));
+}
+
+@keyframes float-up {
+  0% {
+    opacity: 0;
+    transform: translateY(0) rotate(0deg) scale(0.5);
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-120vh) rotate(360deg) scale(1.2);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+// Main Content
+.counter-content {
+  position: relative;
+  z-index: 1;
+  max-width: 650px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+// Header
+.counter-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  
+  .heart-decoration {
+    font-size: 1.8rem;
+    animation: heart-pulse 1.2s ease-in-out infinite;
+    filter: drop-shadow(0 0 15px rgba(255, 105, 135, 0.6));
+    
+    &.left {
+      animation-delay: 0s;
+    }
+    &.right {
+      animation-delay: 0.6s;
+    }
+  }
+  
+  .title-area {
+    text-align: center;
+    
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #ff6f91 0%, #ffb8c6 50%, #e8a4b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      letter-spacing: 1px;
+      text-shadow: 0 0 30px rgba(255, 111, 145, 0.3);
+    }
+    
+    .since-text {
+      font-size: 0.95rem;
+      color: rgba(255, 182, 193, 0.7);
+      margin-top: 0.3rem;
+      font-style: italic;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+@keyframes heart-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+// Main Counter
+.main-counter {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 105, 135, 0.15);
+  border-radius: 24px;
+  padding: 2rem;
+  width: 100%;
+  box-shadow: 
+    0 0 40px rgba(255, 105, 135, 0.08),
+    inset 0 0 60px rgba(255, 255, 255, 0.02);
+}
+
+.big-number-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.time-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  .number {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1;
+    
+    &.glow {
+      text-shadow: 
+        0 0 20px rgba(255, 105, 135, 0.5),
+        0 0 40px rgba(255, 105, 135, 0.3);
+    }
+  }
+  
+  .label {
+    font-size: 0.9rem;
+    color: rgba(255, 182, 193, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 0.4rem;
+  }
+}
+
+.counter-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem 0;
+  
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 105, 135, 0.3), transparent);
+  }
+  
+  .divider-heart {
+    margin: 0 1rem;
+    font-size: 1rem;
+    filter: drop-shadow(0 0 8px rgba(255, 105, 135, 0.5));
+    animation: heart-pulse 1.5s ease-in-out infinite;
+  }
+}
+
+.time-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.time-box {
+  background: rgba(255, 105, 135, 0.08);
+  border: 1px solid rgba(255, 105, 135, 0.15);
+  border-radius: 12px;
+  padding: 0.8rem 1.2rem;
+  min-width: 70px;
+  text-align: center;
+  
+  .time-num {
+    font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: white;
+    display: block;
+    
+    &.pulse {
+      animation: number-pulse 1s ease-in-out infinite;
+    }
+  }
+  
+  .time-label {
+    font-size: 0.65rem;
+    color: rgba(255, 182, 193, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-top: 0.3rem;
+  }
+}
+
+.time-colon {
+  font-size: 1.6rem;
+  color: rgba(255, 105, 135, 0.6);
+  font-weight: 600;
+  
+  &.blink {
+    animation: blink 1s step-end infinite;
+  }
+}
+
+@keyframes number-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.3; }
+}
+
+// Fun Stats
+.fun-stats {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 105, 135, 0.1);
+  border-radius: 16px;
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 180px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 105, 135, 0.25);
+    box-shadow: 0 10px 30px rgba(255, 105, 135, 0.1);
+  }
+  
+  .stat-icon {
+    font-size: 1.6rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: white;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
+    color: rgba(255, 182, 193, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}
+
+// Love Quote
+.love-quote {
+  position: relative;
+  text-align: center;
+  padding: 1rem 2rem;
+  max-width: 400px;
+  
+  .quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: rgba(255, 105, 135, 0.3);
+    position: absolute;
+    line-height: 1;
+    
+    &:first-child {
+      top: -0.5rem;
+      left: 0;
+    }
+    
+    &.closing {
+      bottom: -0.5rem;
+      right: 0;
+    }
+  }
+  
+  p {
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+// Beating Heart
+.beating-heart {
+  margin-top: 0.5rem;
+  
+  .heart {
+    font-size: 2.5rem;
+    display: inline-block;
+    animation: heartbeat 1s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px rgba(255, 0, 60, 0.6));
+  }
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  15% { transform: scale(1.25); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.15); }
+  60% { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+
+// Responsive
+@media (max-width: 600px) {
+  .counter-header {
+    .heart-decoration {
+      font-size: 1.4rem;
+    }
+    
+    .title-area h2 {
+      font-size: 1.8rem;
+    }
+  }
+  
+  .time-unit .number {
+    font-size: 2.8rem;
+  }
+  
+  .big-number-row {
+    gap: 1.5rem;
+  }
+  
+  .time-box {
+    padding: 0.6rem 0.8rem;
+    min-width: 55px;
+    
+    .time-num {
+      font-size: 1.4rem;
+    }
+  }
+  
+  .stat-card {
+    min-width: 140px;
+    padding: 1rem;
+    
+    .stat-value {
+      font-size: 1.2rem;
+    }
+  }
 }

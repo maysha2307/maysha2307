@@ -1,0 +1,247 @@
+@import '../../theme/variables';
+
+.site-footer {
+  background: linear-gradient(180deg, #0a0612 0%, #0d0810 50%, #080408 100%);
+  border-top: 1px solid rgba(255, 105, 135, 0.1);
+  padding: 3rem 1.5rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  
+  // Subtle ambient glow
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 105, 135, 0.4), transparent);
+  }
+}
+
+.footer-content {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+// Section Styles
+.footer-section {
+  text-align: center;
+  
+  h4 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 182, 193, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 1rem;
+  }
+}
+
+// Social Links
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.social-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 105, 135, 0.1);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 105, 135, 0.08);
+    border-color: rgba(255, 105, 135, 0.25);
+    box-shadow: 0 8px 25px rgba(255, 105, 135, 0.15);
+  }
+  
+  .icon {
+    font-size: 1.5rem;
+    
+    &.instagram-icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      svg {
+        width: 100%;
+        height: 100%;
+        fill: #ff6f91;
+        transition: fill 0.3s ease;
+      }
+    }
+  }
+  
+  &:hover .instagram-icon svg {
+    fill: #ffb8c6;
+  }
+  
+  .label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+  }
+  
+  &.his:hover .icon {
+    animation: bounce 0.5s ease;
+  }
+  
+  &.hers:hover .icon {
+    animation: bounce 0.5s ease;
+  }
+  
+  &.ours:hover .icon {
+    animation: pulse-heart 0.8s ease infinite;
+  }
+}
+
+// Divider
+.footer-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    max-width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 105, 135, 0.2), transparent);
+  }
+  
+  .divider-heart {
+    margin: 0 1rem;
+    font-size: 0.9rem;
+    opacity: 0.6;
+    animation: pulse-heart 2s ease-in-out infinite;
+  }
+}
+
+// Other Links
+.links-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.special-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 105, 135, 0.08);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(255, 105, 135, 0.1);
+    border-color: rgba(255, 105, 135, 0.2);
+    transform: scale(1.05);
+  }
+  
+  .link-icon {
+    font-size: 1rem;
+  }
+  
+  .link-name {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+  }
+}
+
+// Footer Bottom
+.footer-bottom {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 105, 135, 0.05);
+  text-align: center;
+}
+
+.love-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  
+  .heart-beat {
+    font-size: 1rem;
+    animation: heartbeat 1.2s ease-in-out infinite;
+  }
+  
+  p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    
+    strong {
+      color: rgba(255, 182, 193, 0.9);
+      font-weight: 600;
+    }
+  }
+}
+
+.copyright {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0;
+}
+
+// Animations
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes pulse-heart {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  15% { transform: scale(1.2); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.15); }
+  60% { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+
+// Responsive
+@media (max-width: 480px) {
+  .site-footer {
+    padding: 2rem 1rem 1rem;
+  }
+  
+  .social-links {
+    gap: 1rem;
+  }
+  
+  .social-link {
+    padding: 0.6rem 1rem;
+    
+    .icon {
+      font-size: 1.3rem;
+    }
+  }
+}

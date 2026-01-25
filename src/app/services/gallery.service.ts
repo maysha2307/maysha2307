@@ -1,77 +1,141 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { GalleryPhoto } from '../models/gallery-photo.model';
+import { environment } from '../../environments/environment';
+
+export interface FolderPhotos {
+  precious: GalleryPhoto[];
+  assthetic: GalleryPhoto[];
+  autistic: GalleryPhoto[];
+}
 
 @Injectable({ providedIn: 'root' })
 export class GalleryService {
+  private folderPhotos: FolderPhotos = { precious: [], assthetic: [], autistic: [] };
+  private folderPhotosSubject = new BehaviorSubject<FolderPhotos>(this.folderPhotos);
+  folderPhotos$ = this.folderPhotosSubject.asObservable();
+
+  // Legacy support
   private photos: GalleryPhoto[] = [];
   private photosSubject = new BehaviorSubject<GalleryPhoto[]>([]);
   photos$ = this.photosSubject.asObservable();
 
-  // Supabase configuration
-  private SUPABASE_URL = 'https://dtkrnfmhdlwsgfkxooqi.supabase.co';
-  private SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR0a3JuZm1oZGx3c2dma3hvb3FpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY4NjQ2NzUsImV4cCI6MjA1MjQzMDY3NX0.S3qUy5Pz8kGU9ZmHyLU8VcF2qJH2lPvNWvHUzJ8TyZI';
+  // Supabase configuration from environment
+  private SUPABASE_URL = environment.supabase.url;
+  private SUPABASE_KEY = environment.supabase.anonKey;
   private STORAGE_BUCKET = 'photo-memories';
-  private STORAGE_FOLDER = 'gallery';
 
   constructor() {
-    this.loadPhotos();
+    this.loadAllFolders();
   }
 
-  private loadPhotos(): void {
-    // Load from hardcoded filenames (user uploaded these to Supabase)
-    this.loadFromHardcodedPhotos();
-  }
-
-  private loadFromHardcodedPhotos(): void {
+  /**
+   * Load photos from all 3 Supabase folders
+   */
+  async loadAllFolders(): Promise<void> {
     try {
-      // These are the exact files uploaded to your Supabase gallery folder
-      const photoFilenames = [
-        'IMG_20260115_230740_176.jpg',
-        'IMG_20260115_230747_125.jpg',
-        'SAVE_20260115_225250.jpg',
-        'xerxes.jpgxxiv-20260119-0001.jpg',
-        'xerxes.xxiv-20251214-0001.jpg'
-      ];
+      const [precious, assthetic, autistic] = await Promise.all([
+        this.loadFolderFromSupabase('gallery/precious'),
+        this.loadFolderFromSupabase('gallery/assthetic'),
+        this.loadFolderFromSupabase('gallery/autistic')
+      ]);
 
-      this.photos = photoFilenames
-        .filter((name: string) => this.isImageFile(name))
-        .map((filename: string, index: number) => {
-          const publicUrl = `${this.SUPABASE_URL}/storage/v1/object/public/${this.STORAGE_BUCKET}/${this.STORAGE_FOLDER}/${filename}`;
+      this.folderPhotos = { precious, assthetic, autistic };
+      this.folderPhotosSubject.next({ ...this.folderPhotos });
 
+      // Also update legacy photos$ for backward compatibility
+      this.photos = [...precious, ...assthetic, ...autistic];
+      this.photosSubject.next([...this.photos]);
+
+      // Save to localStorage as backup
+      localStorage.setItem('gallery_folders', JSON.stringify(this.folderPhotos));
+    } catch (error) {
+      this.loadFallbackPhotos();
+    }
+  }
+
+  /**
+   * Load photos from a specific Supabase storage folder
+   */
+  private async loadFolderFromSupabase(folderPath: string): Promise<GalleryPhoto[]> {
+    try {
+      // List files in the folder using Supabase Storage API
+      const url = `${this.SUPABASE_URL}/storage/v1/object/list/${this.STORAGE_BUCKET}`;
+      
+      const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'apikey': this.SUPABASE_KEY,
+            'Authorization': `Bearer ${this.SUPABASE_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            prefix: folderPath,
+            limit: 100,
+            offset: 0
+          })
+        }
+      );
+
+      if (!response.ok) {
+        return [];
+      }
+
+      const files = await response.json();
+      
+      // Filter for image files and map to GalleryPhoto
+      const photos: GalleryPhoto[] = files
+        .filter((file: any) => file.name && this.isImageFile(file.name))
+        .map((file: any, index: number) => {
+          const publicUrl = `${this.SUPABASE_URL}/storage/v1/object/public/${this.STORAGE_BUCKET}/${folderPath}/${file.name}`;
+          const folderName = folderPath.split('/').pop() || 'gallery';
+          
           return {
-            id: `photo_${index}`,
-            title: this.formatFileName(filename),
-            description: 'Memory from our journey',
+            id: `${folderName}_${index}_${file.name}`,
+            title: this.formatFileName(file.name),
+            description: `Memory from ${folderName}`,
             googleDriveImageUrl: publicUrl,
             thumbnail: publicUrl
           };
         });
 
-      console.log('✅ Photos loaded from Supabase:', this.photos);
-      this.saveToLocalStorage();
-      this.photosSubject.next([...this.photos]);
+      return photos;
     } catch (error) {
-      console.error('❌ Error loading photos:', error);
-      this.loadFallbackPhotos();
+      return [];
+    }
+  }
+
+  /**
+   * Get photos for a specific folder
+   */
+  getFolderPhotos(folderId: string): GalleryPhoto[] {
+    switch (folderId) {
+      case 'precious': return this.folderPhotos.precious;
+      case 'assthetic': return this.folderPhotos.assthetic;
+      case 'autistic': return this.folderPhotos.autistic;
+      default: return [];
     }
   }
 
   private loadFallbackPhotos(): void {
     // Fallback if Supabase is unavailable
-    const saved = localStorage.getItem('gallery_photos');
+    const saved = localStorage.getItem('gallery_folders');
     if (saved) {
       try {
-        this.photos = JSON.parse(saved);
+        this.folderPhotos = JSON.parse(saved);
+        this.folderPhotosSubject.next({ ...this.folderPhotos });
+        this.photos = [...this.folderPhotos.precious, ...this.folderPhotos.assthetic, ...this.folderPhotos.autistic];
         this.photosSubject.next([...this.photos]);
-        console.log('✅ Gallery photos loaded from localStorage');
+        console.log('✅ Gallery folders loaded from localStorage');
         return;
       } catch (error) {
-        console.error('Error parsing saved photos:', error);
+        console.error('Error parsing saved folders:', error);
       }
     }
 
     // No photos available
+    this.folderPhotos = { precious: [], assthetic: [], autistic: [] };
+    this.folderPhotosSubject.next({ ...this.folderPhotos });
     this.photos = [];
     this.photosSubject.next([...this.photos]);
   }
@@ -83,55 +147,16 @@ export class GalleryService {
   }
 
   private formatFileName(filename: string): string {
-    // Convert filename to title: "photo_001.jpg" → "Photo 001"
     return filename
       .substring(0, filename.lastIndexOf('.'))
       .replace(/[-_]/g, ' ')
       .replace(/\b\w/g, (char) => char.toUpperCase());
   }
 
-  private saveToLocalStorage(): void {
-    localStorage.setItem('gallery_photos', JSON.stringify(this.photos));
-  }
-
   /**
-   * Remove a photo from local view
-   * (Note: Photo stays in Supabase Storage)
+   * Refresh photos from Supabase
    */
-  removePhoto(photoId: string): void {
-    const index = this.photos.findIndex(p => p.id === photoId);
-    if (index !== -1) {
-      this.photos.splice(index, 1);
-      this.saveToLocalStorage();
-      this.photosSubject.next([...this.photos]);
-      console.log('✅ Photo removed from gallery');
-    }
-  }
-
-  /**
-   * Update photo metadata (title, description)
-   */
-  updatePhoto(photoId: string, updates: Partial<Omit<GalleryPhoto, 'id'>>): void {
-    const photo = this.photos.find(p => p.id === photoId);
-    if (photo) {
-      Object.assign(photo, updates);
-      this.saveToLocalStorage();
-      this.photosSubject.next([...this.photos]);
-      console.log('✅ Photo updated:', photo);
-    }
-  }
-
-  /**
-   * Reset to default photos
-   */
-  resetToDefaults(): void {
-    this.photos = this.getDefaultPhotos();
-    this.saveToLocalStorage();
-    this.photosSubject.next([...this.photos]);
-  }
-
-  private getDefaultPhotos(): GalleryPhoto[] {
-    // Fallback empty array - photos load from Supabase
-    return [];
+  async refresh(): Promise<void> {
+    await this.loadAllFolders();
   }
 }

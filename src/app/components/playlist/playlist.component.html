@@ -1,0 +1,154 @@
+<div id="playlist-section" class="section-content">
+  <div class="playlist-page">
+    <!-- Header -->
+    <div class="section-header">
+      <div class="header-icon">🎵</div>
+      <h2>Our Playlist</h2>
+      <p class="subtitle">Melodies woven into our moments</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="songs.length === 0 && !showSearch">
+      <div class="empty-illustration">🎶</div>
+      <h3>No songs yet</h3>
+      <p>Add songs that are special to us!</p>
+      <button class="add-first-btn" (click)="openSearch()">
+        + Add Your First Song
+      </button>
+    </div>
+
+    <!-- Song List -->
+    <div class="song-list" *ngIf="songs.length > 0">
+      <div 
+        *ngFor="let song of songs; let i = index" 
+        class="song-card"
+        [class.playing]="currentlyPlaying === song.id"
+        [style.animation-delay.ms]="i * 80"
+      >
+        <!-- Album Art -->
+        <div class="album-art" (click)="togglePreview(song)">
+          <img [src]="song.albumArt" [alt]="song.album" loading="lazy" />
+          <div class="play-overlay">
+            <span *ngIf="currentlyPlaying !== song.id">▶</span>
+            <span *ngIf="currentlyPlaying === song.id">⏸</span>
+          </div>
+        </div>
+
+        <!-- Song Info -->
+        <div class="song-info">
+          <h4 class="song-title">{{ song.title }}</h4>
+          <p class="song-artist">{{ song.artist }}</p>
+          
+          <!-- Note Section -->
+          <div class="song-note" *ngIf="editingNoteId !== song.id">
+            <p *ngIf="song.note" class="note-text">
+              <span class="note-icon">💕</span> {{ song.note }}
+            </p>
+            <button 
+              class="add-note-btn" 
+              (click)="startEditNote(song)"
+              *ngIf="!song.note"
+            >
+              + Add a note
+            </button>
+            <button 
+              class="edit-note-btn"
+              (click)="startEditNote(song)"
+              *ngIf="song.note"
+            >
+              ✏️
+            </button>
+          </div>
+
+          <!-- Note Editor -->
+          <div class="note-editor" *ngIf="editingNoteId === song.id">
+            <input 
+              type="text"
+              [(ngModel)]="noteText"
+              placeholder="Why is this song special?"
+              (keyup.enter)="saveNote(song.id)"
+            />
+            <div class="note-actions">
+              <button class="save-btn" (click)="saveNote(song.id)">Save</button>
+              <button class="cancel-btn" (click)="cancelEditNote()">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delete Button -->
+        <button class="delete-btn" (click)="removeSong(song.id)">×</button>
+      </div>
+    </div>
+
+    <!-- Add Button -->
+    <button 
+      class="add-btn" 
+      (click)="openSearch()"
+      *ngIf="songs.length > 0 && !showSearch"
+    >
+      +
+    </button>
+
+    <!-- Search Modal -->
+    <div class="search-modal" *ngIf="showSearch">
+      <div class="search-overlay" (click)="closeSearch()"></div>
+      <div class="search-content">
+        <div class="search-header">
+          <h3>🔍 Find a Song</h3>
+          <button class="close-btn" (click)="closeSearch()">×</button>
+        </div>
+
+        <!-- Search Input -->
+        <div class="search-input-wrapper">
+          <input 
+            type="text"
+            [(ngModel)]="searchQuery"
+            (input)="onSearch()"
+            placeholder="Search for a song or artist..."
+            autofocus
+          />
+          <div class="search-spinner" *ngIf="isSearching">
+            <span class="spinner"></span>
+          </div>
+        </div>
+
+        <!-- Search Results -->
+        <div class="search-results">
+          <div 
+            *ngFor="let result of searchResults"
+            class="search-result-item"
+            [class.added]="isSongAdded(result.trackId)"
+          >
+            <img 
+              [src]="result.artworkUrl100" 
+              [alt]="result.collectionName"
+              class="result-art"
+            />
+            <div class="result-info">
+              <p class="result-title">{{ result.trackName }}</p>
+              <p class="result-artist">{{ result.artistName }}</p>
+            </div>
+            <button 
+              class="add-result-btn"
+              (click)="addSong(result)"
+              [disabled]="isSongAdded(result.trackId)"
+            >
+              <span *ngIf="!isSongAdded(result.trackId)">+</span>
+              <span *ngIf="isSongAdded(result.trackId)">✓</span>
+            </button>
+          </div>
+
+          <!-- No Results -->
+          <div class="no-results" *ngIf="searchQuery.length >= 2 && searchResults.length === 0 && !isSearching">
+            <p>No songs found. Try a different search!</p>
+          </div>
+
+          <!-- Search Hint -->
+          <div class="search-hint" *ngIf="searchQuery.length < 2 && !isSearching">
+            <p>Type to search for songs...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

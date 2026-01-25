@@ -1,0 +1,88 @@
+<div class="random-drawing-game">
+  <!-- Back Button -->
+  <button class="back-btn" (click)="goBack()">
+    ← Back to Games
+  </button>
+
+  <!-- Game Header -->
+  <div class="game-header">
+    <div class="game-icon">🎨</div>
+    <h2>Random Drawing</h2>
+  </div>
+
+  <!-- Prompt Area -->
+  <div class="prompt-area">
+    <div class="prompt-card" *ngIf="currentPrompt">
+      <p class="prompt-label">Draw this:</p>
+      <p class="prompt-text">{{ currentPrompt }}</p>
+      <div class="timer" [class.warning]="timeLeft <= 10">
+        ⏱️ {{ timeLeft }}s
+      </div>
+    </div>
+
+    <button class="new-prompt-btn" (click)="getRandomPrompt()">
+      🎲 {{ currentPrompt ? 'New Prompt' : 'Get a Prompt' }}
+    </button>
+  </div>
+
+  <!-- Canvas Area -->
+  <div class="canvas-container">
+    <canvas 
+      #canvas
+      (mousedown)="startDrawing($event)"
+      (mousemove)="draw($event)"
+      (mouseup)="stopDrawing()"
+      (mouseleave)="stopDrawing()"
+      (touchstart)="startDrawing($event)"
+      (touchmove)="draw($event)"
+      (touchend)="stopDrawing()"
+    ></canvas>
+  </div>
+
+  <!-- Tools -->
+  <div class="tools-area">
+    <!-- Colors -->
+    <div class="tool-section">
+      <p class="tool-label">Colors</p>
+      <div class="color-options">
+        <button 
+          *ngFor="let color of colors"
+          class="color-btn"
+          [style.background]="color"
+          [class.active]="brushColor === color"
+          (click)="setColor(color)"
+        ></button>
+      </div>
+    </div>
+
+    <!-- Brush Size -->
+    <div class="tool-section">
+      <p class="tool-label">Size</p>
+      <div class="size-options">
+        <button 
+          *ngFor="let size of brushSizes"
+          class="size-btn"
+          [class.active]="brushSize === size"
+          (click)="setSize(size)"
+        >
+          <span class="size-dot" [style.width.px]="size" [style.height.px]="size"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions-area">
+    <button class="action-btn clear" (click)="clearCanvas()">
+      🗑️ Clear
+    </button>
+    <button class="action-btn save" (click)="saveDrawing()">
+      💾 Save
+    </button>
+  </div>
+
+  <!-- Fun Tip -->
+  <div class="game-footer">
+    <p class="footer-tip">🎨 Let your creativity flow together!</p>
+  </div>
+</div>

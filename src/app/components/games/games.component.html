@@ -1,3 +1,48 @@
 <div id="games-section" class="section-content">
-  <div class="games-page">Games works!</div>
+  <div class="games-page">
+    <!-- Header -->
+    <div class="section-header" *ngIf="!activeGame">
+      <div class="header-icon">🎮</div>
+      <h2>Games</h2>
+      <p class="subtitle">Choose a game to play together</p>
+    </div>
+
+    <!-- Game Selection Grid -->
+    <div class="games-grid" *ngIf="!activeGame">
+      <div 
+        *ngFor="let game of games; let i = index"
+        class="game-card"
+        [style.--accent-color]="game.color"
+        [style.animation-delay.ms]="i * 100"
+        (click)="openGame(game.id)"
+      >
+        <div class="game-emoji">{{ game.emoji }}</div>
+        <h3 class="game-name">{{ game.name }}</h3>
+        <p class="game-desc">{{ game.description }}</p>
+        <div class="play-hint">Tap to play →</div>
+      </div>
+
+      <!-- Coming Soon Cards -->
+      <div class="game-card coming-soon">
+        <div class="game-emoji">🎯</div>
+        <h3 class="game-name">Truth or Dare</h3>
+        <p class="game-desc">Coming soon...</p>
+      </div>
+      <div class="game-card coming-soon">
+        <div class="game-emoji">🎰</div>
+        <h3 class="game-name">Spin the Wheel</h3>
+        <p class="game-desc">Coming soon...</p>
+      </div>
+    </div>
+
+    <!-- We Know Us Game -->
+    <div class="game-container" *ngIf="activeGame === 'we-know-us'">
+      <app-we-know-us (close)="closeGame()"></app-we-know-us>
+    </div>
+
+    <!-- Random Drawing Game -->
+    <div class="game-container" *ngIf="activeGame === 'random-drawing'">
+      <app-random-drawing (close)="closeGame()"></app-random-drawing>
+    </div>
+  </div>
 </div>

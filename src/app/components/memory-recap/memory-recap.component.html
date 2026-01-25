@@ -1,3 +1,154 @@
 <div id="memory-recap-section" class="section-content">
-  <div class="memory-recap-page">Memory Recap works!</div>
+  <div class="bucket-list-page">
+    <!-- Header -->
+    <div class="section-header">
+      <div class="header-icon">💫</div>
+      <h2>Our Dreams</h2>
+      <p class="subtitle">Things we want to do together</p>
+    </div>
+
+    <!-- Filter Pills -->
+    <div class="filter-pills" *ngIf="totalCount > 0">
+      <button 
+        class="filter-pill" 
+        [class.active]="activeFilter === 'all'"
+        (click)="setFilter('all')">
+        All
+      </button>
+      <button 
+        class="filter-pill" 
+        [class.active]="activeFilter === 'pending'"
+        (click)="setFilter('pending')">
+        🎯 Pending
+      </button>
+      <button 
+        class="filter-pill" 
+        [class.active]="activeFilter === 'completed'"
+        (click)="setFilter('completed')">
+        ✅ Done
+      </button>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="totalCount === 0">
+      <div class="empty-illustration">🌟</div>
+      <h3>Start dreaming together</h3>
+      <p>Add your first bucket list item and start building memories!</p>
+    </div>
+
+    <!-- Bucket Items -->
+    <div class="bucket-items">
+      <div 
+        *ngFor="let item of filteredItems; trackBy: trackByItemId"
+        class="bucket-card"
+        [class.completed]="item.isCompleted">
+        
+        <div class="card-checkbox" (click)="toggleComplete(item)">
+          <div class="checkbox" [class.checked]="item.isCompleted">
+            <span *ngIf="item.isCompleted">✓</span>
+          </div>
+        </div>
+
+        <div class="card-content">
+          <div class="card-header">
+            <span class="card-emoji">{{ item.emoji || getCategoryEmoji(item.category) }}</span>
+            <span class="card-category">{{ getCategoryName(item.category) }}</span>
+          </div>
+          <h3 class="card-title">{{ item.title }}</h3>
+          <p class="card-description" *ngIf="item.description">{{ item.description }}</p>
+          
+          <div class="completed-info" *ngIf="item.isCompleted && item.completedDate">
+            <span class="completed-date">✨ Achieved {{ formatDate(item.completedDate) }}</span>
+            <p class="completed-note" *ngIf="item.completedNote">"{{ item.completedNote }}"</p>
+          </div>
+        </div>
+
+        <button class="delete-btn" (click)="deleteItem(item)">×</button>
+      </div>
+    </div>
+
+    <!-- Add Button -->
+    <button class="add-btn" (click)="openAddForm()">
+      <span>+</span>
+    </button>
+
+    <!-- Add Form Modal -->
+    <div class="modal-overlay" *ngIf="showAddForm" (click)="closeAddForm()">
+      <div class="modal-content add-form" (click)="$event.stopPropagation()">
+        <h3>Add a Dream ✨</h3>
+        
+        <div class="form-group">
+          <label>What do you want to do?</label>
+          <input 
+            type="text" 
+            [(ngModel)]="newTitle" 
+            placeholder="e.g., Watch sunrise together"
+            maxlength="100">
+        </div>
+
+        <div class="form-group">
+          <label>Description (optional)</label>
+          <textarea 
+            [(ngModel)]="newDescription" 
+            placeholder="Add more details..."
+            rows="2"
+            maxlength="200"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Category</label>
+          <div class="category-options">
+            <button 
+              *ngFor="let cat of categories"
+              class="category-btn"
+              [class.selected]="newCategory === cat.id"
+              (click)="newCategory = cat.id">
+              {{ cat.emoji }} {{ cat.name }}
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Pick an emoji</label>
+          <div class="emoji-options">
+            <button 
+              *ngFor="let emoji of emojiOptions"
+              class="emoji-btn"
+              [class.selected]="newEmoji === emoji"
+              (click)="newEmoji = emoji">
+              {{ emoji }}
+            </button>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="cancel-btn" (click)="closeAddForm()">Cancel</button>
+          <button class="save-btn" (click)="addItem()" [disabled]="!newTitle.trim()">Add Dream</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Complete Modal -->
+    <div class="modal-overlay" *ngIf="showCompleteModal" (click)="closeCompleteModal()">
+      <div class="modal-content complete-modal" (click)="$event.stopPropagation()">
+        <div class="complete-celebration">🎉</div>
+        <h3>Dream Achieved!</h3>
+        <p class="complete-title">{{ selectedItem?.title }}</p>
+        
+        <div class="form-group">
+          <label>Add a memory note (optional)</label>
+          <textarea 
+            [(ngModel)]="completeNote" 
+            placeholder="How was it? What made it special?"
+            rows="3"
+            maxlength="300"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="cancel-btn" (click)="closeCompleteModal()">Cancel</button>
+          <button class="save-btn celebrate" (click)="confirmComplete()">🎊 Mark Complete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

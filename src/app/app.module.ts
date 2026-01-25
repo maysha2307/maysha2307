@@ -10,8 +10,12 @@ import { TimelineComponent } from './components/timeline/timeline.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { MemoryRecapComponent } from './components/memory-recap/memory-recap.component';
 import { GamesComponent } from './components/games/games.component';
+import { WeKnowUsComponent } from './components/games/we-know-us/we-know-us.component';
+import { RandomDrawingComponent } from './components/games/random-drawing/random-drawing.component';
 import { LoveCounterComponent } from './components/love-counter/love-counter.component';
 import { RootPageComponent } from './components/root-page/root-page.component';
+import { PlaylistComponent } from './components/playlist/playlist.component';
+import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -27,8 +31,12 @@ import { CommonModule } from '@angular/common';
     GalleryComponent,
     MemoryRecapComponent,
     GamesComponent,
+    WeKnowUsComponent,
+    RandomDrawingComponent,
     LoveCounterComponent,
-    RootPageComponent
+    RootPageComponent,
+    PlaylistComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

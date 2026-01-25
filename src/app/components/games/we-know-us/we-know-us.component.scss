@@ -1,0 +1,316 @@
+.we-know-us-game {
+  padding: 0;
+}
+
+/* Back Button */
+.back-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  margin-bottom: 1rem;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #ff9eb5;
+  }
+}
+
+/* Game Header */
+.game-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  .game-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  h2 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.5rem;
+    color: #fff;
+    margin: 0 0 0.5rem;
+    font-weight: 700;
+  }
+
+  .turn-indicator {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+
+    .player-name {
+      color: #ff9eb5;
+      font-weight: 600;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Category Pills */
+.category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.cat-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    background: rgba(255, 107, 138, 0.2);
+    border-color: rgba(255, 107, 138, 0.4);
+    color: #ff9eb5;
+  }
+}
+
+/* Question Area */
+.question-area {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Start Prompt */
+.start-prompt {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.get-question-btn {
+  background: linear-gradient(135deg, #ff6b8a 0%, #ff9eb5 100%);
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 100px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(255, 107, 138, 0.4);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(255, 107, 138, 0.5);
+  }
+}
+
+.custom-btn {
+  background: transparent;
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.6);
+  padding: 0.75rem 1.5rem;
+  border-radius: 100px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: rgba(255, 150, 180, 0.5);
+    color: #ff9eb5;
+  }
+}
+
+/* Custom Input */
+.custom-input-area {
+  width: 100%;
+  max-width: 320px;
+
+  input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 1rem;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 1rem;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: rgba(255, 107, 138, 0.5);
+    }
+  }
+
+  .custom-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+
+    button {
+      padding: 0.6rem 1.25rem;
+      border-radius: 100px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .ask-btn {
+      background: linear-gradient(135deg, #ff6b8a 0%, #ff9eb5 100%);
+      border: none;
+      color: white;
+    }
+
+    .cancel-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+}
+
+/* Question Card */
+.question-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  width: 100%;
+  max-width: 340px;
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.asker-label {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.question-text {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.25rem;
+  color: #fff;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 1.5rem;
+}
+
+/* Answer Section */
+.answer-section {
+  .answer-prompt {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 0 1rem;
+  }
+
+  .reveal-btn {
+    background: rgba(100, 200, 150, 0.2);
+    border: 1px solid rgba(100, 200, 150, 0.4);
+    color: #8fc;
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: rgba(100, 200, 150, 0.3);
+    }
+  }
+}
+
+/* After Answer */
+.after-answer {
+  animation: fadeIn 0.3s ease-out;
+
+  .discuss-prompt {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 1.25rem;
+    line-height: 1.5;
+  }
+
+  .next-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    button {
+      padding: 0.75rem 1.25rem;
+      border-radius: 100px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .another-btn {
+      background: linear-gradient(135deg, #ff6b8a 0%, #ff9eb5 100%);
+      border: none;
+      color: white;
+    }
+
+    .switch-btn {
+      background: rgba(139, 92, 246, 0.2);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      color: #c4b5fd;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Footer */
+.game-footer {
+  margin-top: 2rem;
+  text-align: center;
+
+  .footer-tip {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+  }
+}

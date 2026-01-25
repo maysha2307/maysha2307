@@ -1,211 +1,232 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@400;600&display=swap');
+@import '../../theme/_variables.scss';
 
 :host {
-  background: linear-gradient(135deg, #ffeaf4 0%, #ffd6e0 50%, #f8bbd0 100%);
+  background: 
+    radial-gradient(ellipse at 30% 0%, rgba(255, 150, 180, 0.15) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 100%, rgba(200, 150, 220, 0.08) 0%, transparent 50%),
+    linear-gradient(165deg, #08080f 0%, #0d0d18 50%, #0a0a12 100%);
   width: 100%;
   min-height: 100vh;
-  margin: 0 !important;
-  padding: 0 !important;
   display: block;
-  box-sizing: border-box;
+}
+
+.section-content {
+  scroll-margin-top: 64px;
+  padding-top: 64px;
 }
 
 .thoughts-wrapper {
-  padding: 2.2rem 1.5rem 7rem;
+  padding: 2rem 1.25rem 6rem;
   font-family: 'Quicksand', sans-serif;
   position: relative;
-  max-width: 680px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
+/* Header */
 .board-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  animation: slideDown 0.6s ease-out;
 
   h2 {
-    margin: 0.25rem 0 0.5rem;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.6rem;
     font-weight: 700;
-    color: #c2185b;
-    font-family: 'Dancing Script', cursive;
-    font-size: 1.18rem;
-    color: #5a1130;
-    line-height: 1.7;
-    word-break: break-word;
-    position: relative;
-    text-indent: 1.2em;
-    white-space: pre-line;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 180, 200, 0.9) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
   }
 }
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-1rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Notes Grid */
 .notes-grid {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 }
 
+/* Note Card */
 .note {
-  margin: 0.8rem 0.5rem;
-  // background: #fffaf1;
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 107, 138, 0.15);
+  border-radius: 20px;
   padding: 0;
-  // border: 2px solid #f8bbd0;
-  box-shadow:
-    0 2px 8px rgba(255, 105, 180, 0.18),
-    inset 0 -10px 20px rgba(255, 240, 246, 0.8);
   position: relative;
-  transition: box-shadow 0.2s, transform 0.2s;
-  will-change: transform;
-  touch-action: manipulation;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.5s ease-out backwards;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 107, 138, 0.25);
+    transform: translateY(-2px);
+  }
 }
 
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(1rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Note Paper */
 .note-paper {
-  min-height: 120px;
-  padding: 8px 12px 8px 56px;
-  border-radius: 10px;
+  min-height: 100px;
+  padding: 1rem 1rem 1rem 3.5rem;
+  border-radius: 20px;
   font-family: 'Dancing Script', cursive;
-  font-size: 1.18rem;
-  color: #6f1c3f;
-  line-height: 1.2;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
   word-break: break-word;
   position: relative;
-  background: rgba(255, 255, 255, 0.35);
-  box-shadow:
-    0 4px 24px rgba(236, 64, 122, 0.10),
-    0 1.5px 8px rgba(255, 105, 180, 0.10),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(12px) saturate(1.2);
-  border: 1.5px solid rgba(236, 64, 122, 0.18);
+  background: transparent;
   outline: none;
-  /* Notebook margin line */
-  &:before {
+
+  /* Margin line */
+  &::before {
     content: '';
     position: absolute;
-    left: 40px;
-    top: 12px;
-    bottom: 12px;
-    width: 3px;
-    background: linear-gradient(to bottom, #e573a7 90%, transparent 100%);
-    opacity: 0.85;
+    left: 2.5rem;
+    top: 1rem;
+    bottom: 1rem;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(255, 107, 138, 0.4), rgba(255, 107, 138, 0.1));
     border-radius: 2px;
-    z-index: 1;
   }
+
   &.editing {
-  outline: 2px dashed rgba(236, 64, 122, 0.7);
-  outline-offset: 0;
-  padding: 12px 12px 12px 54px !important;
-  margin: 0 !important;
-    background:
-      linear-gradient(#fffdfa, #fff5f2),
-      repeating-linear-gradient(
-        to bottom,
-        #e573a7 0px,
-        #e573a7 2px,
-        transparent 2px,
-        transparent 28px
-      );
+    outline: 1px dashed rgba(255, 107, 138, 0.5);
+    outline-offset: -2px;
+    background: rgba(255, 255, 255, 0.02);
   }
 }
 
+/* Note Actions */
 .note-actions {
-  margin-top: 0;
+  position: absolute;
+  left: 0.6rem;
+  top: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  position: absolute;
-  left: 10px;
-  top: 18px;
+  gap: 1rem;
   z-index: 2;
-  align-items: flex-start;
 }
 
 .icon-btn {
   border: none !important;
   background: none !important;
-  font-size: 1.05rem !important;
-  line-height: 1 !important;
+  font-size: 1rem !important;
   cursor: pointer !important;
   padding: 0 !important;
-  border-radius: 0 !important;
-  transition: none !important;
-  box-shadow: none !important;
-  outline: none !important;
-  margin: 0 !important;
-  appearance: none !important;
+  opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s;
 
-  &:active { transform: scale(0.92); }
+  &:hover {
+    opacity: 1;
+  }
 
-  &.save {
-  background: none !important;
-  color: inherit !important;
-  padding: 0 !important;
-  font-weight: normal !important;
-  box-shadow: none !important;
-  outline: none !important;
-  border: none !important;
-  border-radius: 0 !important;
-  margin: 0 !important;
-  appearance: none !important;
+  &:active {
+    transform: scale(0.9);
   }
 
   &.danger {
-    color: #b71c5c;
+    color: #ff6b8a;
+  }
+
+  &.save {
+    color: #4ade80;
   }
 }
 
+/* Reply Section */
 .reply-wrapper {
-  margin-top: 10px;
-  padding-top: 8px;
-  border-top: 1px dashed rgba(200, 80, 120, 0.25);
+  margin: 0.75rem 1rem 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed rgba(255, 107, 138, 0.2);
   position: relative;
 }
 
 .reply-paper {
-  min-height: 70px;
-  padding: 8px 10px;
-  border-radius: 10px;
+  min-height: 60px;
+  padding: 0.75rem 2.5rem 0.75rem 0.75rem;
+  border-radius: 12px;
   font-family: 'Dancing Script', cursive;
-  font-size: 1.05rem;
-  color: #5a1130;
-  line-height: 1.6;
+  font-size: 1.1rem;
+  color: rgba(255, 200, 210, 0.9);
+  line-height: 1.5;
   word-break: break-word;
-  background: rgba(255, 255, 255, 0.35);
-  box-shadow:
-    0 2px 12px rgba(236, 64, 122, 0.10),
-    0 1px 4px rgba(255, 105, 180, 0.10),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(10px) saturate(1.1);
-  border: 1.2px solid rgba(236, 64, 122, 0.15);
+  background: rgba(255, 107, 138, 0.05);
+  border: 1px solid rgba(255, 107, 138, 0.1);
   outline: none;
-    &:after {
+  position: relative;
+
+  /* Right margin line */
+  &::after {
     content: '';
     position: absolute;
-  right: 40px;
-  top: 8px;
-  bottom: 8px;
-  width: 3px;
-  background: linear-gradient(to bottom, #e573a7 98%, #ffb6e6 100%);
-  opacity: 1;
+    right: 1.5rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(255, 107, 138, 0.3), rgba(255, 107, 138, 0.1));
     border-radius: 2px;
-    z-index: 1;
   }
 }
 
+/* Add Button */
 .add-btn-row {
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
 }
 
 .add-btn {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  font-size: 2rem;
-  line-height: 0;
+  font-size: 1.8rem;
+  line-height: 1;
   border: none;
   cursor: pointer;
-  background: radial-gradient(circle at 30% 30%, #ff8ac9, #ff4ba0);
-  color: #fff;
-  box-shadow: 0 8px 20px rgba(255, 105, 180, 0.45);
-  &:active { transform: scale(0.96); }
+  background: rgba(255, 107, 138, 0.2);
+  border: 1px solid rgba(255, 107, 138, 0.4);
+  color: #ff9eb5;
+  box-shadow: 0 4px 20px rgba(255, 107, 138, 0.15);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 107, 138, 0.3);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: rgba(255, 255, 255, 0.5);
+
+  .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  p {
+    font-size: 0.95rem;
+    margin: 0;
+  }
 }

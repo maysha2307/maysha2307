@@ -1,11 +1,45 @@
-// SCSS Variables for Mysha Love Theme
-$primary-color: #ff6f91;
-$secondary-color: #ffe6eb;
-$accent-color: #f9a1bc;
-$navbar-bg: #fff0f6;
-$text-color: #3d2c41;
-$menu-bg: #fff0f6;
-$menu-active: #ff6f91;
+// SCSS Variables for Mysha Love Theme - Premium Dark Edition
+// ===== Core Colors =====
+$primary-pink: #ff6b8a;
+$primary-pink-light: #ff9eb5;
+$primary-pink-dark: #e84a6f;
+$accent-purple: rgba(180, 100, 200, 0.15);
+$accent-gold: rgba(255, 200, 150, 0.1);
+
+// ===== Backgrounds =====
+$bg-dark: #0a0a12;
+$bg-dark-gradient: linear-gradient(165deg, #08080f 0%, #0d0d18 50%, #0a0a12 100%);
+$bg-ambient-pink: radial-gradient(ellipse at 30% 0%, rgba(255, 150, 180, 0.18) 0%, transparent 55%);
+$bg-ambient-purple: radial-gradient(ellipse at 70% 100%, rgba(200, 150, 220, 0.08) 0%, transparent 50%);
+
+// ===== Text Colors =====
+$text-primary: #ffffff;
+$text-secondary: rgba(255, 255, 255, 0.7);
+$text-muted: rgba(255, 255, 255, 0.5);
+$text-accent: #ff9eb5;
+
+// ===== Glassmorphism =====
+$glass-bg: rgba(255, 255, 255, 0.04);
+$glass-bg-hover: rgba(255, 255, 255, 0.08);
+$glass-border: rgba(255, 255, 255, 0.08);
+$glass-border-active: rgba(255, 107, 138, 0.4);
+
+// ===== Navbar =====
+$navbar-bg: linear-gradient(90deg, rgba(15, 10, 18, 0.95), rgba(20, 12, 22, 0.98));
+$navbar-height: 64px;
+
+// ===== Shadows & Effects =====
+$shadow-glow: 0 0 40px rgba(255, 107, 138, 0.15);
+$shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+$text-glow: 0 0 20px rgba(255, 107, 138, 0.5);
+
+// ===== Legacy Support =====
+$primary-color: $primary-pink;
+$secondary-color: #1a0f1f;
+$accent-color: $primary-pink-light;
+$text-color: $text-primary;
+$menu-bg: rgba(15, 10, 18, 0.98);
+$menu-active: $primary-pink;
 $heart-color: #ff3366;
 $border-radius: 1.2rem;
-$box-shadow: 0 4px 24px rgba(255, 111, 145, 0.15);
+$box-shadow: $shadow-card;

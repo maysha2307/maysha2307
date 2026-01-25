@@ -9,9 +9,8 @@ import { TimelineComponent } from './components/timeline/timeline.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { MemoryRecapComponent } from './components/memory-recap/memory-recap.component';
 import { GamesComponent } from './components/games/games.component';
-import { TodoGameComponent } from './components/games/todo-game.component';
-import { DrawingGameComponent } from './components/games/drawing-game.component';
 import { LoveCounterComponent } from './components/love-counter/love-counter.component';
+import { PlaylistComponent } from './components/playlist/playlist.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -27,9 +26,8 @@ const routes: Routes = [
       { path: 'timeline', component: TimelineComponent },
       { path: 'gallery', component: GalleryComponent },
       { path: 'memory-recap', component: MemoryRecapComponent },
+      { path: 'playlist', component: PlaylistComponent },
       { path: 'games', component: GamesComponent },
-      { path: 'games/todo', component: TodoGameComponent },
-      { path: 'games/drawing', component: DrawingGameComponent },
       { path: 'love-counter', component: LoveCounterComponent }
     ]
   },

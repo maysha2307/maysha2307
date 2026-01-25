@@ -1,0 +1,97 @@
+<div class="we-know-us-game">
+  <!-- Back Button -->
+  <button class="back-btn" (click)="goBack()">
+    ← Back to Games
+  </button>
+
+  <!-- Game Header -->
+  <div class="game-header">
+    <div class="game-icon">💕</div>
+    <h2>We Know Us</h2>
+    <p class="turn-indicator">
+      <span class="player-name">{{ currentPlayerName }}</span> asks,
+      <span class="player-name">{{ answeringPlayerName }}</span> answers
+    </p>
+  </div>
+
+  <!-- Category Pills -->
+  <div class="category-pills" *ngIf="!currentQuestion">
+    <button 
+      class="cat-pill"
+      [class.active]="selectedCategory === 'all'"
+      (click)="selectCategory('all')"
+    >
+      All
+    </button>
+    <button 
+      *ngFor="let cat of categories"
+      class="cat-pill"
+      [class.active]="selectedCategory === cat.id"
+      (click)="selectCategory(cat.id)"
+    >
+      {{ cat.emoji }} {{ cat.name }}
+    </button>
+  </div>
+
+  <!-- Start / Question Card -->
+  <div class="question-area">
+    <!-- No Question Yet -->
+    <div class="start-prompt" *ngIf="!currentQuestion && !showCustomInput">
+      <button class="get-question-btn" (click)="getRandomQuestion()">
+        🎲 Get a Question
+      </button>
+      <button class="custom-btn" (click)="toggleCustomInput()">
+        ✏️ Ask Your Own
+      </button>
+    </div>
+
+    <!-- Custom Question Input -->
+    <div class="custom-input-area" *ngIf="showCustomInput">
+      <input 
+        type="text"
+        [(ngModel)]="customQuestion"
+        placeholder="Type your question..."
+        (keyup.enter)="askCustomQuestion()"
+      />
+      <div class="custom-actions">
+        <button class="ask-btn" (click)="askCustomQuestion()">Ask</button>
+        <button class="cancel-btn" (click)="toggleCustomInput()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="question-card" *ngIf="currentQuestion">
+      <div class="asker-label">{{ currentPlayerName }} asks:</div>
+      <p class="question-text">{{ currentQuestion.text }}</p>
+      
+      <!-- Answer Section -->
+      <div class="answer-section" *ngIf="!showAnswer">
+        <p class="answer-prompt">{{ answeringPlayerName }}, answer honestly! 💭</p>
+        <button class="reveal-btn" (click)="revealAnswer()">
+          I've Answered ✓
+        </button>
+      </div>
+
+      <!-- After Answer -->
+      <div class="after-answer" *ngIf="showAnswer">
+        <p class="discuss-prompt">
+          Did {{ answeringPlayerName }} get it right? 
+          <br/>Discuss and laugh about it! 😄
+        </p>
+        <div class="next-actions">
+          <button class="another-btn" (click)="getRandomQuestion()">
+            🎲 Another Question
+          </button>
+          <button class="switch-btn" (click)="nextTurn()">
+            🔄 Switch Turns
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Score / Fun Stats (optional future) -->
+  <div class="game-footer">
+    <p class="footer-tip">💡 Be honest, have fun, and learn something new!</p>
+  </div>
+</div>

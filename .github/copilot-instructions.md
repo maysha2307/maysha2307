@@ -1,54 +1,102 @@
 # Copilot Instructions for Mysha (Angular 16 Love Journey Website)
 
-## Project Overview
-- Angular 16, SCSS, mobile-first, romantic/cute love theme.
-- Entry flow: Lottie animation + welcome message, blur effect, then password modal (pop-up card).
-- On correct password: heart splash animation, then navigate to RootPage.
-- RootPage: fixed navbar (logo/name left, animated hamburger/close button right), all child routes/components load below.
-- Hamburger toggles a full-screen, animated menu under navbar; close button replaces hamburger when open.
-- Menu items: Home, Thoughts, Timeline, Gallery, Memory Recap, Games, Love Counter (all separate components).
-- Games: grid of squares (each game as a square with image, click to open game component); easy to add more games later.
-- All navigation/components optimized for mobile use.
-- Firebase for storage/hosting (setup after project is complete).
-- Hardcoded password for login (no backend auth).
+## Architecture Overview
+**Entry → Password (protected) → RootPage (nested routes on protected `/app`)**
 
-## Key Directories & Files
-- `src/app/components/`: All major UI components (AnimationWelcome, PasswordModal, RootPage, Navbar, Menu, Home, Thoughts, Timeline, Gallery, MemoryRecap, Games, LoveCounter, etc.)
-- `src/app/services/`: Angular services (e.g., AuthService, AnimationService, DataService)
-- `src/app/models/`: TypeScript interfaces/models for app data
-- `src/app/theme/`: SCSS variables, mixins, and theme styles
-- `src/app/app-routing.module.ts`: Main routing config
-- `src/app/app.module.ts`: Main Angular module
-- `src/app/styles.scss`: Global styles
+Single-page app with layered guards: PasswordComponent is public; all others protected by AuthGuard (`localStorage.unlocked === 'true'`).
 
-## Patterns & Conventions
-- Use Angular routing for all navigation; each menu item is a separate route/component.
-- Use SCSS variables/mixins for theme colors and spacing.
-- All UI/UX is mobile-first; test on mobile viewports.
-- Lottie animations for entry, heart splash, and animated hamburger/close button.
-- Password modal is a pop-up card, triggered after welcome animation.
-- Navbar is always visible on RootPage and its child routes.
-- Hamburger menu toggles a full-screen overlay menu; close button animates in place of hamburger.
-- Games section is a grid; each game is a separate component, easy to add more.
-- Use services for shared logic (auth, data, animation).
-- Use models for all structured data.
-- Firebase integration only for storage/hosting; no backend auth.
+### Route Structure
+```
+/ → PasswordComponent (login + intro animations)
+/app → RootPageComponent (shell with navbar + outlet)
+  ├── home → HomeComponent
+  ├── thoughts → ThoughtsComponent (CRUD with Supabase)
+  ├── timeline → TimelineComponent
+  ├── gallery → GalleryComponent
+  ├── memory-recap → MemoryRecapComponent
+  ├── games → GamesComponent (grid view)
+  │   ├── games/todo → TodoGameComponent
+  │   └── games/drawing → DrawingGameComponent
+  └── love-counter → LoveCounterComponent
+```
 
-## Example Workflow
-1. User visits site: sees animation + welcome message.
-2. Animation blurs, password modal appears.
-3. On correct password: heart splash animation, then RootPage loads.
-4. User navigates via navbar/hamburger menu; all content loads in main section.
-5. Games menu shows grid; clicking a game loads its component.
+## Critical Patterns
 
-## Mobile-First Guidance
-- Prioritize mobile layout and touch interactions.
-- Use rem/em for sizing, avoid px.
-- Test all animations and menus on mobile viewports.
+### 1. Authentication & Navigation
+- **PasswordComponent** (`/`): On success, sets `localStorage.unlocked = 'true'` + plays Love.json animation
+- **AuthGuard**: Blocks `/app` routes if `unlocked !== 'true'`; no AuthGuard on root
+- **NavbarComponent**: Scroll-based menu (not route-based). Toggle `menuOpen` flag to add/remove `menu-open` class on `document.body`. Calls `scrollToSection(sectionId)` to smooth-scroll to IDs like `home-section`, `thoughts-section`, etc.
+- **RootPageComponent**: Bare shell—only renders navbar + `<router-outlet>`. No content of its own.
 
-## Customization
-- Logo/name are placeholders; update as needed.
-- Theme colors/styles in `src/app/theme/`.
+### 2. Data Layer (Services)
+All services use `@Injectable({ providedIn: 'root' })` for singletons.
+
+| Service | Pattern | Details |
+|---------|---------|---------|
+| **ThoughtsService** | BehaviorSubject `thoughts$` | Tries Supabase REST API first; falls back to localStorage. CRUD: `addThought()`, `updateThought(id, text)`, `deleteThought(id)`, `updateReply(id, reply)`. Emits via `thoughtsSubject.next()`. |
+| **AuthService** | Hardcoded credentials | `login(username, password)` checks vs `hardcodedUser` object. Sets `isAuthenticated` flag (in-memory only). |
+| **SignatureService** | Cloudinary + Supabase | Uploads images to Cloudinary, stores URLs in Supabase. CRUD: `getSignature(id)`, `saveSignature(url)`, `deleteSignature(id)`. |
+| **GalleryService** / **TimelineService** | Planned (not yet integrated) | Follow same BehaviorSubject pattern. |
+
+**Key pattern**: Components subscribe to `service$` observables in `ngOnInit()`, unsubscribe in `ngOnDestroy()` using takeUntil pattern for cleanup.
+
+### 3. Animations (Lottie)
+- Load in `AfterViewInit` (not `OnInit`); must wait for DOM
+- Pattern: `this.anim = lottie.loadAnimation({ container, renderer: 'svg', path, loop, autoplay })`
+- Always destroy in `OnDestroy`: `this.anim.destroy()` to prevent memory leaks
+- Files: `src/assets/animations/` (Book.json, Love.json, LoveLine.json, pencil.json)
+
+### 4. Styling & Theme
+- **Variables**: `src/app/theme/_variables.scss` defines `$primary-color` (#ff6f91), `$secondary-color` (#ffe6eb), `$heart-color` (#ff3366), etc.
+- **Mixins**: `src/app/theme/_mixins.scss` has breakpoints and utilities
+- **Mobile-first**: Use rem/em; avoid px for responsive design
+- Import in component SCSS: `@import '../../theme/variables';`
+
+### 5. Component Patterns
+- **Registration**: All components declared in `AppModule.declarations[]` and routed in `AppRoutingModule`
+- **Edit/Reply Draft State**: ThoughtsComponent uses `draftText` and `draftReply` dicts to track unsaved inline edits before API calls
+- **ContentEditable**: Thoughts use contenteditable divs; listen to input events to update draft state, then `saveEdit()` on user action
+
+## Development Commands
+| Command | Purpose |
+|---------|---------|
+| `npm start` | Dev server at localhost:4200 (ng serve) |
+| `npm build` | Production build → `dist/` |
+| `npm test` | Unit tests via Karma |
+| `npm run watch` | Rebuild on file changes |
+
+## Adding Features
+
+### New Menu Section
+1. Create component: `src/app/components/<name>/<name>.component.ts|html|scss`
+2. Declare in `AppModule.declarations[]`
+3. Add route in `AppRoutingModule` (under `/app` children)
+4. Add section ID to component template (e.g., `id="my-section"`)
+5. Add navbar link + section ID to `NavbarComponent.sectionIds` array
+6. Add navbar `<a (click)="onMenuClick($event, 'my-section')">` button
+
+### New Game
+1. Create game component under `src/app/components/games/`
+2. Add route under `/app/games/` (e.g., `games/my-game`)
+3. Add grid item in `GamesComponent` template that links to route
+4. No navbar entry needed (accessed from games grid only)
+
+### New Data
+Create service in `src/app/services/` exposing BehaviorSubject Observables. Inject in components and subscribe with takeUntil pattern.
+
+## Backend Integration
+- **Supabase**: `ThoughtsService` + `SignatureService` use REST API via fetch + localStorage fallback
+- **Firebase**: `@angular/fire` installed but unused; available for scaling auth/storage
+- **Environment**: `src/environments/environment.ts` contains `supabase.url` and `supabase.anonKey`
+- **Fallback**: Network errors → services gracefully degrade to localStorage; check browser console for failures
+
+## Debug Checklist
+| Issue | Debug Steps |
+|-------|-------------|
+| Auth not working | Check DevTools → Application → Local Storage → `unlocked` key; clear to reset |
+| Animations not loading | Verify `src/assets/animations/<name>.json` exists; check browser console for 404 |
+| Service data stale | Ensure component unsubscribes with `takeUntil(this.destroy$)` on Observable |
+| Navbar height issues | Navbar sets `--navbar-height` CSS custom property in `ngAfterViewInit()`; child components use it |
 
 ---
-Update this file as new patterns/components are added.
+**Last updated:** January 25, 2026

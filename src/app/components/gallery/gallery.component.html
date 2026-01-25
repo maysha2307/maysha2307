@@ -1,3 +1,142 @@
 <div id="gallery-section" class="section-content">
-  <div class="gallery-page">Gallery works!</div>
+  <div class="gallery-wrapper">
+    <!-- Header -->
+    <div class="gallery-header">
+      <div class="header-icon">📸</div>
+      <h2>Photo Memories</h2>
+      <p class="subtitle">Our beautiful moments together</p>
+    </div>
+
+    <!-- Gallery Container -->
+    <div class="gallery-container" *ngIf="(photos$ | async) as photos">
+      <!-- Gallery Grid -->
+      <div class="gallery-grid" *ngIf="photos.length > 0">
+        <div
+          *ngFor="let photo of photos; let i = index; trackBy: trackById"
+          class="gallery-card"
+          (click)="openPhotoModal(i)"
+          role="button"
+          [attr.aria-label]="'Photo ' + (i + 1)"
+        >
+          <div class="card-inner">
+            <div class="image-wrapper">
+              <img
+                [src]="photo.googleDriveImageUrl"
+                [alt]="photo.title"
+                class="gallery-image"
+                loading="lazy"
+              />
+              <!-- Comment indicator -->
+              <div 
+                *ngIf="hasComment(photo.id)"
+                class="comment-badge"
+                [title]="getComment(photo.id)"
+              >
+                💭
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="photos.length === 0" class="no-photos">
+        <p>✨ No memories yet. Upload some photos! 📷</p>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Full Screen Photo Modal -->
+<div 
+  *ngIf="selectedPhotoIndex !== null && (photos$ | async) as photos"
+  class="photo-modal-overlay"
+  (click)="closePhotoModal()"
+>
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- Close Button -->
+    <button class="close-btn" (click)="closePhotoModal()" aria-label="Close">
+      ✕
+    </button>
+
+    <!-- Main Photo -->
+    <div class="modal-photo-container">
+      <img
+        [src]="photos[selectedPhotoIndex].googleDriveImageUrl"
+        [alt]="photos[selectedPhotoIndex].title"
+        class="modal-photo"
+        loading="lazy"
+      />
+
+      <!-- Note Button (corner) -->
+      <button
+        class="note-btn"
+        [class.has-note]="hasComment(photos[selectedPhotoIndex].id)"
+        (click)="toggleCommentForm(photos[selectedPhotoIndex].id)"
+        [title]="hasComment(photos[selectedPhotoIndex].id) ? getComment(photos[selectedPhotoIndex].id) : 'Add note'"
+        aria-label="Add or edit note"
+      >
+        📝
+      </button>
+
+      <!-- Navigation Buttons -->
+      <button 
+        *ngIf="photos.length > 1"
+        class="nav-btn prev-btn"
+        (click)="prevPhoto(photos.length)"
+        aria-label="Previous photo"
+      >
+        ❮
+      </button>
+      <button 
+        *ngIf="photos.length > 1"
+        class="nav-btn next-btn"
+        (click)="nextPhoto(photos.length)"
+        aria-label="Next photo"
+      >
+        ❯
+      </button>
+
+      <!-- Slide Counter -->
+      <div *ngIf="photos.length > 1" class="slide-counter">
+        {{ selectedPhotoIndex + 1 }} / {{ photos.length }}
+      </div>
+
+      <!-- Note Input Modal -->
+      <div 
+        *ngIf="showCommentForm[photos[selectedPhotoIndex].id]"
+        class="note-modal"
+        (click)="$event.stopPropagation()"
+      >
+        <textarea
+          [(ngModel)]="commentText[photos[selectedPhotoIndex].id]"
+          placeholder="Note (max 7-8 words)"
+          maxlength="45"
+          class="note-textarea"
+        ></textarea>
+        <div class="note-actions">
+          <button 
+            class="note-save"
+            (click)="saveComment(photos[selectedPhotoIndex].id)"
+          >
+            ✓
+          </button>
+          <button 
+            *ngIf="hasComment(photos[selectedPhotoIndex].id)"
+            class="note-delete"
+            (click)="deleteComment(photos[selectedPhotoIndex].id)"
+          >
+            🗑
+          </button>
+          <button 
+            class="note-close"
+            (click)="toggleCommentForm(photos[selectedPhotoIndex].id)"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

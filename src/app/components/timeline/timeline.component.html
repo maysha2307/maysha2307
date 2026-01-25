@@ -1,3 +1,128 @@
 <div id="timeline-section" class="section-content">
-  <div class="timeline-page">Timeline works!</div>
+  <div class="timeline-wrapper">
+    <!-- Header -->
+    <div class="timeline-header">
+      <h2>Our Timeline 📅</h2>
+      <p class="subtitle">The beautiful moments that shaped our love story</p>
+    </div>
+
+    <!-- Timeline Container -->
+    <div class="timeline-container">
+      <!-- Main Timeline Line -->
+      <div class="timeline-line"></div>
+
+      <!-- Events -->
+      <div
+        *ngFor="let event of events$ | async; trackBy: trackById"
+        class="timeline-item"
+        [class.left]="isLeft(event)"
+        [class.right]="!isLeft(event)"
+      >
+        <!-- Event Card -->
+        <div class="event-card">
+          <!-- Emoji Badge -->
+          <div class="emoji-badge">{{ event.emoji }}</div>
+
+          <!-- Card Content -->
+          <div class="card-content">
+            <div class="card-header">
+              <h3 class="event-title">{{ event.title }}</h3>
+              <div class="card-actions">
+                <button class="action-btn edit" (click)="openEditModal(event)" title="Edit">✏️</button>
+                <button class="action-btn delete" (click)="deleteEvent(event)" title="Delete">🗑️</button>
+              </div>
+            </div>
+
+            <p class="event-date">{{ formatDate(event.date) }}</p>
+            <p class="event-description">{{ event.description }}</p>
+          </div>
+
+          <!-- Dot on Timeline -->
+          <div class="timeline-dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Event Button -->
+    <div class="add-event-section">
+      <button class="add-event-btn" (click)="openAddModal()">
+        <span class="plus-icon">➕</span>
+        <span>Add a Special Moment</span>
+      </button>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div *ngIf="showAddModal" class="modal-overlay" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>{{ editingId ? 'Edit' : 'Add a New' }} Moment</h3>
+          <button class="close-btn" (click)="closeModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Emoji Selector -->
+          <div class="form-group">
+            <label>Choose an emoji 💫</label>
+            <div class="emoji-selector">
+              <button
+                *ngFor="let emoji of emojiOptions"
+                class="emoji-option"
+                [class.selected]="formEmoji === emoji"
+                (click)="formEmoji = emoji"
+              >
+                {{ emoji }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Title -->
+          <div class="form-group">
+            <label for="title">What happened?</label>
+            <input
+              id="title"
+              type="text"
+              [(ngModel)]="formTitle"
+              placeholder="e.g., Our First Kiss"
+              class="form-input"
+            />
+          </div>
+
+          <!-- Date -->
+          <div class="form-group">
+            <label for="date">When? 📅</label>
+            <input
+              id="date"
+              type="date"
+              [(ngModel)]="formDate"
+              class="form-input"
+            />
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <label for="description">Tell the story ✨</label>
+            <textarea
+              id="description"
+              [(ngModel)]="formDescription"
+              placeholder="Add a sweet memory or description..."
+              class="form-textarea"
+              rows="4"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-cancel" (click)="closeModal()">Cancel</button>
+          <button
+            class="btn btn-save"
+            (click)="submitEvent()"
+            [disabled]="isSubmitting"
+          >
+            {{ isSubmitting ? '💾 Saving...' : (editingId ? '💾 Update' : '💾 Save') }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+

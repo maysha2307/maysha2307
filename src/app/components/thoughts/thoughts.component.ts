@@ -32,6 +32,7 @@ export class ThoughtsComponent {
   editingId: number | null = null;
   replyingId: number | null = null;
   replyEditingId: number | null = null;
+  isAddingThought = false;
 
   constructor(private thoughtsService: ThoughtsService) {
     this.thoughts$ = this.thoughtsService.thoughts$;
@@ -50,7 +51,7 @@ export class ThoughtsComponent {
   }
 
   creating(): boolean {
-    return false;
+    return this.isAddingThought;
   }
 
   startEdit(note: Thought) {
@@ -78,8 +79,17 @@ export class ThoughtsComponent {
     }
   }
 
-  addNote() {
-    this.thoughtsService.addThought('New note...');
+  async addNote() {
+    if (this.isAddingThought) return; // Prevent duplicate submissions
+    this.isAddingThought = true;
+    try {
+      await this.thoughtsService.addThought('New note...');
+    } catch (error) {
+      console.error('Failed to add thought:', error);
+      alert('Failed to add thought. Please try again.');
+    } finally {
+      this.isAddingThought = false;
+    }
   }
 
   toggleReply(note: Thought) {

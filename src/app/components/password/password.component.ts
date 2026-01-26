@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import lottie, { AnimationItem } from 'lottie-web';
 
@@ -14,31 +14,67 @@ export class PasswordComponent implements AfterViewInit, OnDestroy {
   // UI state
   fadeOutIntro = false;
   showCard = false;
-  fadeOutCard = false; // Restored
+  fadeOutCard = false;
   wrongPassword = false;
-  showLove = false; // Restored
+  showLove = false;
   fadeOutBackground = false;
+  animationsLoaded = false;
 
   private bookAnim!: AnimationItem;
   private pencilAnim!: AnimationItem;
-  private loveAnim!: AnimationItem; // Restored
+  private loveAnim!: AnimationItem;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
-    // Load intro animations
+    // Preload animations and wait for them to be ready
+    this.loadIntroAnimations();
+  }
+
+  private loadIntroAnimations() {
     const bookContainer = document.getElementById('book-animation');
     const pencilContainer = document.getElementById('pencil-animation');
+
+    let bookLoaded = false;
+    let pencilLoaded = !pencilContainer; // If no pencil container, mark as loaded
+
+    const checkAllLoaded = () => {
+      if (bookLoaded && pencilLoaded && !this.animationsLoaded) {
+        this.animationsLoaded = true;
+        this.cdr.detectChanges();
+        // Start the intro sequence after animations are loaded
+        this.startIntroSequence();
+      }
+    };
 
     if (bookContainer) {
       this.bookAnim = lottie.loadAnimation({
         container: bookContainer,
         renderer: 'svg',
         loop: true,
-        autoplay: true,
+        autoplay: false, // Don't autoplay until loaded
         path: 'assets/animations/Book.json'
       });
       this.bookAnim.setSpeed(0.6);
+      
+      // Wait for animation data to load
+      this.bookAnim.addEventListener('DOMLoaded', () => {
+        bookLoaded = true;
+        this.bookAnim.play(); // Now play
+        checkAllLoaded();
+      });
+
+      // Fallback in case DOMLoaded doesn't fire
+      setTimeout(() => {
+        if (!bookLoaded) {
+          bookLoaded = true;
+          this.bookAnim?.play();
+          checkAllLoaded();
+        }
+      }, 1500);
+    } else {
+      bookLoaded = true;
+      checkAllLoaded();
     }
 
     if (pencilContainer) {
@@ -46,30 +82,55 @@ export class PasswordComponent implements AfterViewInit, OnDestroy {
         container: pencilContainer,
         renderer: 'svg',
         loop: true,
-        autoplay: true,
+        autoplay: false,
         path: 'assets/animations/pencil.json'
       });
-    }
+      
+      this.pencilAnim.addEventListener('DOMLoaded', () => {
+        pencilLoaded = true;
+        this.pencilAnim.play();
+        checkAllLoaded();
+      });
 
-    // Sequence: Intro → fade → card
+      setTimeout(() => {
+        if (!pencilLoaded) {
+          pencilLoaded = true;
+          this.pencilAnim?.play();
+          checkAllLoaded();
+        }
+      }, 1500);
+    }
+  }
+
+  private startIntroSequence() {
+    // Show intro for 4.5 seconds after animations are confirmed loaded
     setTimeout(() => {
       this.fadeOutIntro = true;
+      this.cdr.detectChanges();
+      
+      // Wait for fade out animation (1.5s in SCSS) then show card
       setTimeout(() => {
         this.showCard = true;
-      }, 1500); // This should match the opacity transition in SCSS
-    }, 4000); // Increased from 3000ms
+        this.cdr.detectChanges();
+      }, 1500);
+    }, 4500);
   }
 
   unlock() {
     if (this.password.trim() === this.correctPassword) {
       this.fadeOutCard = true;
+      this.cdr.detectChanges();
+      
       setTimeout(() => {
         this.showCard = false;
         this.showLove = true;
-        // Fade out pink background while love animation plays
         this.fadeOutBackground = true;
+        this.cdr.detectChanges();
+        
+        // Wait for DOM to update, then load Lottie
         setTimeout(() => {
           const loveContainer = document.getElementById('love-animation');
+          
           if (loveContainer) {
             this.loveAnim = lottie.loadAnimation({
               container: loveContainer,
@@ -78,21 +139,40 @@ export class PasswordComponent implements AfterViewInit, OnDestroy {
               autoplay: true,
               path: 'assets/animations/Love.json'
             });
-            // Navigate quickly after animation starts (e.g. 900ms)
-            setTimeout(() => {
+            
+            // Slower speed for smooth elegance
+            this.loveAnim.setSpeed(0.8);
+            
+            // Navigate immediately when animation completes
+            this.loveAnim.addEventListener('complete', () => {
               localStorage.setItem('unlocked', 'true');
-              this.showLove = false; // Remove heart
+              this.showLove = false;
+              this.cdr.detectChanges();
               this.router.navigate(['/app/home']);
-            }, 900);
+            });
+            
+            // Fallback only if complete event fails
+            setTimeout(() => {
+              if (this.showLove) {
+                localStorage.setItem('unlocked', 'true');
+                this.showLove = false;
+                this.cdr.detectChanges();
+                this.router.navigate(['/app/home']);
+              }
+            }, 3000);
           } else {
             localStorage.setItem('unlocked', 'true');
             this.router.navigate(['/app/home']);
           }
-        });
-      }, 800);
+        }, 150);
+      }, 600);
     } else {
       this.wrongPassword = true;
-      setTimeout(() => (this.wrongPassword = false), 1500);
+      this.cdr.detectChanges();
+      setTimeout(() => {
+        this.wrongPassword = false;
+        this.cdr.detectChanges();
+      }, 1500);
     }
   }
 

@@ -1,21 +1,27 @@
-@import '../../theme/_variables.scss';
-
-:host {
-  background: 
-    radial-gradient(ellipse at 30% 0%, rgba(255, 150, 180, 0.15) 0%, transparent 55%),
-    radial-gradient(ellipse at 70% 100%, rgba(200, 150, 220, 0.08) 0%, transparent 50%),
-    linear-gradient(165deg, #08080f 0%, #0d0d18 50%, #0a0a12 100%);
-  width: 100%;
-  min-height: 100vh;
-  display: block;
-  position: relative;
-  overflow: hidden;
+/* Hide any rogue black heart in the bottom left corner */
+.section-content::before,
+.section-content::after,
+.intro-content::before,
+.intro-content::after {
+  display: none !important;
 }
 
+.corner-heart, .corner-heart-black {
+  display: none !important;
+}
+// Home card centering and margin
 .section-content {
-  scroll-margin-top: 64px;
-  padding-top: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  width: 100vw;
+  background: none;
+  padding-top: 5.5rem;
+  box-sizing: border-box;
 }
+
 
 .main-home {
   padding: 2rem 1rem;
@@ -24,7 +30,12 @@
 }
 
 .page-wrapper {
-  min-height: calc(100vh - 80px);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,11 +49,7 @@
   border: 1px solid rgba(255, 107, 138, 0.2);
   border-radius: 24px;
   box-shadow: 
-    0 8px 40px rgba(0, 0, 0, 0.4),
-    0 0 60px rgba(255, 107, 138, 0.08),
-    inset 0 0 60px rgba(255, 255, 255, 0.02);
-  padding: 2rem 1.5rem !important;
-  margin: 2rem 1.5rem !important;
+    0 8px 40px rgba(0, 0, 0, 0.4);
   max-width: 420px;
   position: relative;
   animation: floatCard 6s ease-in-out infinite alternate;
@@ -63,6 +70,74 @@
   background-clip: text;
   margin: 0 0 1rem 0;
   letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.title-heart {
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 0 6px rgba(255, 107, 138, 0.6));
+  
+  // Heart drawing stroke animation - plays once
+  .heart-draw {
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+  .intro-content {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 107, 138, 0.2);
+    border-radius: 24px;
+    box-shadow: 
+      0 8px 40px rgba(0, 0, 0, 0.4),
+      0 0 60px rgba(255, 107, 138, 0.08),
+      inset 0 0 60px rgba(255, 255, 255, 0.02);
+    padding: 2.5rem 2.2rem 2.2rem 2.2rem !important;
+    margin: 0 auto;
+    max-width: 480px;
+    width: 100%;
+    position: relative;
+    animation: floatCard 6s ease-in-out infinite alternate;
+    z-index: 1;
+  }
+    animation: drawTitleHeart 2s ease-out forwards;
+  }
+  
+  // Heart fill appears after drawing, then pulses forever
+  .heart-fill {
+    opacity: 0;
+    animation: revealTitleHeart 0.5s ease-out 1.8s forwards, pulseTitleHeart 2.5s ease-in-out 2.5s infinite;
+    transform-origin: center center;
+  }
+}
+
+@keyframes drawTitleHeart {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes revealTitleHeart {
+  to { opacity: 1; }
+}
+
+@keyframes pulseTitleHeart {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.poem-verses {
+  margin: 0.5rem 0 1rem;
+  
+  p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0.4rem 0;
+    line-height: 1.7;
+    font-style: italic;
+  }
 }
 
 .intro-content p {
@@ -227,44 +302,51 @@
 }
 
 /* Floating Hearts */
-.floating-hearts {
-  position: absolute;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 0;
+
+@keyframes floatCurve1 {
+  0% { transform: translateY(0) scale(1) rotate(-8deg); opacity: 0.7; }
+  30% { transform: translateY(-30vh) scale(1.1) rotate(0deg); opacity: 0.8; }
+  60% { transform: translateY(-60vh) scale(1.2) rotate(8deg); opacity: 0.5; }
+  100% { transform: translateY(-80vh) scale(1.3) rotate(16deg); opacity: 0; }
+}
+@keyframes floatCurve2 {
+  0% { transform: translateY(0) scale(1) rotate(6deg); opacity: 0.5; }
+  40% { transform: translateY(-40vh) scale(1.05) rotate(-6deg); opacity: 0.7; }
+  80% { transform: translateY(-70vh) scale(1.15) rotate(-12deg); opacity: 0.3; }
+  100% { transform: translateY(-80vh) scale(1.2) rotate(-18deg); opacity: 0; }
+}
+@keyframes floatCurve3 {
+  0% { transform: translateY(0) scale(0.9) rotate(0deg); opacity: 0.4; }
+  50% { transform: translateY(-50vh) scale(1.1) rotate(10deg); opacity: 0.6; }
+  100% { transform: translateY(-80vh) scale(1.2) rotate(20deg); opacity: 0; }
+}
+@keyframes floatCurve4 {
+  0% { transform: translateY(0) scale(1) rotate(12deg); opacity: 0.6; }
+  35% { transform: translateY(-35vh) scale(1.08) rotate(-8deg); opacity: 0.7; }
+  70% { transform: translateY(-65vh) scale(1.18) rotate(-16deg); opacity: 0.4; }
+  100% { transform: translateY(-80vh) scale(1.25) rotate(-24deg); opacity: 0; }
+}
+@keyframes floatCurve5 {
+  0% { transform: translateY(0) scale(0.95) rotate(-6deg); opacity: 0.5; }
+  60% { transform: translateY(-60vh) scale(1.12) rotate(6deg); opacity: 0.7; }
+  100% { transform: translateY(-80vh) scale(1.18) rotate(12deg); opacity: 0; }
+}
+@keyframes floatCurve6 {
+  0% { transform: translateY(0) scale(0.85) rotate(0deg); opacity: 0.35; }
+  50% { transform: translateY(-50vh) scale(1.05) rotate(-10deg); opacity: 0.5; }
+  100% { transform: translateY(-80vh) scale(1.1) rotate(-20deg); opacity: 0; }
 }
 
-.floating-hearts span {
-  position: absolute;
-  color: rgba(255, 107, 138, 0.3);
-  font-size: 1rem;
-  animation: floatUp 8s linear infinite;
-}
-
-.floating-hearts.left {
-  left: 0;
-  width: 25%;
-}
-
-.floating-hearts.right {
-  right: 0;
-  width: 25%;
-}
-
-.floating-hearts.left span:nth-child(1) { left: 10px; animation-delay: 0s; }
-.floating-hearts.left span:nth-child(2) { left: 35px; animation-delay: 2.5s; }
-.floating-hearts.left span:nth-child(3) { left: 60px; animation-delay: 5s; }
-.floating-hearts.right span:nth-child(1) { right: 10px; animation-delay: 1s; }
-.floating-hearts.right span:nth-child(2) { right: 35px; animation-delay: 3.5s; }
-.floating-hearts.right span:nth-child(3) { right: 60px; animation-delay: 6s; }
-
-@keyframes floatUp {
-  0% { transform: translateY(0) scale(1); opacity: 0.7; }
-  100% { transform: translateY(-80vh) scale(1.3); opacity: 0; }
+@keyframes shimmer {
+  0%, 100% { text-shadow: 0 0 0px #fff; }
+  50% { text-shadow: 0 0 8px #fff8, 0 0 16px #ffb8c6; }
 }
 
 /* Mobile Responsive */
 @media (max-width: 480px) {
+  .section-content {
+    padding-top: 3.5rem;
+  }
   .intro-content {
     padding: 1.5rem 1rem !important;
     margin: 1.5rem 1rem !important;

@@ -21,7 +21,7 @@ interface Folder {
 export class GalleryComponent implements OnInit, OnDestroy {
   // Folders mapped to Supabase storage folders
   folders: Folder[] = [
-    { id: 'precious', supabaseFolder: 'gallery/precious', name: 'Precious Us', emoji: '💕', photos: [], currentIndex: 0, isTransitioning: false },
+    { id: 'precious', supabaseFolder: 'gallery/precious', name: 'Lovely Us', emoji: '💕', photos: [], currentIndex: 0, isTransitioning: false },
     { id: 'assthetic', supabaseFolder: 'gallery/assthetic', name: 'Assthetic Us', emoji: '✨', photos: [], currentIndex: 0, isTransitioning: false },
     { id: 'autistic', supabaseFolder: 'gallery/autistic', name: 'Autistic Us', emoji: '🤪', photos: [], currentIndex: 0, isTransitioning: false }
   ];

@@ -10,6 +10,24 @@ import { ThoughtsService } from '../../services/thoughts.service';
   styleUrls: ['./thoughts.component.scss']
 })
 export class ThoughtsComponent {
+
+  toggleHeart(note: any, event: Event) {
+    event.stopPropagation();
+    note.liked = !note.liked;
+  }
+
+    activeNoteId: number | null = null;
+
+    onNoteTouchStart(event: Event, noteId: number) {
+      // Only activate if not clicking on an emoji/icon-btn or heart button
+      const target = event.target as HTMLElement;
+      if (target.closest('.icon-btn') || target.closest('.note-heart-btn')) return;
+      this.activeNoteId = noteId;
+    }
+
+    onNoteTouchEnd(event: Event) {
+      this.activeNoteId = null;
+    }
   cancelEdit() {
     this.editingId = null;
   }

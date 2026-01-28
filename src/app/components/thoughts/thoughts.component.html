@@ -1,6 +1,6 @@
 <div class="thoughts-wrapper">
   <div class="board-head">
-    <h2>Thoughts 💌</h2>
+    <h2>Thoughts 🪶</h2>
   </div>
 
   <!-- Notes Grid -->
@@ -9,23 +9,30 @@
     <div
       class="note"
       *ngFor="let note of thoughts$ | async; trackBy: trackById"
-
       [class.editing]="isEditing(note.id)"
+      [class.active]="activeNoteId === note.id"
+      (touchstart)="onNoteTouchStart($event, note.id)"
+      (touchend)="onNoteTouchEnd($event)"
+      (mousedown)="onNoteTouchStart($event, note.id)"
+      (mouseup)="onNoteTouchEnd($event)"
       [style.transition]="'box-shadow 0.2s, transform 0.2s'"
     >
       <!-- Note body -->
       <div
         class="note-paper"
         [class.editing]="isEditing(note.id)"
-      >
-        <pre *ngIf="!isEditing(note.id)" style="margin:0;background:none;border:none;font-family:'Dancing Script',cursive;font-size:1.18rem;color:#5a1130;line-height:1.7;text-indent:1.2em;white-space:pre-wrap;word-break:break-word;">
+    >
+      <button class="note-heart-btn" [class.liked]="note.liked" (click)="toggleHeart(note, $event)" tabindex="0" aria-label="Like this thought">
+        <span class="note-heart" [class.liked]="note.liked">&#10084;</span>
+      </button>
+        <pre *ngIf="!isEditing(note.id)" style="margin:0;background:none;border:none;font-family:'Dancing Script',cursive;font-size:1.18rem;line-height:1.7;text-indent:1.2em;white-space:pre-wrap;word-break:break-word;">
           {{ note.text }}
         </pre>
         <textarea *ngIf="isEditing(note.id)"
           class="note-textarea"
           [(ngModel)]="draftText[note.id!]"
           rows="5"
-          style="width:100%;font-family:'Dancing Script',cursive;font-size:1.18rem;color:#5a1130;background:#fffbe9;border:none;outline:2px dashed rgba(236,64,122,0.7);border-radius:10px;resize:vertical;padding:8px 12px 12px 12px;box-sizing:border-box;"
+          style="width:100%;font-family:'Dancing Script',cursive;font-size:1.18rem;background:#fffbe9;border:none;outline:2px dashed rgba(236,64,122,0.7);border-radius:10px;resize:vertical;padding:8px 12px 12px 12px;box-sizing:border-box;"
         ></textarea>
       </div>
 
@@ -42,14 +49,14 @@
   <div class="reply-paper" *ngIf="isReplyOpen(note.id)">
         <div style="display: flex; align-items: flex-start;">
           <div style="flex: 1;">
-            <pre *ngIf="replyEditingId !== note.id" style="margin:0;background:none;border:none;font-family:'Dancing Script',cursive;font-size:1.05rem;color:#5a1130;line-height:1.6;white-space:pre-wrap;word-break:break-word;">
+            <pre *ngIf="replyEditingId !== note.id" style="margin:0;background:none;border:none;font-family:'Dancing Script',cursive;font-size:1.05rem;line-height:1.6;white-space:pre-wrap;word-break:break-word;">
               {{ note.reply }}
             </pre>
             <textarea *ngIf="replyEditingId === note.id"
               class="reply-textarea"
               [(ngModel)]="draftReply[note.id!]"
               rows="3"
-              style="width:100%;font-family:'Dancing Script',cursive;font-size:1.05rem;color:#5a1130;background:#fffbe9;border:none;outline:2px dashed rgba(236,64,122,0.7);border-radius:10px;resize:vertical;padding:8px 0px 8px 0px;box-sizing:border-box;"
+              style="width:100%;font-family:'Dancing Script',cursive;font-size:1.05rem;background:#fffbe9;border:none;outline:2px dashed rgba(236,64,122,0.7);border-radius:10px;resize:vertical;padding:8px 0px 8px 0px;box-sizing:border-box;"
             ></textarea>
           </div>
           <div style="display: flex; flex-direction: column; gap: 22px; margin-left: 10px; margin-top:6px">

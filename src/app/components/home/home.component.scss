@@ -43,16 +43,79 @@
 }
 
 .intro-content {
+    // Romantic soft pink glow
+    box-shadow: 0 8px 40px rgba(255, 107, 138, 0.25),
+      0 0 60px rgba(255, 107, 138, 0.12),
+      0 0 0 8px rgba(255, 111, 145, 0.07),
+      0 0 0 2px #ffe6eb;
+
+    // Add floating animated hearts
+    &::before {
+      content: '💖 💕 💗 💓';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 2.2rem;
+      opacity: 0.18;
+      filter: blur(0.5px);
+      animation: floatHearts 7s ease-in-out infinite alternate;
+      z-index: 2;
+    }
+
+    // Add a subtle heart confetti overlay
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(135deg, #ffe6eb 0 2px, transparent 2px 8px), repeating-linear-gradient(-135deg, #ffb6d5 0 2px, transparent 2px 8px);
+      opacity: 0.07;
+      border-radius: 24px;
+      z-index: 1;
+    }
   text-align: center;
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 107, 138, 0.2);
   border-radius: 24px;
   box-shadow: 
-    0 8px 40px rgba(0, 0, 0, 0.4);
+    0 8px 40px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(255, 107, 138, 0.08),
+    inset 0 0 60px rgba(255, 255, 255, 0.02);
   max-width: 420px;
   position: relative;
-  animation: floatCard 6s ease-in-out infinite alternate;
+  animation: floatCard 6s ease-in-out infinite alternate, cardGlow 4s ease-in-out infinite alternate;
+  z-index: 1;
+  
+  // Romantic floating hearts background
+  &::before {
+    content: '💖💕💗💓';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    pointer-events: none;
+    font-size: 12px;
+    opacity: 0.1;
+    animation: floatingHearts 8s ease-in-out infinite;
+    z-index: -1;
+  }
+  
+  // Subtle shimmer overlay
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    border-radius: 24px;
+    animation: shimmerSweep 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
 @keyframes floatCard {
@@ -75,6 +138,7 @@
   justify-content: center;
   gap: 0.4rem;
   flex-wrap: wrap;
+  animation: fadeInUp 1.5s ease-out 0.5s both;
 }
 
 .title-heart {
@@ -123,13 +187,54 @@
   to { opacity: 1; }
 }
 
-@keyframes pulseTitleHeart {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08); }
+@keyframes cardGlow {
+  0% { box-shadow: 
+    0 8px 40px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(255, 107, 138, 0.08),
+    inset 0 0 60px rgba(255, 255, 255, 0.02); }
+  100% { box-shadow: 
+    0 8px 40px rgba(0, 0, 0, 0.4),
+    0 0 80px rgba(255, 107, 138, 0.15),
+    inset 0 0 80px rgba(255, 255, 255, 0.04); }
+}
+
+@keyframes floatingHearts {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-5px) rotate(2deg); }
+  50% { transform: translateY(-10px) rotate(-2deg); }
+  75% { transform: translateY(-5px) rotate(1deg); }
+}
+
+@keyframes shimmerSweep {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .poem-verses {
   margin: 0.5rem 0 1rem;
+  animation: fadeInUp 1.5s ease-out 1s both;
   
   p {
     font-size: 1rem;
@@ -156,6 +261,7 @@
   background-clip: text;
   margin: 1rem 0 0.5rem;
   font-weight: 600;
+  animation: fadeInUp 1.5s ease-out 2s both;
 }
 
 .soft-divider {
@@ -163,19 +269,135 @@
   color: #ff6b8a;
   margin: 0.8rem 0;
   filter: drop-shadow(0 0 8px rgba(255, 107, 138, 0.5));
+  animation: fadeInScale 1s ease-out 1.5s both;
 }
 
-.lottie-divider {
+
+// Premium CSS floating hearts animation
+
+.css-hearts-animation {
+  position: relative;
+  width: 100%;
+  height: 48px;
+  margin: 1.2rem 0 0.2rem 0;
+  opacity: 0;
+  animation: fadeInHearts 0.8s 2.7s forwards;
   display: flex;
   justify-content: center;
-  margin-bottom: -2rem;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: 3;
 }
 
-.card-lottie {
-  width: 120px;
-  height: 120px;
-  filter: drop-shadow(0 0 12px rgba(255, 107, 138, 0.4));
+.css-hearts-animation .heart-svg {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  opacity: 0.7;
+  filter: drop-shadow(0 2px 6px rgba(255, 107, 138, 0.10));
+  stroke: #ff6f91;
+  stroke-width: 0.5;
+  fill: url(#heartGradient1);
+  animation: floatHeartSvg 4.5s linear infinite;
+  transition: opacity 0.3s;
 }
+.css-hearts-animation .heart1 {
+  left: 12%;
+  animation-delay: 0s;
+  fill: url(#heartGradient1);
+}
+.css-hearts-animation .heart2 {
+  left: 32%;
+  animation-delay: 1.2s;
+  fill: url(#heartGradient2);
+  opacity: 0.5;
+}
+.css-hearts-animation .heart3 {
+  left: 52%;
+  animation-delay: 0.7s;
+  fill: url(#heartGradient3);
+  opacity: 0.8;
+}
+.css-hearts-animation .heart4 {
+  left: 68%;
+  animation-delay: 2.1s;
+  fill: url(#heartGradient4);
+  opacity: 0.6;
+}
+.css-hearts-animation .heart5 {
+  left: 84%;
+  animation-delay: 1.7s;
+  fill: url(#heartGradient5);
+  opacity: 0.4;
+}
+
+@keyframes floatHeartSvg {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.7;
+  }
+  10% {
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(-60px) scale(1.08);
+    opacity: 0.7;
+  }
+  80% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-120px) scale(1.12);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInHearts {
+  to { opacity: 1; }
+}
+
+/* SVG gradients for hearts */
+.css-hearts-animation svg.heart1 path { fill: url(#heartGradient1); }
+.css-hearts-animation svg.heart2 path { fill: url(#heartGradient2); }
+.css-hearts-animation svg.heart3 path { fill: url(#heartGradient3); }
+.css-hearts-animation svg.heart4 path { fill: url(#heartGradient4); }
+.css-hearts-animation svg.heart5 path { fill: url(#heartGradient5); }
+
+/* Add SVG gradients to the page */
+body::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Gradients for hearts (to be injected in SVG defs) */
+/*
+<defs>
+  <linearGradient id="heartGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#ffe6eb"/>
+    <stop offset="100%" stop-color="#ff6f91"/>
+  </linearGradient>
+  <linearGradient id="heartGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#ffb6d5"/>
+    <stop offset="100%" stop-color="#ff8ac9"/>
+  </linearGradient>
+  <linearGradient id="heartGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#ffb8c6"/>
+    <stop offset="100%" stop-color="#ff4ba0"/>
+  </linearGradient>
+  <linearGradient id="heartGradient4" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#ffe6eb"/>
+    <stop offset="100%" stop-color="#ffb6d5"/>
+  </linearGradient>
+  <linearGradient id="heartGradient5" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#ffb6d5"/>
+    <stop offset="100%" stop-color="#ffe6eb"/>
+  </linearGradient>
+</defs>
+*/
 
 /* Signatures Section */
 .signatures-section {
@@ -185,8 +407,28 @@
   justify-content: space-evenly;
   align-items: center;
   gap: 1rem;
+  animation: fadeInUp 1.5s ease-out 2.5s both;
 }
 
+.signature-box {
+    background: linear-gradient(135deg, rgba(255, 239, 246, 0.7) 0%, rgba(255, 182, 213, 0.18) 100%);
+    border: 1.5px solid #ffb6d5;
+    box-shadow: 0 2px 12px 0 rgba(255, 107, 138, 0.10), 0 0 0 2px #ffe6eb;
+    transition: box-shadow 0.3s, border-color 0.3s, background 0.3s;
+
+    &:hover {
+      background: linear-gradient(135deg, #ffe6eb 0%, #ffb6d5 100%);
+      border-color: #ff6f91;
+      box-shadow: 0 4px 24px 0 rgba(255, 107, 138, 0.18), 0 0 0 4px #ffe6eb;
+      transform: scale(1.04) translateY(-4px) rotate(-2deg);
+    }
+  }
+
+  @keyframes floatHearts {
+    0% { transform: translateY(0) scale(1) rotate(-2deg); }
+    50% { transform: translateY(-10px) scale(1.08) rotate(2deg); }
+    100% { transform: translateY(0) scale(1) rotate(-2deg); }
+  }
 .signature-box {
   flex: 1;
   max-width: 150px;

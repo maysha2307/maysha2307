@@ -1,13 +1,12 @@
-import { Component, ElementRef, OnInit, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { SignatureService } from '../../services/signature.service';
-import lottie from 'lottie-web';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit {
   onSignatureBoxClick(event: MouseEvent, who: 'mashooq' | 'aayesha') {
     // Prevent file input trigger if bin button is clicked
     const target = event.target as HTMLElement;
@@ -57,15 +56,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
 
 
-  ngAfterViewInit(): void {
-    lottie.loadAnimation({
-      container: this.el.nativeElement.querySelector('#card-animation'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: 'assets/animations/LoveLine.json'
-    });
-  }
+  // Lottie animation removed to eliminate CommonJS dependency
 
 onFileSelected(event: Event, who: 'mashooq' | 'aayesha') {
   const input = event.target as HTMLInputElement;

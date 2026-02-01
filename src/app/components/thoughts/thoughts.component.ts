@@ -13,7 +13,17 @@ export class ThoughtsComponent {
 
   toggleHeart(note: any, event: Event) {
     event.stopPropagation();
+    // Create a new object to trigger Angular change detection
     note.liked = !note.liked;
+    this.thoughtsService.forceUpdate();
+  }
+
+  // Toggle reply heart (like) for reply
+  toggleReplyHeart(note: any, event: Event) {
+    event.stopPropagation();
+    if (note.replyLiked === undefined) note.replyLiked = false;
+    note.replyLiked = !note.replyLiked;
+    this.thoughtsService.forceUpdate();
   }
 
     activeNoteId: number | null = null;

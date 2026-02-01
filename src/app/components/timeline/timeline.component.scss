@@ -25,12 +25,29 @@
 /* ===== HEADER ===== */
 .timeline-header {
   text-align: center;
-  margin-bottom: 3rem;
-  animation: slideDown 0.6s ease-out;
+  margin-bottom: 2.5rem;
+  animation: slideDown 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .header-icon {
+    font-size: 2.4rem;
+    margin-bottom: 0.6rem;
+    display: inline-block;
+    animation: calendarRelaxed 4.2s ease-in-out infinite;
+    filter: drop-shadow(0 4px 12px rgba(255, 80, 120, 0.35));
+  }
+
+@keyframes calendarRelaxed {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  20% { transform: translateY(-8px) rotate(-6deg); }
+  50% { transform: translateY(-14px) rotate(6deg); }
+  80% { transform: translateY(-8px) rotate(-6deg); }
+}
 
   h2 {
     font-family: 'Quicksand', sans-serif;
     font-size: 1.6rem;
+    color: #fff;
+    margin: 0;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -38,7 +55,6 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin: 0 0 0.4rem;
   }
 
   .subtitle {
@@ -49,6 +65,23 @@
     font-style: italic;
   }
 }
+
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+// Simple modern style for active timeline dot
+.active-dot {
+  background: $heart-color;
+  border-color: $heart-color;
+  box-shadow: none;
+  animation: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+
 
 @keyframes slideDown {
   from { opacity: 0; transform: translateY(-1rem); }
@@ -77,7 +110,7 @@
   box-shadow: 0 0 20px rgba(255, 107, 138, 0.3);
 
   @media (max-width: 768px) {
-    left: 1rem;
+    left: 18px;
   }
 }
 
@@ -100,26 +133,26 @@
     padding-right: 2rem;
 
     .event-card { text-align: right; }
-    .timeline-dot { right: auto; left: -10px; }
+    .timeline-dot { right: auto; left: -18px; }
 
     @media (max-width: 768px) {
       margin-right: auto;
       padding-right: 0;
       flex-direction: row;
       .event-card { text-align: left; }
-      .timeline-dot { right: auto; left: -19px; }
+      .timeline-dot { right: auto; left: -27px; }
     }
   }
 
   &.right {
     margin-left: 50%;
     padding-left: 2rem;
-    .timeline-dot { left: -10px; }
+    .timeline-dot { left: -18px; }
 
     @media (max-width: 768px) {
       margin-left: auto;
       padding-left: 0;
-      .timeline-dot { left: -19px; }
+      .timeline-dot { left: -27px; }
     }
   }
 
@@ -191,7 +224,7 @@
   left: 18px;
   font-size: 2.2rem;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-  animation: bounce 2.5s ease-in-out infinite;
+  animation: float 2.5s ease-in-out infinite;
 
   @media (max-width: 768px) {
     font-size: 1.8rem;
@@ -200,41 +233,47 @@
   }
 }
 
-@keyframes bounce {
+
+@keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  50% { transform: translateY(-8px); }
 }
 
 /* ===== TIMELINE DOT ===== */
+
 .timeline-dot {
   position: absolute;
-  top: 1.5rem;
-  width: 20px;
-  height: 20px;
-  background: #0d0d18;
-  border: 3px solid #ff6b8a;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  background: #181824;
+  border: 2.5px solid $heart-color;
   border-radius: 50%;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(255, 107, 138, 0.4);
+  transition: background 0.2s, border-color 0.2s;
+  box-shadow: none;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &::after {
     content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: block;
     width: 8px;
     height: 8px;
-    background: #ff6b8a;
     border-radius: 50%;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    background: lighten($heart-color, 10%);
+    border: none;
+    box-shadow: none;
+    transition: background 0.2s;
   }
 }
 
-.event-card:hover + .timeline-dot::after,
-.event-card:hover .timeline-dot::after {
-  opacity: 1;
+.timeline-dot.active-dot {
+  border-color: $heart-color;
+  background: lighten($heart-color, 10%);
 }
 
 /* ===== CARD ACTIONS ===== */
@@ -243,20 +282,10 @@
   gap: 0.4rem;
 }
 
-.action-btn {
-  background: none;
-  border: none;
-  font-size: 1.1rem;
-  cursor: pointer;
-  padding: 0.2rem;
-  opacity: 0.6;
-  transition: all 0.2s ease;
+// .action-btn intentionally left out; use .icon-btn from thoughts for timeline action buttons
+// Import .icon-btn from thoughts for timeline action buttons
+@import '../thoughts/thoughts.component.scss';
 
-  &:hover {
-    opacity: 1;
-    transform: scale(1.15);
-  }
-}
 
 /* ===== ADD EVENT BUTTON ===== */
 .add-event-section {

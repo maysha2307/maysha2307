@@ -20,7 +20,7 @@ export class GamesComponent {
     {
       id: 'we-know-us',
       name: 'We Know Us',
-      emoji: '💕',
+      emoji: '🤝',
       description: 'Ask questions, test your bond',
       color: '#ff6b8a'
     },

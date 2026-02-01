@@ -99,24 +99,13 @@
     transition: opacity 0.3s ease;
   }
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateY(-4px) scale(1.02);
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 
-    &::before {
-      opacity: 1;
-    }
-
-    .game-emoji {
-      transform: scale(1.15);
-    }
-
-    .play-hint {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  // Mobile-friendly tap/active effect
+  &:active {
+    background: rgba(255, 255, 255, 0.10);
+    transform: scale(0.97);
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
   }
 
   &.coming-soon {

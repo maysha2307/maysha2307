@@ -4,4 +4,5 @@ export interface Thought {
   reply?: string;
   order: number;
   liked?: boolean;
+  replyLiked?: boolean;
 }

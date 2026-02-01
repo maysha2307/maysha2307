@@ -2,8 +2,9 @@
   <div class="timeline-wrapper">
     <!-- Header -->
     <div class="timeline-header">
-      <h2>Our Timeline 📅</h2>
-      <p class="subtitle">The beautiful moments that shaped our love story</p>
+      <div class="header-icon">📅</div>
+      <h2>Our Timeline</h2>
+      <p class="subtitle">walktrough of this wonderful journey</p>
     </div>
 
     <!-- Timeline Container -->
@@ -13,13 +14,13 @@
 
       <!-- Events -->
       <div
-        *ngFor="let event of events$ | async; trackBy: trackById"
+        *ngFor="let event of events$ | async; let i = index; trackBy: trackById"
         class="timeline-item"
         [class.left]="isLeft(event)"
         [class.right]="!isLeft(event)"
       >
         <!-- Event Card -->
-        <div class="event-card">
+        <div class="event-card" #timelineCard>
           <!-- Emoji Badge -->
           <div class="emoji-badge">{{ event.emoji }}</div>
 
@@ -28,8 +29,12 @@
             <div class="card-header">
               <h3 class="event-title">{{ event.title }}</h3>
               <div class="card-actions">
-                <button class="action-btn edit" (click)="openEditModal(event)" title="Edit">✏️</button>
-                <button class="action-btn delete" (click)="deleteEvent(event)" title="Delete">🗑️</button>
+                <button class="icon-btn" (click)="openEditModal(event)" title="Edit">
+                  <span class="material-icons">edit</span>
+                </button>
+                <button class="icon-btn danger" (click)="deleteEvent(event)" title="Delete">
+                  <span class="material-icons">delete</span>
+                </button>
               </div>
             </div>
 
@@ -38,7 +43,7 @@
           </div>
 
           <!-- Dot on Timeline -->
-          <div class="timeline-dot"></div>
+          <div class="timeline-dot" [class.active-dot]="activeCardIndex === i"></div>
         </div>
       </div>
     </div>

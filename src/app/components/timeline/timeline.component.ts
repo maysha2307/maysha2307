@@ -1,3 +1,4 @@
+import { ElementRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TimelineEvent } from '../../models/timeline-event.model';
@@ -8,7 +9,32 @@ import { TimelineService } from '../../services/timeline.service';
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss']
 })
-export class TimelineComponent implements OnInit {
+export class TimelineComponent implements OnInit, AfterViewInit {
+    @ViewChildren('timelineCard') timelineCards!: QueryList<ElementRef>;
+    activeCardIndex: number = 0;
+    ngAfterViewInit(): void {
+      if (typeof window === 'undefined') return;
+      const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.5 // 50% of card visible
+      };
+      const callback = (entries: IntersectionObserverEntry[]) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const idx = Number((entry.target as HTMLElement).getAttribute('data-index'));
+            this.activeCardIndex = idx;
+          }
+        });
+      };
+      const observer = new IntersectionObserver(callback, options);
+      setTimeout(() => {
+        this.timelineCards.forEach((card, idx) => {
+          card.nativeElement.setAttribute('data-index', idx);
+          observer.observe(card.nativeElement);
+        });
+      }, 0);
+    }
   events$: Observable<TimelineEvent[]>;
   showAddModal = false;
   isSubmitting = false;

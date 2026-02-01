@@ -1,4 +1,67 @@
+/* Feather float animation */
+
+// Feather writing animation: left-to-right and back
+.feather-emoji {
+  display: inline-block;
+  animation: featherWrite 2.8s ease-in-out infinite;
+  /* Ensure emoji is visible even inside gradient/transparent text */
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  -webkit-text-fill-color: initial !important;
+  background-clip: initial !important;
+  color: inherit !important;
+  filter: none !important;
+}
+
+@keyframes featherWrite {
+  0%   { transform: translateX(0) rotate(-18deg); }
+  20%  { transform: translateX(12px) rotate(-8deg); }
+  50%  { transform: translateX(32px) rotate(8deg); }
+  80%  { transform: translateX(12px) rotate(-8deg); }
+  100% { transform: translateX(0) rotate(-18deg); }
+}
+
+@keyframes featherFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
 @import '../../theme/_variables.scss';
+.reply-heart-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s;
+  font-size: 1.1rem;
+  margin-right: 10px;
+  margin-top: 6px;
+  /* Remove circle and box-shadow */
+  border-radius: 0;
+  width: auto;
+  height: auto;
+  box-shadow: none;
+}
+.reply-heart-btn:active {
+  transform: scale(1.18);
+}
+.reply-heart {
+  font-size: 1.25rem;
+  color: #ffe6eb;
+  transition: color 0.18s;
+  text-shadow: 0 2px 8px #ffb6d5;
+}
+.reply-heart.liked {
+  color: $heart-color;
+  text-shadow: 0 2px 8px #ff3366;
+}
+.reply-action-group .icon-btn.danger {
+  margin-top: 0 !important;
+}
 
 :host {
   background: 
@@ -15,12 +78,51 @@
   padding-top: 64px;
 }
 
+
 .thoughts-wrapper {
-  padding: 2rem 1.25rem 6rem;
+  padding: 2.5rem 1.25rem 5rem;
   font-family: 'Quicksand', sans-serif;
   position: relative;
   max-width: 600px;
   margin: 0 auto;
+}
+
+/* ===== HEADER ===== */
+.thoughts-header {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 2.5rem;
+  animation: slideDown 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .header-icon {
+    font-size: 2.4rem;
+    margin-bottom: 0.6rem;
+    display: inline-block;
+    animation: featherWrite 2.8s ease-in-out infinite;
+    filter: drop-shadow(0 4px 12px rgba(255, 80, 120, 0.35));
+  }
+
+  h2 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.6rem;
+    color: #fff;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 180, 200, 0.9) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-family: 'Quicksand', sans-serif;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    margin: 0;
+    font-style: italic;
+  }
 }
 
 /* Header */
@@ -70,8 +172,8 @@
   // Remove background heart, replaced by interactive heart button
 .note-heart-btn {
   position: absolute;
-  top: 16px;
-  right: 18px;
+  top: 8px;
+  right: 8px;
   background: none;
   border: none;
   padding: 0;
@@ -86,17 +188,33 @@
 .note-heart-btn:active {
   transform: scale(1.18);
 }
+// Main heart icon
 .note-heart {
   font-size: 1.45rem;
   color: #ffe6eb;
-  opacity: 0.7;
-  transition: color 0.2s, opacity 0.2s;
-  filter: none;
+  transition: color 0.18s;
+  text-shadow: 0 2px 8px #ffb6d5;
 }
 .note-heart.liked {
-  color: #ff3366;
-  opacity: 1;
-  text-shadow: 0 2px 8px #ffb6d5;
+  color: $heart-color;
+  text-shadow: 0 2px 8px #ff3366;
+}
+.reply-action-group {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+  margin: 0;
+  padding: 0 0 4px 0;
+  height: auto;
+}
+.reply-action-group .icon-btn {
+  margin-bottom: 0 !important;
+  align-self: center !important;
+
+  /* Remove white/pink shadow from reply action icons */
+  text-shadow: none;
 }
 
   // Touch/tap/active effect for mobile
@@ -109,6 +227,14 @@
   }
 }
 
+/* Prevent card shake when clicking reply heart: only .note (card) gets .active when not clicking heart or reply-heart */
+.reply-heart-btn:active, .reply-heart-btn:focus {
+  /* Do not affect parent card */
+  outline: none;
+  box-shadow: none;
+  transform: scale(1.18);
+}
+
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(1rem); }
   to { opacity: 1; transform: translateY(0); }
@@ -116,8 +242,29 @@
 
 /* Note Paper */
 .note-paper {
-  min-height: 100px;
-  padding: 1rem 1rem 1rem 3.5rem;
+  min-height: 124px;
+  padding: 1rem 2rem 0.05rem 3rem; // Minimal bottom padding
+  .editing .note-heart-btn {
+    display: none !important;
+  }
+  // Main note text (not editing)
+  .note-paper pre {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.18rem;
+    line-height: 1.7;
+    text-indent: 1.2em; // Restore original indent
+    margin: 0;
+    background: none;
+    border: none;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  // Main note textarea (editing)
+  .note-textarea {
+    padding: 14px 18px 10px 18px !important;
+    min-height: 110px;
+    box-sizing: border-box;
+  }
   border-radius: 20px;
   font-family: 'Dancing Script', cursive;
   font-size: 1.22rem;
@@ -135,6 +282,7 @@
     outline: 1px dashed rgba(255, 107, 138, 0.5);
     outline-offset: -2px;
     background: rgba(255, 255, 255, 0.02);
+    padding-bottom: 8px;
   }
 }
 
@@ -149,43 +297,92 @@
   z-index: 2;
 }
 
-.icon-btn {
-  border: none !important;
-  background: none !important;
-  font-size: 1rem !important;
-  cursor: pointer !important;
-  padding: 0 !important;
-  opacity: 0.6;
-  transition: opacity 0.2s, transform 0.2s;
 
-  &:hover {
-    opacity: 1;
-  }
+
+// Extra Small Icon Button Style for Mobile
+.icon-btn {
+  border: none;
+  background: $glass-bg;
+  font-size: 0.85rem;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  min-height: 24px;
+  max-width: 24px;
+  max-height: 24px;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(255, 107, 138, 0.10), 0 0 0 1px $glass-border;
+  color: $text-accent;
+  opacity: 0.95;
+  outline: none;
+  margin-bottom: 0.12rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.11s, box-shadow 0.11s, color 0.11s, transform 0.11s, opacity 0.11s;
 
   &:active {
-    transform: scale(0.9);
+    background: $primary-pink-light;
+    color: #fff;
+    transform: scale(1.11);
+    box-shadow: 0 1px 4px $primary-pink-dark;
+    transition: transform 0.11s cubic-bezier(.4,1.4,.6,1), background 0.11s, color 0.11s;
   }
 
   &.danger {
-    color: #ff6b8a;
+    color: #ff3366;
+    &:active {
+      background: #ff3366;
+      color: #fff;
+    }
   }
 
   &.save {
     color: #4ade80;
+    &:active {
+      background: #43e97b;
+      color: #fff;
+    }
+  }
+
+  &.cancel {
+    color: #bdbdbd;
+    &:active {
+      background: #bdbdbd;
+      color: #fff;
+    }
+  }
+
+  .material-icons {
+    font-size: 1.05rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
   }
 }
 
 /* Reply Section */
 .reply-wrapper {
-  margin: 0.75rem 1rem 1rem;
-  padding-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0.5rem 0.75rem 0.75rem 0.75rem;
+  padding-top: 0.5rem;
   border-top: 1px dashed rgba(255, 107, 138, 0.2);
   position: relative;
 }
 
+// Reply Section
 .reply-paper {
-  min-height: 60px;
-  padding: 0.75rem 2.5rem 0.75rem 0.75rem;
+  min-height: 50px;
+  padding: 0.7rem 1rem 0.3rem 1rem;
   border-radius: 12px;
   font-family: 'Dancing Script', cursive;
   font-size: 1.12rem;
@@ -197,9 +394,19 @@
   border: 1px solid rgba(255, 107, 138, 0.1);
   outline: none;
   position: relative;
+}
+
+// Fix reply textarea padding
+.reply-textarea {
+  padding: 14px 18px 10px 18px !important;
+  min-height: 70px;
+  box-sizing: border-box;
+}
+// .reply-action-group .icon-btn.cancel {
+//   margin-top: 18px !important;
+// }
 
   /* Right margin line removed */
-}
 
 /* Add Button */
 .add-btn-row {

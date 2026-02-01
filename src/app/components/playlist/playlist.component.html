@@ -4,7 +4,7 @@
     <div class="section-header">
       <div class="header-icon">🎵</div>
       <h2>Our Playlist</h2>
-      <p class="subtitle">Melodies woven into our moments</p>
+      <p class="subtitle">Music n chill through our moments</p>
     </div>
 
     <!-- Empty State -->
@@ -81,13 +81,9 @@
     </div>
 
     <!-- Add Button -->
-    <button 
-      class="add-btn" 
-      (click)="openSearch()"
-      *ngIf="songs.length > 0 && !showSearch"
-    >
-      +
-    </button>
+    <div class="add-btn-row" *ngIf="songs.length > 0 && !showSearch">
+      <button class="add-btn icon-btn" (click)="openSearch()">＋</button>
+    </div>
 
     <!-- Search Modal -->
     <div class="search-modal" *ngIf="showSearch">

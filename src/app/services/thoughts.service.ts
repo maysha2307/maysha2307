@@ -4,6 +4,12 @@ import { Thought } from '../models/thought.model';
 
 @Injectable({ providedIn: 'root' })
 export class ThoughtsService {
+  // ...existing code...
+    // Force update for UI (when toggling like, etc)
+    forceUpdate() {
+      this.thoughtsSubject.next([...this.thoughts]);
+      this.saveToLocalStorage();
+    }
   private thoughts: Thought[] = [];
   private thoughtsSubject = new BehaviorSubject<Thought[]>(this.thoughts);
   thoughts$ = this.thoughtsSubject.asObservable();

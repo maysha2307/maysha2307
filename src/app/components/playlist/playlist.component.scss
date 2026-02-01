@@ -352,37 +352,37 @@
 }
 
 /* ===== ADD BUTTON ===== */
+.add-btn-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
 .add-btn {
-  position: absolute;
-  bottom: 2rem;
-  right: 1.5rem;
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ff6b8a 0%, #ff9eb5 100%);
+  font-size: 1.8rem;
+  line-height: 1;
   border: none;
-  color: white;
-  font-size: 1.75rem;
   cursor: pointer;
-  box-shadow: 
-    0 4px 20px rgba(255, 107, 138, 0.4),
-    0 2px 8px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 107, 138, 0.2);
+  border: 1px solid rgba(255, 107, 138, 0.4);
+  color: #ff9eb5;
+  box-shadow: 0 4px 20px rgba(255, 107, 138, 0.15);
   transition: all 0.3s ease;
-  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
-  &:hover {
-    transform: scale(1.08);
-    box-shadow: 
-      0 6px 28px rgba(255, 107, 138, 0.5),
-      0 4px 12px rgba(0, 0, 0, 0.3);
-  }
+.add-btn:hover {
+  background: rgba(255, 107, 138, 0.3);
+  transform: scale(1.05);
+}
 
-  &:active {
-    transform: scale(0.95);
-  }
+.add-btn:active {
+  transform: scale(0.95);
 }
 
 /* ===== SEARCH MODAL ===== */

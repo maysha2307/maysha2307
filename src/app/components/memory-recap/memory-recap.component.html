@@ -68,9 +68,11 @@
     </div>
 
     <!-- Add Button -->
-    <button class="add-btn" (click)="openAddForm()">
-      <span>+</span>
-    </button>
+    <div class="add-btn-row">
+      <button class="add-btn" (click)="openAddForm()">
+        <span>＋</span>
+      </button>
+    </div>
 
     <!-- Add Form Modal -->
     <div class="modal-overlay" *ngIf="showAddForm" (click)="closeAddForm()">

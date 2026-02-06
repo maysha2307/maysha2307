@@ -3,6 +3,7 @@ import { ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Thought } from '../../models/thought.model';
 import { ThoughtsService } from '../../services/thoughts.service';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-thoughts',
@@ -42,7 +43,9 @@ export class ThoughtsComponent {
     this.editingId = null;
   }
 
-  deleteReply(note: Thought) {
+  async deleteReply(note: Thought) {
+    const ok = await this.dialog.confirm('Delete reply?');
+    if (!ok) return;
     if (note.id != null) {
       this.thoughtsService.updateReply(note.id, '');
       this.replyEditingId = null;
@@ -62,7 +65,7 @@ export class ThoughtsComponent {
   replyEditingId: number | null = null;
   isAddingThought = false;
 
-  constructor(private thoughtsService: ThoughtsService) {
+  constructor(private thoughtsService: ThoughtsService, private dialog: DialogService) {
     this.thoughts$ = this.thoughtsService.thoughts$;
   }
 
@@ -85,7 +88,9 @@ export class ThoughtsComponent {
   startEdit(note: Thought) {
     this.editingId = note.id!;
     if (this.draftText[note.id!] === undefined) {
-      this.draftText[note.id!] = note.text;
+      // If the note was created with the placeholder "New note...", start with an empty draft
+      const isPlaceholder = typeof note.text === 'string' && note.text.trim().toLowerCase().startsWith('new note');
+      this.draftText[note.id!] = isPlaceholder ? '' : note.text;
     }
   }
 
@@ -100,8 +105,9 @@ export class ThoughtsComponent {
       this.editingId = null;
     }
   }
-
-  deleteNote(note: Thought) {
+  async deleteNote(note: Thought) {
+    const ok = await this.dialog.confirm(`Delete "${(note.text || '').toString().slice(0,40)}"?`);
+    if (!ok) return;
     if (note.id != null) {
       this.thoughtsService.deleteThought(note.id);
     }
@@ -114,7 +120,7 @@ export class ThoughtsComponent {
       await this.thoughtsService.addThought('New note...');
     } catch (error) {
       console.error('Failed to add thought:', error);
-      alert('Failed to add thought. Please try again.');
+      await this.dialog.alert('Failed to add thought. Please try again.');
     } finally {
       this.isAddingThought = false;
     }
@@ -140,6 +146,11 @@ export class ThoughtsComponent {
       this.thoughtsService.updateReply(note.id, this.draftReply[note.id!]);
       this.replyEditingId = null;
     }
+  }
+
+  // Return trimmed reply for display to avoid accidental leading/trailing newlines
+  getTrimmedReply(note: Thought): string {
+    return (note.reply || '').toString().trim();
   }
 
   // Drag & drop logic removed for performance

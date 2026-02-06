@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PlaylistSong, iTunesSearchResult } from '../models/playlist-song.model';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,11 +10,78 @@ import { PlaylistSong, iTunesSearchResult } from '../models/playlist-song.model'
 export class PlaylistService {
   private readonly STORAGE_KEY = 'our_playlist';
   private songsSubject = new BehaviorSubject<PlaylistSong[]>([]);
+  private supabase: SupabaseClient | null = null;
+  private useSupabase = false;
   
   songs$ = this.songsSubject.asObservable();
 
   constructor() {
-    this.loadSongs();
+    try {
+      if (environment && environment.supabase && environment.supabase.url && environment.supabase.anonKey) {
+        this.supabase = createClient(environment.supabase.url, environment.supabase.anonKey);
+        this.useSupabase = true;
+      }
+    } catch (e) {
+      this.supabase = null;
+      this.useSupabase = false;
+    }
+    this.init();
+  }
+
+  private async init() {
+    if (this.useSupabase && this.supabase) {
+      const ok = await this.loadFromSupabase();
+      if (!ok) this.loadSongs();
+    } else {
+      this.loadSongs();
+    }
+  }
+
+  private async loadFromSupabase(): Promise<boolean> {
+    try {
+      const { data, error } = await this.supabase!.from('playlist_songs').select('*').order('added_at', { ascending: false });
+      if (error) throw error;
+      if (Array.isArray(data) && data.length > 0) {
+        const songs: PlaylistSong[] = data.map((r: any) => ({
+          id: r.id,
+          title: r.title,
+          artist: r.artist,
+          album: r.album,
+          albumArt: r.album_art,
+          previewUrl: r.preview_url,
+          addedAt: r.added_at,
+          note: r.note
+        }));
+        this.saveSongs(songs);
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.warn('Failed to load playlist from Supabase, falling back to localStorage', err);
+      return false;
+    }
+  }
+
+  private async persistAll() {
+    const songs = this.songsSubject.getValue();
+    if (this.useSupabase && this.supabase) {
+      try {
+        const payload = songs.map(s => ({
+          id: s.id,
+          title: s.title,
+          artist: s.artist,
+          album: s.album,
+          album_art: s.albumArt,
+          preview_url: s.previewUrl,
+          added_at: s.addedAt,
+          note: s.note
+        }));
+        const { error } = await this.supabase.from('playlist_songs').upsert(payload);
+        if (error) throw error;
+      } catch (err) {
+        console.warn('Persist playlist to Supabase failed', err);
+      }
+    }
   }
 
   private loadSongs(): void {
@@ -30,6 +99,8 @@ export class PlaylistService {
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(songs));
       this.songsSubject.next(songs);
+      // persist to Supabase in background if available
+      try { void this.persistAll(); } catch (e) { /* ignore */ }
     } catch (e) {
       console.error('Error saving playlist:', e);
     }

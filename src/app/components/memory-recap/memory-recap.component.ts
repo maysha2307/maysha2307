@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { BucketItem, BUCKET_CATEGORIES } from '../../models/bucket-item.model';
 import { BucketListService } from '../../services/bucket-list.service';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-memory-recap',
@@ -30,7 +31,7 @@ export class MemoryRecapComponent implements OnInit, OnDestroy {
   // Emoji options
   emojiOptions = ['💫', '✨', '🌟', '💕', '🎯', '🌈', '🦋', '🌸', '🎀', '💝', '🥂', '🎉'];
 
-  constructor(private bucketService: BucketListService) {}
+  constructor(private bucketService: BucketListService, private dialog: DialogService) {}
 
   ngOnInit(): void {
     this.bucketService.bucketItems$
@@ -143,10 +144,10 @@ export class MemoryRecapComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteItem(item: BucketItem): void {
-    if (confirm('Remove this dream from your bucket list?')) {
-      this.bucketService.deleteItem(item.id);
-    }
+  async deleteItem(item: BucketItem): Promise<void> {
+    const ok = await this.dialog.confirm('Remove this dream from your bucket list?');
+    if (!ok) return;
+    this.bucketService.deleteItem(item.id);
   }
 
   formatDate(dateString: string): string {

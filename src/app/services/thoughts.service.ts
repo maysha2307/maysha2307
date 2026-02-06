@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Thought } from '../models/thought.model';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ThoughtsService {
-  // ...existing code...
-    // Force update for UI (when toggling like, etc)
-    forceUpdate() {
-      this.thoughtsSubject.next([...this.thoughts]);
-      this.saveToLocalStorage();
-    }
+  private supabase: SupabaseClient | null = null;
+  private useSupabase = false;
+
   private thoughts: Thought[] = [];
   private thoughtsSubject = new BehaviorSubject<Thought[]>(this.thoughts);
   thoughts$ = this.thoughtsSubject.asObservable();
@@ -17,14 +16,82 @@ export class ThoughtsService {
   private readonly STORAGE_KEY = 'thoughts_backup';
 
   constructor() {
-    this.loadFromLocalStorage();
+    try {
+      if (environment && environment.supabase && environment.supabase.url && environment.supabase.anonKey) {
+        this.supabase = createClient(environment.supabase.url, environment.supabase.anonKey);
+        this.useSupabase = true;
+      }
+    } catch (err) {
+      this.supabase = null;
+      this.useSupabase = false;
+    }
+    // initialize data source
+    this.init();
+  }
+
+  private async init() {
+    if (this.useSupabase && this.supabase) {
+      const ok = await this.loadFromSupabase();
+      if (!ok) this.loadFromLocalStorage();
+    } else {
+      this.loadFromLocalStorage();
+    }
+  }
+
+  // Force update for UI (when toggling like, etc)
+  async forceUpdate() {
+    this.thoughtsSubject.next([...this.thoughts]);
+    await this.persistAll();
+  }
+
+  private async loadFromSupabase(): Promise<boolean> {
+    try {
+      const { data, error } = await this.supabase!.from('thoughts').select('*').order('order', { ascending: true });
+      if (error) throw error;
+      if (Array.isArray(data)) {
+        // Normalize to Thought[] and trim reply whitespace loaded from remote
+        const updates: Thought[] = [];
+        this.thoughts = data.map((r: any) => {
+          const trimmedReply = r.reply && typeof r.reply === 'string' ? r.reply.trim() : r.reply;
+          const thought: Thought = {
+            id: r.id,
+            text: r.text,
+            reply: trimmedReply,
+            order: r.order,
+            liked: r.liked,
+            replyLiked: r.replyLiked
+          };
+          // If the remote reply contains extra whitespace, schedule an update to persist the trimmed value
+          if (r.reply && typeof r.reply === 'string' && r.reply !== trimmedReply) updates.push(thought);
+          return thought;
+        });
+        this.thoughtsSubject.next([...this.thoughts]);
+        // Keep a local backup
+        this.saveToLocalStorage();
+        // Persist cleaned replies back to remote to avoid future spacing issues
+        for (const t of updates) {
+          // fire-and-forget
+          this.persistOne(t).catch(() => undefined);
+        }
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.warn('Supabase load failed, falling back to localStorage', err);
+      return false;
+    }
   }
 
   private loadFromLocalStorage() {
     const saved = localStorage.getItem(this.STORAGE_KEY);
     if (saved) {
-      this.thoughts = JSON.parse(saved);
-      this.thoughtsSubject.next([...this.thoughts]);
+      try {
+        this.thoughts = JSON.parse(saved);
+        this.thoughtsSubject.next([...this.thoughts]);
+      } catch (e) {
+        this.thoughts = [];
+        this.thoughtsSubject.next([]);
+      }
     } else {
       this.thoughts = [];
       this.thoughtsSubject.next([]);
@@ -33,6 +100,49 @@ export class ThoughtsService {
 
   private saveToLocalStorage() {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.thoughts));
+  }
+
+  private async persistAll() {
+    if (this.useSupabase && this.supabase) {
+      try {
+        // upsert entire array; assumes `id` is primary key in supabase table
+        const { error } = await this.supabase.from('thoughts').upsert(this.thoughts);
+        if (error) throw error;
+        // also update local backup
+        this.saveToLocalStorage();
+      } catch (err) {
+        console.warn('Persist to Supabase failed, saved to localStorage instead', err);
+        this.saveToLocalStorage();
+      }
+    } else {
+      this.saveToLocalStorage();
+    }
+  }
+
+  private async persistOne(thought: Thought) {
+    if (this.useSupabase && this.supabase) {
+      try {
+        const { error } = await this.supabase.from('thoughts').upsert(thought);
+        if (error) throw error;
+        this.saveToLocalStorage();
+      } catch (err) {
+        console.warn('Persist one to Supabase failed, saved to localStorage instead', err);
+        this.saveToLocalStorage();
+      }
+    } else {
+      this.saveToLocalStorage();
+    }
+  }
+
+  private async removeOneFromRemote(id: number) {
+    if (this.useSupabase && this.supabase) {
+      try {
+        const { error } = await this.supabase.from('thoughts').delete().eq('id', id);
+        if (error) throw error;
+      } catch (err) {
+        console.warn('Remote delete failed', err);
+      }
+    }
   }
 
   async addThought(text: string) {
@@ -44,7 +154,7 @@ export class ThoughtsService {
     };
     this.thoughts.push(newThought);
     this.thoughtsSubject.next([...this.thoughts]);
-    this.saveToLocalStorage();
+    await this.persistOne(newThought);
   }
 
   async updateThought(id: number, text: string) {
@@ -52,7 +162,7 @@ export class ThoughtsService {
     if (!thought) return;
     thought.text = text;
     this.thoughtsSubject.next([...this.thoughts]);
-    this.saveToLocalStorage();
+    await this.persistOne(thought);
   }
 
   async deleteThought(id: number) {
@@ -60,15 +170,17 @@ export class ThoughtsService {
     if (index === -1) return;
     this.thoughts.splice(index, 1);
     this.thoughtsSubject.next([...this.thoughts]);
-    this.saveToLocalStorage();
+    await this.removeOneFromRemote(id);
+    await this.persistAll();
   }
 
   async updateReply(id: number, reply: string) {
     const thought = this.thoughts.find(t => t.id === id);
     if (!thought) return;
-    thought.reply = reply;
+    // Trim leading/trailing whitespace (including newlines) before saving
+    thought.reply = reply && typeof reply === 'string' ? reply.trim() : reply;
     this.thoughtsSubject.next([...this.thoughts]);
-    this.saveToLocalStorage();
+    await this.persistOne(thought);
   }
 
   async reorderNotes(dragId: number, targetId: number) {
@@ -84,7 +196,7 @@ export class ThoughtsService {
       }
       this.thoughts = notes;
       this.thoughtsSubject.next([...this.thoughts]);
-      this.saveToLocalStorage();
+      await this.persistAll();
     }
   }
 }

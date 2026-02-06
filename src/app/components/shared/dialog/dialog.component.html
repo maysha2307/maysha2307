@@ -1,0 +1,9 @@
+<div *ngIf="state.open" class="confirm-overlay" (click)="close()">
+  <div class="confirm-popup" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="close()" aria-label="Close">✕</button>
+    <p class="confirm-text">{{ state.message }}</p>
+    <div class="dialog-actions">
+      <button class="yes-btn" (click)="ok()">OK</button>
+    </div>
+  </div>
+</div>

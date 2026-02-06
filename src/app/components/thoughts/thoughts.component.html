@@ -30,9 +30,7 @@
         <button class="note-heart-btn" [class.liked]="note.liked" (click)="toggleHeart(note, $event)" (pointerdown)="$event.stopPropagation()" tabindex="0" aria-label="Like this thought">
           <span class="note-heart" [class.liked]="note.liked">&#10084;</span>
         </button>
-        <pre *ngIf="!isEditing(note.id)" style="margin:0;background:none;border:none;font-family:'Dancing Script',cursive;font-size:1.18rem;line-height:1.7;text-indent:1.2em;white-space:pre-wrap;word-break:break-word;">
-          {{ note.text }}
-        </pre>
+        <pre *ngIf="!isEditing(note.id)" style="margin:0;background:none;border:none;font-family:'Dancing Script',cursive;font-size:1.18rem;line-height:1.7;text-indent:1.2em;white-space:pre-wrap;word-break:break-word;">{{note.text}}</pre>
         <textarea *ngIf="isEditing(note.id)"
           class="note-textarea"
           [(ngModel)]="draftText[note.id!]"
@@ -64,9 +62,7 @@
       <div class="reply-paper" *ngIf="isReplyOpen(note.id)">
         <div style="display: flex; align-items: flex-start;">
           <div style="flex: 1; margin-right: 12px;">
-            <pre *ngIf="replyEditingId !== note.id" style="margin:0;background:none;border:none;font-family:'Dancing Script',cursive;font-size:1.05rem;line-height:1.6;white-space:pre-wrap;word-break:break-word;">
-              {{ note.reply }}
-            </pre>
+            <pre *ngIf="replyEditingId !== note.id" style="margin:0;background:none;border:none;font-family:'Dancing Script',cursive;font-size:1.05rem;line-height:1.6;white-space:pre-wrap;word-break:break-word;">{{getTrimmedReply(note)}}</pre>
             <textarea *ngIf="replyEditingId === note.id"
               class="reply-textarea"
               [(ngModel)]="draftReply[note.id!]"
@@ -99,5 +95,7 @@
     <div class="add-btn-row">
       <button class="add-btn" (click)="addNote()" [disabled]="creating()">＋</button>
     </div>
+
+    <!-- shared dialog will render via DialogComponent -->
   </div>
 </div>

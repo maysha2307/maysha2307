@@ -7,6 +7,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { PasswordComponent } from './components/password/password.component';
 import { ThoughtsComponent } from './components/thoughts/thoughts.component';
 import { TimelineComponent } from './components/timeline/timeline.component';
+import { DialogComponent } from './components/shared/dialog/dialog.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { MemoryRecapComponent } from './components/memory-recap/memory-recap.component';
 import { GamesComponent } from './components/games/games.component';
@@ -19,6 +20,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { CommonModule } from '@angular/common';
     PasswordComponent,
     ThoughtsComponent,
     TimelineComponent,
+    DialogComponent,
     GalleryComponent,
     MemoryRecapComponent,
     GamesComponent,
@@ -43,7 +46,8 @@ import { CommonModule } from '@angular/common';
     AppRoutingModule,
     FormsModule,
     RouterModule,
-    CommonModule
+    CommonModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],

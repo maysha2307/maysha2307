@@ -37,6 +37,17 @@
           rows="5"
           style="width:100%;font-family:'Dancing Script',cursive;font-size:1.18rem;background:#fffbe9;border:none;outline:2px dashed rgba(236,64,122,0.7);border-radius:10px;resize:vertical;box-sizing:border-box;"
         ></textarea>
+        <!-- Author selector (small circle bottom-right) -->
+        <div class="author-container" (click)="$event.stopPropagation()">
+          <button class="author-toggle" title="Who wrote this?" (click)="toggleAuthorMenu(note, $event)">
+            <span *ngIf="note.author; else emptyInitial">{{note.author}}</span>
+            <ng-template #emptyInitial><span class="dot"></span></ng-template>
+          </button>
+          <div class="author-options" *ngIf="authorMenuOpenId === note.id">
+            <button class="author-option" (click)="selectAuthor(note, 'm', $event)">m</button>
+            <button class="author-option" (click)="selectAuthor(note, 'a', $event)">a</button>
+          </div>
+        </div>
       </div>
 
       <!-- Actions row -->

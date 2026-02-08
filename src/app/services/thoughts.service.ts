@@ -59,7 +59,8 @@ export class ThoughtsService {
             reply: trimmedReply,
             order: r.order,
             liked: r.liked,
-            replyLiked: r.replyLiked
+            replyLiked: r.replyLiked,
+            author: r.author
           };
           // If the remote reply contains extra whitespace, schedule an update to persist the trimmed value
           if (r.reply && typeof r.reply === 'string' && r.reply !== trimmedReply) updates.push(thought);
@@ -106,7 +107,7 @@ export class ThoughtsService {
     if (this.useSupabase && this.supabase) {
       try {
         // upsert entire array; assumes `id` is primary key in supabase table
-        const { error } = await this.supabase.from('thoughts').upsert(this.thoughts);
+        const { error } = await this.supabase.from('thoughts').upsert(this.thoughts, { onConflict: 'id' });
         if (error) throw error;
         // also update local backup
         this.saveToLocalStorage();
@@ -122,7 +123,7 @@ export class ThoughtsService {
   private async persistOne(thought: Thought) {
     if (this.useSupabase && this.supabase) {
       try {
-        const { error } = await this.supabase.from('thoughts').upsert(thought);
+        const { error } = await this.supabase.from('thoughts').upsert(thought, { onConflict: 'id' });
         if (error) throw error;
         this.saveToLocalStorage();
       } catch (err) {
@@ -161,6 +162,14 @@ export class ThoughtsService {
     const thought = this.thoughts.find(t => t.id === id);
     if (!thought) return;
     thought.text = text;
+    this.thoughtsSubject.next([...this.thoughts]);
+    await this.persistOne(thought);
+  }
+
+  async updateAuthor(id: number, author: string | undefined) {
+    const thought = this.thoughts.find(t => t.id === id);
+    if (!thought) return;
+    thought.author = author;
     this.thoughtsSubject.next([...this.thoughts]);
     await this.persistOne(thought);
   }

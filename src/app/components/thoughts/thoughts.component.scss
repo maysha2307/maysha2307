@@ -243,7 +243,7 @@
 /* Note Paper */
 .note-paper {
   min-height: 124px;
-  padding: 1rem 2rem 0.05rem 3rem; // Minimal bottom padding
+  padding: 1rem 3.5rem 0.5rem 3rem; // increased right padding to avoid overlap with action controls
   .editing .note-heart-btn {
     display: none !important;
   }
@@ -283,8 +283,62 @@
     outline-offset: -2px;
     background: rgba(255, 255, 255, 0.02);
     padding-bottom: 8px;
+    /* ensure extra right spacing while editing */
+    padding-right: 3rem;
   }
 }
+
+/* Author selector bubble */
+.author-container {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 3;
+}
+.author-toggle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: $glass-bg;
+  color: $text-accent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25), 0 0 0 1px $glass-border;
+  padding: 0;
+}
+.author-toggle .dot {
+  width: 8px;
+  height: 8px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 50%;
+  display: inline-block;
+}
+.author-options {
+  display: flex;
+  gap: 6px;
+}
+.author-option {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+.author-option:active { transform: scale(0.98); }
 
 /* Note Actions */
 .note-actions {

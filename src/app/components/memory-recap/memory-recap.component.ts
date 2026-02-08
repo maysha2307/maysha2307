@@ -29,7 +29,7 @@ export class MemoryRecapComponent implements OnInit, OnDestroy {
   completeNote = '';
 
   // Emoji options
-  emojiOptions = ['💫', '✨', '🌟', '💕', '🎯', '🌈', '🦋', '🌸', '🎀', '💝', '🥂', '🎉'];
+  emojiOptions = ['💫', '✨', '🌟', '💕', '🎯', '🌈', '🦋', '🌸', '🎀', '💝', '🥂', '�'];
 
   constructor(private bucketService: BucketListService, private dialog: DialogService) {}
 

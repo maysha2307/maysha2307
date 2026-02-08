@@ -97,7 +97,10 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   formDate = '';
   formEmoji = '💕';
 
-  emojiOptions = ['💕', '💖', '💗', '💝', '💞', '💑', '🎂', '🎉', '🎊', '💍', '✨', '🌹', '💫', '🎁'];
+  // Updated emoji options: replaced couple emoji with rainbow and added more choices
+  emojiOptions = [
+    '💕', '💖', '💗', '💝', '💞', '🌈', '🎂', '🎉', '🎊', '💍', '✨', '🌹', '💫', '🎁', '🌟', '📸', '🏖️', '🎵'
+  ];
 
   constructor(private timelineService: TimelineService, private dialog: DialogService) {
     this.events$ = this.timelineService.events$;

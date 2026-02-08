@@ -1,3 +1,28 @@
+.close-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,107,138,0.12);
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 0.2rem;
+  margin-right: 0.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  transition: transform 0.12s ease, background 0.12s ease, color 0.12s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: rgba(255,107,138,0.13);
+    color: #ff6b8a;
+  }
+}
 // Centered add button row for consistency
 .add-btn-row {
   display: flex;
@@ -344,7 +369,10 @@
   animation: fadeIn 0.2s ease-out;
 }
 
+
+// Add margin-top to push modal card down from navbar
 .modal-content {
+  margin-top: 4rem;
   background: linear-gradient(145deg, #1a1a25 0%, #12121a 100%);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
@@ -361,6 +389,65 @@
     color: #fff;
     margin: 0 0 1.25rem;
     text-align: center;
+  }
+
+  &.add-form {
+    /* make form a little roomier on small screens */
+    padding: 1rem;
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    input, textarea {
+      font-size: 1rem;
+      padding: 0.8rem 0.9rem;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Responsive fix for textarea/input on small screens */
+    @media (max-width: 480px) {
+      input, textarea {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+      }
+      .modal-content {
+        padding: 0.5rem;
+        max-width: 98vw;
+      }
+    }
+
+    /* category options: switch to grid for narrow screens so buttons are easier to tap */
+    .category-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 0.5rem;
+    }
+
+    /* emoji options: use responsive grid with larger touch targets */
+    .emoji-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(56px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .emoji-btn {
+      width: 100%;
+      height: 56px;
+      font-size: 1.35rem;
+      border-radius: 12px;
+    }
+
+    .form-actions {
+      flex-direction: column-reverse;
+      gap: 0.6rem;
+    }
+
+    .save-btn, .cancel-btn {
+      width: 100%;
+    }
   }
 }
 

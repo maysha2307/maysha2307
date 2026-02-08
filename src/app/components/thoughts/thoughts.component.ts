@@ -64,6 +64,7 @@ export class ThoughtsComponent {
   replyingId: number | null = null;
   replyEditingId: number | null = null;
   isAddingThought = false;
+  authorMenuOpenId: number | null = null;
 
   constructor(private thoughtsService: ThoughtsService, private dialog: DialogService) {
     this.thoughts$ = this.thoughtsService.thoughts$;
@@ -92,6 +93,19 @@ export class ThoughtsComponent {
       const isPlaceholder = typeof note.text === 'string' && note.text.trim().toLowerCase().startsWith('new note');
       this.draftText[note.id!] = isPlaceholder ? '' : note.text;
     }
+  }
+
+  toggleAuthorMenu(note: Thought, event: Event) {
+    event.stopPropagation();
+    this.authorMenuOpenId = this.authorMenuOpenId === note.id ? null : note.id!;
+  }
+
+  async selectAuthor(note: Thought, author: string, event?: Event) {
+    if (event) event.stopPropagation();
+    if (note.id == null) return;
+    note.author = author;
+    this.authorMenuOpenId = null;
+    await this.thoughtsService.updateAuthor(note.id, author);
   }
 
   onNoteInput(note: Thought, event: Event) {

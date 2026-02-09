@@ -14,6 +14,18 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('movingDot') movingDot!: ElementRef;
   @ViewChild('timelineContainer') timelineContainer!: ElementRef;
   activeCardIndex: number = 0;
+  selectedCardIndex: number | null = null;
+    onCardClick(idx: number): void {
+      this.selectedCardIndex = idx;
+    }
+
+    private onDocumentClick = (event: MouseEvent) => {
+      // Only clear focus if click is outside any .event-card
+      const target = event.target as HTMLElement;
+      if (!target.closest('.event-card')) {
+        this.selectedCardIndex = null;
+      }
+    };
   private intersectionObserver?: IntersectionObserver;
   private cardsChangesSub: any;
   private ticking = false;
@@ -46,6 +58,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         this.timelineCards.forEach((card, idx) => {
           try {
             card.nativeElement.setAttribute('data-index', idx);
+            card.nativeElement.onclick = () => this.onCardClick(idx);
             this.intersectionObserver!.observe(card.nativeElement);
           } catch (e) {
             // ignore elements that are not ready
@@ -79,12 +92,15 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // store listeners for cleanup
       (this as any)._onScroll = onScroll;
+      // Listen for clicks outside cards to remove focus
+      document.addEventListener('click', this.onDocumentClick, true);
     }
 
     ngOnDestroy(): void {
       try { if (this.intersectionObserver) this.intersectionObserver.disconnect(); } catch (e) {}
       try { if (this.cardsChangesSub) this.cardsChangesSub.unsubscribe(); } catch (e) {}
       try { window.removeEventListener('scroll', (this as any)._onScroll); window.removeEventListener('resize', (this as any)._onScroll); } catch (e) {}
+      document.removeEventListener('click', this.onDocumentClick, true);
     }
   events$: Observable<TimelineEvent[]>;
   showAddModal = false;

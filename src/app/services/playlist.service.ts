@@ -159,6 +159,18 @@ export class PlaylistService {
   removeSong(songId: string): void {
     const songs = this.songsSubject.getValue();
     this.saveSongs(songs.filter(s => s.id !== songId));
+    // Remove from Supabase if enabled
+    if (this.useSupabase && this.supabase) {
+      this.supabase
+        .from('playlist_songs')
+        .delete()
+        .eq('id', songId)
+        .then(({ error }) => {
+          if (error) {
+            console.warn('Failed to delete song from Supabase', error);
+          }
+        });
+    }
   }
 
   reorderSongs(songs: PlaylistSong[]): void {

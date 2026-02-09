@@ -167,13 +167,14 @@
 }
 
 /* ===== EVENT CARD ===== */
+// ...existing code...
 .event-card {
   position: relative;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 107, 138, 0.15);
   border-radius: 20px;
   padding: 1.25rem;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
   flex: 1;
 
@@ -184,6 +185,13 @@
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
   }
 
+  &.focused {
+    background: rgba(255, 255, 255, 0.10);
+    border-color: $heart-color;
+    transform: scale(1.035) translateY(-6px);
+    box-shadow: 0 16px 48px rgba(255, 107, 138, 0.18);
+    z-index: 2;
+  }
   .card-header {
     display: flex;
     justify-content: space-between;

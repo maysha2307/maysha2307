@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Thought } from '../models/thought.model';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { supabase } from './supabase-client';
 import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -17,8 +18,8 @@ export class ThoughtsService {
 
   constructor() {
     try {
-      if (environment && environment.supabase && environment.supabase.url && environment.supabase.anonKey) {
-        this.supabase = createClient(environment.supabase.url, environment.supabase.anonKey);
+      if (supabase) {
+        this.supabase = supabase;
         this.useSupabase = true;
       }
     } catch (err) {

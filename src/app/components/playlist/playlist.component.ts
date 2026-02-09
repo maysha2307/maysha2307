@@ -1,3 +1,4 @@
+// removed misplaced property declaration
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { PlaylistSong, iTunesSearchResult } from '../../models/playlist-song.model';
@@ -9,6 +10,27 @@ import { PlaylistService } from '../../services/playlist.service';
   styleUrls: ['./playlist.component.scss']
 })
 export class PlaylistComponent implements OnInit, OnDestroy {
+  // Delete dialog state
+  showDeleteDialog: boolean = false;
+  songToDelete: PlaylistSong | null = null;
+
+  confirmDelete(song: PlaylistSong): void {
+    this.songToDelete = song;
+    this.showDeleteDialog = true;
+  }
+
+  cancelDelete(): void {
+    this.showDeleteDialog = false;
+    this.songToDelete = null;
+  }
+
+  doDelete(): void {
+    if (this.songToDelete) {
+      this.removeSong(this.songToDelete.id);
+    }
+    this.cancelDelete();
+  }
+  selectedSongCard: any = null;
   private destroy$ = new Subject<void>();
 
   songs: PlaylistSong[] = [];

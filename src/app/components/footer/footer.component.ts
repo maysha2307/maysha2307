@@ -10,14 +10,14 @@ export class FooterComponent {
 
   // 💕 Social Links - Replace with your actual handles!
   socials = {
-    hisInstagram: 'https://instagram.com/your_handle',
-    herInstagram: 'https://instagram.com/her_handle',
-    coupleInstagram: 'https://instagram.com/our_handle'
+    hisInstagram: 'https://instagram.com/mashooq_min',
+    herInstagram: 'https://instagram.com/xerxes.xxiv',
+    coupleInstagram: 'https://instagram.com/maysha_23.7',
   };
 
   // 🔗 Other Websites - Add your special occasion sites here!
   otherLinks = [
-    { name: "Valentine's Day", url: 'https://example.com/valentines', icon: '💝' },
+    { name: "Surprise Event", url: 'https://example.com/surprise', icon: '💝' },
     { name: 'Anniversary', url: 'https://example.com/anniversary', icon: '💍' }
   ];
 

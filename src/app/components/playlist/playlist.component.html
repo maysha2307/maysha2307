@@ -23,7 +23,9 @@
         *ngFor="let song of songs; let i = index" 
         class="song-card"
         [class.playing]="currentlyPlaying === song.id"
+        [class.selected]="selectedSongCard === song"
         [style.animation-delay.ms]="i * 80"
+        (click)="selectedSongCard = selectedSongCard === song ? null : song"
       >
         <!-- Album Art -->
         <div class="album-art" (click)="togglePreview(song)">
@@ -76,7 +78,21 @@
         </div>
 
         <!-- Delete Button -->
-        <button class="delete-btn" (click)="removeSong(song.id)">×</button>
+        <button class="delete-btn" (click)="confirmDelete(song)">×</button>
+          <!-- Delete Confirm Dialog -->
+          <div *ngIf="showDeleteDialog" class="confirm-overlay" (click)="cancelDelete()">
+            <div class="confirm-popup" (click)="$event.stopPropagation()">
+              <button class="close-btn" (click)="cancelDelete()" aria-label="Close">&#10005;</button>
+              <p class="confirm-text">
+                Delete <span class="song-title-in-dialog"><b>{{ songToDelete?.title }}</b></span><br>
+                by <span class="song-artist-in-dialog"><b>{{ songToDelete?.artist }}</b></span> from playlist?
+              </p>
+              <div class="dialog-actions">
+                <button class="yes-btn" (click)="doDelete()">Delete</button>
+                <button class="btn btn-cancel" (click)="cancelDelete()">Cancel</button>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
 

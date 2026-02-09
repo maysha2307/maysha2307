@@ -1,3 +1,4 @@
+  // removed misplaced property declaration
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { BucketItem, BUCKET_CATEGORIES } from '../../models/bucket-item.model';
@@ -10,6 +11,7 @@ import { DialogService } from '../../services/dialog.service';
   styleUrls: ['./memory-recap.component.scss']
 })
 export class MemoryRecapComponent implements OnInit, OnDestroy {
+  selectedCard: any = null;
   private destroy$ = new Subject<void>();
 
   bucketItems: BucketItem[] = [];

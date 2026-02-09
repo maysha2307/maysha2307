@@ -41,7 +41,9 @@
       <div 
         *ngFor="let item of filteredItems; trackBy: trackByItemId"
         class="bucket-card"
-        [class.completed]="item.isCompleted">
+        [class.completed]="item.isCompleted"
+        [class.selected]="selectedCard === item"
+        (click)="selectedCard = selectedCard === item ? null : item">
         
         <div class="card-checkbox" (click)="toggleComplete(item)">
           <div class="checkbox" [class.checked]="item.isCompleted">

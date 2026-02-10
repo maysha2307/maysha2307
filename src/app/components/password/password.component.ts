@@ -9,7 +9,7 @@ import lottie, { AnimationItem } from 'lottie-web';
 })
 export class PasswordComponent implements AfterViewInit, OnDestroy {
   password = '';
-  private correctPassword = 'm';
+  private correctPassword = 'aama';
 
   // UI state
   fadeOutIntro = false;

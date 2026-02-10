@@ -30,8 +30,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1rem 0 0.5rem;
-  height: 60px;
+  padding: 0 1.3rem 0 0.7rem;
+  height: 78px;
   z-index: 2000;
   box-shadow: 
     0 4px 30px rgba(0, 0, 0, 0.5),
@@ -69,8 +69,8 @@
 .logo::before {
   content: '';
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 52px;
+  height: 52px;
   background: radial-gradient(circle, rgba(255, 107, 138, 0.25) 0%, transparent 70%);
   border-radius: 50%;
   animation: logoGlow 3s ease-in-out infinite;
@@ -83,8 +83,8 @@
 }
 
 .logo-svg {
-  height: 48px;
-  width: 48px;
+  height: 62px;
+  width: 62px;
   filter: drop-shadow(0 0 10px rgba(255, 107, 138, 0.3));
   position: relative;
   z-index: 1;
@@ -172,7 +172,7 @@
   flex: 1;
   text-align: center;
   font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
+  font-size: 2.1rem;
   font-weight: 600;
   background: linear-gradient(135deg, #ff6b8a 0%, #ffb8c6 50%, #ff9eb5 100%);
   -webkit-background-clip: text;
@@ -186,8 +186,8 @@
 // ═══════════════════════════════════════════════
 
 .menu-toggle {
-  width: 34px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: 
     radial-gradient(circle at 40% 40%, rgba(255, 158, 181, 0.15), transparent 60%),
@@ -205,15 +205,15 @@
 }
 
 .menu-icon {
-  width: 22px;
-  height: 22px;
+  width: 29px;
+  height: 29px;
   transition: transform 0.2s ease;
   filter: drop-shadow(0 0 4px rgba(255, 107, 138, 0.4));
 }
 
 .menu-icon.close {
-  width: 18px;
-  height: 18px;
+  width: 23px;
+  height: 23px;
   filter: none;
 }
 
@@ -327,10 +327,10 @@ body.menu-open {
 .romantic-overlay ul li a {
   text-decoration: none;
   font-family: 'Quicksand', sans-serif;
-  font-size: 1.3rem;
+  font-size: 1.7rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
-  padding: 0.8rem 2rem;
+  padding: 1.1rem 2.6rem;
   border-radius: 50px;
   background: rgba(255, 107, 138, 0.12);
   border: 1px solid rgba(255, 107, 138, 0.25);

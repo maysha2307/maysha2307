@@ -8,7 +8,7 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(): boolean {
-    if (localStorage.getItem('unlocked') === 'true') {
+    if (sessionStorage.getItem('unlocked') === 'true') {
       return true;
     } else {
       this.router.navigate(['/']);

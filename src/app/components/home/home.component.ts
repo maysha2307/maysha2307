@@ -1,5 +1,5 @@
 // ...existing code...
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, Renderer2 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SignatureGalleryService, SignaturePhotos } from '../../services/signature-gallery.service';
 
@@ -8,7 +8,10 @@ import { SignatureGalleryService, SignaturePhotos } from '../../services/signatu
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+    @ViewChild('promiseCard', { static: false }) promiseCard!: ElementRef;
+    private intersectionObserver: IntersectionObserver | null = null;
+
     sprinkleTimeouts: { [key: string]: any } = {};
     sprinkleStates: { [key: string]: boolean } = { mashooq: false, aayesha: false };
     sprinkleHearts(card: 'mashooq' | 'aayesha') {
@@ -24,7 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   aayeshaSignatures: any[] = [];
   private signatureSub: Subscription | null = null;
 
-  constructor(private signatureGalleryService: SignatureGalleryService) {}
+  constructor(private signatureGalleryService: SignatureGalleryService, private renderer: Renderer2) {}
 
   ngOnInit(): void {
     this.signatureSub = this.signatureGalleryService.signaturePhotos$.subscribe((photos: SignaturePhotos) => {
@@ -33,9 +36,33 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit(): void {
+    // trigger reveal when promise card enters viewport
+    if (this.promiseCard) {
+      this.intersectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            this.renderer.addClass(this.promiseCard.nativeElement, 'in-view');
+            // We can disconnect after reveal to avoid extra triggers
+            if (this.intersectionObserver) {
+              this.intersectionObserver.disconnect();
+              this.intersectionObserver = null;
+            }
+          }
+        });
+      }, { threshold: 0.35 });
+
+      this.intersectionObserver.observe(this.promiseCard.nativeElement);
+    }
+  }
+
   ngOnDestroy(): void {
     if (this.signatureSub) {
       this.signatureSub.unsubscribe();
+    }
+    if (this.intersectionObserver) {
+      this.intersectionObserver.disconnect();
+      this.intersectionObserver = null;
     }
   }
 

@@ -1,4 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -7,6 +8,8 @@ import { Component, AfterViewInit } from '@angular/core';
 })
 export class NavbarComponent implements AfterViewInit {
   menuOpen = false;
+
+  constructor(private router: Router) {}
 
   sectionIds = [
     'home-section',
@@ -43,6 +46,20 @@ export class NavbarComponent implements AfterViewInit {
     event.preventDefault();
     this.scrollToSection(sectionId);
     this.menuOpen = false;
+  }
+
+  async logout() {
+    try {
+      await fetch('/.netlify/functions/logout', { method: 'POST', credentials: 'same-origin' });
+    } catch (err) {
+      console.error('Logout request failed', err);
+    }
+
+    // Clear local and session storage and navigate to lock screen
+    localStorage.removeItem('unlocked');
+    sessionStorage.removeItem('unlocked');
+    this.closeMenu();
+    this.router.navigate(['/']);
   }
 
   ngAfterViewInit() {

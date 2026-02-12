@@ -1,3 +1,5 @@
+@import '../../theme/_variables.scss';
+
 // Premium unified signature cards
 .premium-signatures {
   display: flex;
@@ -31,6 +33,12 @@
   border-color: #ff3366;
   background: linear-gradient(135deg, #2d0e1e 60%, #3c1830 100%);
   color: #ffb6d5;
+}
+
+@media (min-width: 768px) {
+  .premium-signature-card {
+    padding: 1rem 1rem 1.2rem 1rem;
+  }
 }
 
 .signature-img.premium {
@@ -291,7 +299,7 @@
   min-height: 100vh;
   width: 100vw;
   background: none;
-  padding-top: 5.5rem;
+  padding-top: 4rem;
   box-sizing: border-box;
 }
 
@@ -411,7 +419,7 @@
   justify-content: center;
   gap: 0.4rem;
   flex-wrap: wrap;
-  animation: fadeInUp 1.5s ease-out 0.5s both;
+  animation: fadeInUp 1.5s ease-out 0.3s both;
 }
 
 .title-heart {
@@ -486,11 +494,11 @@
 @keyframes fadeInUp {
   0% {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(30px) scale(0.9);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -507,14 +515,26 @@
 
 .poem-verses {
   margin: 0.5rem 0 1rem;
-  animation: fadeInUp 1.5s ease-out 1s both;
+  animation: fadeInUp 1.5s ease-out 0.8s both;
   
   p {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.75);
-    margin: 0.4rem 0;
-    line-height: 1.7;
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0.6rem 0;
+    line-height: 1.8;
     font-style: italic;
+    text-shadow: 0 0 8px rgba(255, 107, 138, 0.3);
+    animation: fadeInUp 1.5s ease-out both;
+    
+    &:nth-child(1) { animation-delay: 1s; }
+    &:nth-child(2) { animation-delay: 1.3s; }
+    &:nth-child(3) { animation-delay: 1.6s; }
+    &:nth-child(4) { animation-delay: 1.9s; }
+    &:nth-child(5) { animation-delay: 2.2s; }
+    &:nth-child(6) { animation-delay: 2.5s; }
+    &:nth-child(7) { animation-delay: 2.8s; }
+    &:nth-child(8) { animation-delay: 3.1s; }
   }
 }
 
@@ -526,7 +546,7 @@
 }
 
 .intro-content h2 {
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Crimson Text', serif;
   font-size: 1.4rem;
   background: linear-gradient(135deg, #ff9eb5, #ffb8c6);
   -webkit-background-clip: text;
@@ -534,15 +554,107 @@
   background-clip: text;
   margin: 1rem 0 0.5rem;
   font-weight: 600;
-  animation: fadeInUp 1.5s ease-out 2s both;
+  animation: fadeInUp 2s ease-out 7s both;
+}
+
+.promise-card h2 {
+  font-family: 'Dancing Script', cursive;
+  animation: none;
+}
+
+.promise-text {
+  font-family: 'Dancing Script', cursive;
+}
+
+@media (max-width: 400px) {
+  .promise-text p {
+    text-align: center;
+    color: $primary-pink-light; /* lighter, readable premium pink */
+    font-size: 1.3rem; /* smaller for balance */
+    line-height: 1.35;
+    margin-bottom: 0.35rem;
+    padding: 0.3rem 0;
+    letter-spacing: 0.2px;
+    font-weight: 500;
+  }
+
+  /* Hide the floated shape on small screens to center text cleanly */
+  .heart-shape {
+    display: none;
+  }
+}
+
+.heart-shape {
+  float: left;
+  width: 150px;
+  height: 150px;
+  margin-right: 1rem;
+  shape-outside: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+@media (max-width: 768px) {
+  .heart-shape {
+    width: 80px;
+    height: 80px;
+    margin-right: 0.5rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .heart-shape {
+    width: 50px;
+    height: 50px;
+    margin-right: 0.3rem;
+  }
+}
+
+.poem-verses p:nth-child(9) {
+  animation: fadeInUp 1.5s ease-out 3.4s both;
 }
 
 .soft-divider {
+  text-align: center;
+}
+
+.soft-divider span {
   font-size: 1.2rem;
-  color: #ff6b8a;
-  margin: 0.8rem 0;
-  filter: drop-shadow(0 0 8px rgba(255, 107, 138, 0.5));
-  animation: fadeInScale 1s ease-out 1.5s both;
+  color: #ff6f91;
+  filter: drop-shadow(0 0 8px rgba(255, 111, 145, 0.5));
+}
+
+.intro-content.promise-card {
+  margin-top: 2rem;
+  padding: 0 1rem;
+  opacity: 0; /* hidden until scrolled into view */
+}
+
+/* Reveal when scrolled into view */
+.intro-content.promise-card.in-view {
+  opacity: 1;
+  animation: fadeInScale 0.9s ease-out both;
+}
+
+.intro-content.promise-card.in-view .promise-text {
+  opacity: 1;
+  animation: fadeInUp 0.9s ease-out 0.12s both;
+} 
+
+@media (max-width: 400px) {
+  .intro-content.promise-card {
+    padding: 0 1.5rem;
+  }
+}
+
+.intro-content.promise-card .soft-divider {
+  animation: fadeInScale 1.5s ease-out 6s both;
+}
+
+.intro-content.promise-card .intro-content h2 {
+  animation: fadeInUp 2s ease-out 7s both;
+}
+
+.intro-content.promise-card .css-hearts-animation {
+  animation: fadeInHearts 0.8s 8s forwards;
 }
 
 
@@ -674,6 +786,7 @@ body::after {
 
 /* Signatures Section */
 .signatures-section {
+  clear: both;
   margin-top: 1.5rem;
   display: flex;
   flex-direction: row;

@@ -9,7 +9,8 @@ import lottie, { AnimationItem } from 'lottie-web';
 })
 export class PasswordComponent implements AfterViewInit, OnDestroy {
   password = '';
-  private correctPassword = 'aama';
+  // password is now verified server-side via Netlify function
+  loading = false;
 
   // UI state
   fadeOutIntro = false;
@@ -116,63 +117,93 @@ export class PasswordComponent implements AfterViewInit, OnDestroy {
     }, 4500);
   }
 
-  unlock() {
-    if (this.password.trim() === this.correctPassword) {
-      this.fadeOutCard = true;
-      this.cdr.detectChanges();
-      
-      setTimeout(() => {
-        this.showCard = false;
-        this.showLove = true;
-        this.fadeOutBackground = true;
+  async unlock() {
+    this.loading = true;
+    this.cdr.detectChanges();
+
+    try {
+      const res = await fetch('/.netlify/functions/unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ password: this.password.trim() })
+      });
+
+      if (res.ok) {
+        // Mark unlocked immediately so it persists even if user closes during animation
+        localStorage.setItem('unlocked', 'true');
+
+        // Trigger the same success UX as before
+        this.fadeOutCard = true;
         this.cdr.detectChanges();
-        
-        // Wait for DOM to update, then load Lottie
+
         setTimeout(() => {
-          const loveContainer = document.getElementById('love-animation');
-          
-          if (loveContainer) {
-            this.loveAnim = lottie.loadAnimation({
-              container: loveContainer,
-              renderer: 'svg',
-              loop: false,
-              autoplay: true,
-              path: 'assets/animations/Love.json'
-            });
-            
-            // Slower speed for smooth elegance
-            this.loveAnim.setSpeed(0.8);
-            
-            // Navigate immediately when animation completes
-            this.loveAnim.addEventListener('complete', () => {
-              sessionStorage.setItem('unlocked', 'true');
-              this.showLove = false;
-              this.cdr.detectChanges();
-              this.router.navigate(['/app/home']);
-            });
-            
-            // Fallback only if complete event fails
-            setTimeout(() => {
-              if (this.showLove) {
+          this.showCard = false;
+          this.showLove = true;
+          this.fadeOutBackground = true;
+          this.cdr.detectChanges();
+
+          // Wait for DOM to update, then load Lottie
+          setTimeout(() => {
+            const loveContainer = document.getElementById('love-animation');
+
+            if (loveContainer) {
+              this.loveAnim = lottie.loadAnimation({
+                container: loveContainer,
+                renderer: 'svg',
+                loop: false,
+                autoplay: true,
+                path: 'assets/animations/Love.json'
+              });
+
+              // Slower speed for smooth elegance
+              this.loveAnim.setSpeed(0.8);
+
+              // Navigate immediately when animation completes
+              this.loveAnim.addEventListener('complete', () => {
                 sessionStorage.setItem('unlocked', 'true');
+                localStorage.setItem('unlocked', 'true');
                 this.showLove = false;
                 this.cdr.detectChanges();
                 this.router.navigate(['/app/home']);
-              }
-            }, 3000);
-          } else {
-            sessionStorage.setItem('unlocked', 'true');
-            this.router.navigate(['/app/home']);
-          }
-        }, 150);
-      }, 600);
-    } else {
+              });
+
+              // Fallback only if complete event fails
+              setTimeout(() => {
+                if (this.showLove) {
+                  sessionStorage.setItem('unlocked', 'true');
+                  localStorage.setItem('unlocked', 'true');
+                  this.showLove = false;
+                  this.cdr.detectChanges();
+                  this.router.navigate(['/app/home']);
+                }
+              }, 3000);
+            } else {
+              sessionStorage.setItem('unlocked', 'true');
+              this.router.navigate(['/app/home']);
+            }
+          }, 150);
+        }, 600);
+      } else {
+        // wrong password
+        this.wrongPassword = true;
+        this.cdr.detectChanges();
+        setTimeout(() => {
+          this.wrongPassword = false;
+          this.cdr.detectChanges();
+        }, 1500);
+      }
+    } catch (err) {
+      console.error('Unlock failed', err);
       this.wrongPassword = true;
       this.cdr.detectChanges();
       setTimeout(() => {
         this.wrongPassword = false;
         this.cdr.detectChanges();
       }, 1500);
+    } finally {
+      this.loading = false;
+      this.cdr.detectChanges();
     }
   }
 

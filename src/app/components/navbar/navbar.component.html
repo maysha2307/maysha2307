@@ -51,13 +51,14 @@
 <!-- Fullscreen Romantic Overlay Menu -->
 <div *ngIf="menuOpen" class="romantic-overlay">
   <ul>
-  <li class="float-in" style="animation-delay:0.2s"><a href="#home-section" (click)="onMenuClick($event, 'home-section')">Home</a></li>
-  <li class="float-in" style="animation-delay:0.4s"><a href="#thoughts-section" (click)="onMenuClick($event, 'thoughts-section')">Thoughts</a></li>
-  <li class="float-in" style="animation-delay:0.6s"><a href="#timeline-section" (click)="onMenuClick($event, 'timeline-section')">Timeline</a></li>
-  <li class="float-in" style="animation-delay:0.8s"><a href="#gallery-section" (click)="onMenuClick($event, 'gallery-section')">Gallery</a></li>
-  <li class="float-in" style="animation-delay:1s"><a href="#memory-recap-section" (click)="onMenuClick($event, 'memory-recap-section')">Our Dreams</a></li>
-  <li class="float-in" style="animation-delay:1.2s"><a href="#playlist-section" (click)="onMenuClick($event, 'playlist-section')">Our Playlist</a></li>
-  <li class="float-in" style="animation-delay:1.4s"><a href="#games-section" (click)="onMenuClick($event, 'games-section')">Games</a></li>
-  <li class="float-in" style="animation-delay:1.6s"><a href="#love-counter-section" (click)="onMenuClick($event, 'love-counter-section')">Love Counter</a></li>
+  <li class="float-in" style="animation-delay:0.2s"><a href="#home-section" (click)="onMenuClick($event, 'home-section')"><span class="emoji">🏠</span> Home</a></li>
+  <li class="float-in" style="animation-delay:0.4s"><a href="#thoughts-section" (click)="onMenuClick($event, 'thoughts-section')"><span class="emoji">🪶</span> Thoughts</a></li>
+  <li class="float-in" style="animation-delay:0.6s"><a href="#timeline-section" (click)="onMenuClick($event, 'timeline-section')"><span class="emoji">📅</span> Timeline</a></li>
+  <li class="float-in" style="animation-delay:0.8s"><a href="#gallery-section" (click)="onMenuClick($event, 'gallery-section')"><span class="emoji">🖼️</span> Gallery</a></li>
+  <li class="float-in" style="animation-delay:1s"><a href="#memory-recap-section" (click)="onMenuClick($event, 'memory-recap-section')"><span class="emoji">💫</span> Our Dreams</a></li>
+  <li class="float-in" style="animation-delay:1.2s"><a href="#playlist-section" (click)="onMenuClick($event, 'playlist-section')"><span class="emoji">🎵</span> Our Playlist</a></li>
+  <li class="float-in" style="animation-delay:1.4s"><a href="#games-section" (click)="onMenuClick($event, 'games-section')"><span class="emoji">🎮</span> Games</a></li>
+  <li class="float-in" style="animation-delay:1.6s"><a href="#love-counter-section" (click)="onMenuClick($event, 'love-counter-section')"><span class="emoji">❤️</span> Love Counter</a></li>
+  <li class="float-in" style="animation-delay:1.8s"><a href="#" (click)="logout()"><span class="emoji">🔒</span> Logout</a></li>
   </ul>
 </div>

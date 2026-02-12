@@ -30,8 +30,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1.3rem 0 0.7rem;
-  height: 78px;
+  padding: 0 0.9rem 0 0.54rem; /* 10% tighter */
+  height: 58px; /* ~10% smaller */
   z-index: 2000;
   box-shadow: 
     0 4px 30px rgba(0, 0, 0, 0.5),
@@ -83,8 +83,8 @@
 }
 
 .logo-svg {
-  height: 62px;
-  width: 62px;
+  height: 43px; /* ~10% smaller */
+  width: 43px;
   filter: drop-shadow(0 0 10px rgba(255, 107, 138, 0.3));
   position: relative;
   z-index: 1;
@@ -172,13 +172,13 @@
   flex: 1;
   text-align: center;
   font-family: 'Playfair Display', serif;
-  font-size: 2.1rem;
+  font-size: 1.44rem; /* ~10% smaller */
   font-weight: 600;
   background: linear-gradient(135deg, #ff6b8a 0%, #ffb8c6 50%, #ff9eb5 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.036em;
 }
 
 // ═══════════════════════════════════════════════
@@ -242,30 +242,42 @@
 @media (max-width: 480px) {
   .romantic-navbar {
     padding: 0 0.6rem;
-    height: 54px;
+    height: 60px; /* compact but still comfortable */
   }
   .logo::before {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
   }
   .logo-svg {
-    height: 40px;
-    width: 40px;
+    height: 44px;
+    width: 44px;
   }
   .navbar-title {
-    font-size: 1.3rem;
+    font-size: 1.4rem; /* slightly smaller for harmony */
   }
   .menu-toggle {
-    width: 30px;
-    height: 30px;
+    width: 34px; /* slightly smaller tap target but still usable */
+    height: 34px;
   }
   .menu-icon {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
   .menu-icon.close {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Overlay menu buttons slightly reduced to balance spacing */
+  .romantic-overlay ul li a {
+    font-size: 1.8rem;
+    padding: 0.9rem 1.4rem;
+    border-radius: 999px;
+  }
+
+  .emoji {
+    font-size: 1.35rem;
+    margin-right: 0.45rem;
   }
 }
 

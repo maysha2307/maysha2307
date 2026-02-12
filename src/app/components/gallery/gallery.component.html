@@ -41,14 +41,14 @@
           </div>
 
           <!-- Photo Count Badge -->
-          <div *ngIf="folder.photos.length > 0" class="photo-count">
+          <div *ngIf="(folder.photos.length || 0) > 0" class="photo-count">
             {{ folder.photos.length }} 📸
           </div>
 
           <!-- Slide Indicators -->
-          <div *ngIf="folder.photos.length > 1" class="slide-indicators">
+          <div *ngIf="(folder.photos?.length || 0) > 1" class="slide-indicators">
             <span 
-              *ngFor="let photo of folder.photos; let i = index"
+              *ngFor="let photo of folder.photos ?? []; let i = index"
               class="indicator"
               [class.active]="i === folder.currentIndex"
             ></span>
@@ -86,7 +86,7 @@
     <!-- Main Photo -->
     <div class="modal-photo-container">
       <img
-        *ngIf="selectedFolder.photos[selectedPhotoIndex] as photo"
+        *ngIf="selectedFolder?.photos?.length && selectedFolder.photos[selectedPhotoIndex] as photo"
         [src]="photo.googleDriveImageUrl"
         [alt]="photo.title"
         class="modal-photo"
@@ -97,7 +97,7 @@
 
       <!-- Navigation Buttons -->
       <button 
-        *ngIf="selectedFolder.photos.length > 1"
+        *ngIf="(selectedFolder.photos?.length || 0) > 1"
         class="nav-btn prev-btn"
         (click)="prevPhoto()"
         aria-label="Previous photo"
@@ -105,7 +105,7 @@
         ❮
       </button>
       <button 
-        *ngIf="selectedFolder.photos.length > 1"
+        *ngIf="(selectedFolder?.photos?.length || 0) > 1"
         class="nav-btn next-btn"
         (click)="nextPhoto()"
         aria-label="Next photo"
@@ -114,7 +114,7 @@
       </button>
 
       <!-- Slide Counter -->
-      <div *ngIf="selectedFolder.photos.length > 1" class="slide-counter">
+      <div *ngIf="(selectedFolder.photos?.length || 0) > 1" class="slide-counter">
         {{ selectedPhotoIndex + 1 }} / {{ selectedFolder.photos.length }}
       </div>
 
@@ -122,9 +122,9 @@
     </div>
 
     <!-- Thumbnail Strip -->
-    <div class="thumbnail-strip" *ngIf="selectedFolder.photos.length > 1">
+    <div class="thumbnail-strip" *ngIf="(selectedFolder.photos?.length || 0) > 1">
       <div 
-        *ngFor="let photo of selectedFolder.photos; let i = index; trackBy: trackById"
+        *ngFor="let photo of (selectedFolder.photos ?? []); let i = index; trackBy: trackById"
         class="thumbnail"
         [class.active]="i === selectedPhotoIndex"
         (click)="selectedPhotoIndex = i"

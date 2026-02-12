@@ -299,7 +299,8 @@
   min-height: 100vh;
   width: 100vw;
   background: none;
-  padding-top: 4rem;
+  /* reduce extra vertical whitespace so content sits closer to navbar */
+  padding-top: calc(var(--navbar-height, 64px) + 0.4rem);
   box-sizing: border-box;
 }
 
@@ -396,6 +397,19 @@
     animation: shimmerSweep 6s ease-in-out infinite;
     pointer-events: none;
     z-index: 0;
+  }
+}
+
+/* Ensure intro-card sits below navbar */
+.intro-content.intro-card {
+  /* minimal extra spacing — section padding provides navbar offset */
+  margin-top: 0.4rem;
+}
+
+@media (max-width: 480px) {
+  /* compact spacing on small screens */
+  .intro-content.intro-card {
+    margin-top: 2rem !important;
   }
 }
 
@@ -621,6 +635,7 @@
   color: #ff6f91;
   filter: drop-shadow(0 0 8px rgba(255, 111, 145, 0.5));
 }
+
 
 .intro-content.promise-card {
   margin-top: 2rem;

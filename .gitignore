@@ -37,6 +37,15 @@ yarn-error.log
 testem.log
 /typings
 
+# Local env
+.env
+
 # System files
 .DS_Store
 Thumbs.db
+
+yes
+
+
+# Local Netlify folder
+.netlify

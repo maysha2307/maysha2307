@@ -130,9 +130,6 @@ export class PasswordComponent implements AfterViewInit, OnDestroy {
       });
 
       if (res.ok) {
-        // Mark unlocked immediately so it persists even if user closes during animation
-        localStorage.setItem('unlocked', 'true');
-
         // Trigger the same success UX as before
         this.fadeOutCard = true;
         this.cdr.detectChanges();
@@ -161,8 +158,6 @@ export class PasswordComponent implements AfterViewInit, OnDestroy {
 
               // Navigate immediately when animation completes
               this.loveAnim.addEventListener('complete', () => {
-                sessionStorage.setItem('unlocked', 'true');
-                localStorage.setItem('unlocked', 'true');
                 this.showLove = false;
                 this.cdr.detectChanges();
                 this.router.navigate(['/app/home']);
@@ -171,8 +166,6 @@ export class PasswordComponent implements AfterViewInit, OnDestroy {
               // Fallback only if complete event fails
               setTimeout(() => {
                 if (this.showLove) {
-                  sessionStorage.setItem('unlocked', 'true');
-                  localStorage.setItem('unlocked', 'true');
                   this.showLove = false;
                   this.cdr.detectChanges();
                   this.router.navigate(['/app/home']);

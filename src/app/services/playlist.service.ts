@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PlaylistSong, iTunesSearchResult } from '../models/playlist-song.model';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
+import { supabase } from './supabase-client';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class PlaylistService {
   constructor() {
     try {
       if (environment && environment.supabase && environment.supabase.url && environment.supabase.anonKey) {
-        this.supabase = createClient(environment.supabase.url, environment.supabase.anonKey);
+        this.supabase = supabase; // use singleton
         this.useSupabase = true;
       }
     } catch (e) {

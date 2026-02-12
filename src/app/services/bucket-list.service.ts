@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { BucketItem } from '../models/bucket-item.model';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
+import { supabase } from './supabase-client';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class BucketListService {
   constructor() {
     try {
       if (environment && environment.supabase && environment.supabase.url && environment.supabase.anonKey) {
-        this.supabase = createClient(environment.supabase.url, environment.supabase.anonKey);
+        this.supabase = supabase; // use shared singleton client
         this.useSupabase = true;
       }
     } catch (e) {

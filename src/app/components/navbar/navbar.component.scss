@@ -207,23 +207,21 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: 0.036em;
-  text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
   position: relative;
+  filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.4));
   
-  /* Anime text glow effect */
-  &::after {
-    content: attr(data-text);
+  /* Anime glow using radial gradient behind */
+  &::before {
+    content: '';
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.2) 0%, transparent 70%);
+    filter: blur(10px);
     z-index: -1;
-    background: linear-gradient(135deg, #00d4ff 0%, #0088ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: blur(8px);
-    opacity: 0.6;
   }
 }
 
@@ -238,8 +236,7 @@
   background: 
     radial-gradient(circle at 40% 40%, rgba(0, 212, 255, 0.2), transparent 60%),
     rgba(0, 136, 255, 0.15);
-  border: 2px solid;
-  border-image: linear-gradient(135deg, rgba(0, 212, 255, 0.4), rgba(77, 0, 255, 0.3)) 1;
+  border: 2px solid rgba(0, 212, 255, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -250,6 +247,18 @@
   box-shadow: 0 2px 12px rgba(0, 212, 255, 0.2);
   margin-right: 1.2rem;
   
+  /* Animated gradient border using pseudo-element */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.6), rgba(77, 0, 255, 0.4));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
   /* Energy pulse effect */
   &::before {
     content: '';
@@ -257,9 +266,9 @@
     inset: -4px;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(0, 212, 255, 0.3), transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    opacity: 0.3;
     animation: energyPulseNav 2s ease-in-out infinite;
+    z-index: -2;
   }
 }
 
@@ -291,9 +300,13 @@
   background: 
     radial-gradient(circle at 40% 40%, rgba(0, 212, 255, 0.3), transparent 60%),
     rgba(0, 136, 255, 0.25);
-  border-image: linear-gradient(135deg, rgba(0, 212, 255, 0.6), rgba(77, 0, 255, 0.5)) 1;
+  border-color: rgba(0, 212, 255, 0.6);
   transform: scale(1.08);
   box-shadow: 0 4px 20px rgba(0, 212, 255, 0.35);
+  
+  &::after {
+    opacity: 0.6;
+  }
 }
 
 .menu-toggle:active {
@@ -302,7 +315,11 @@
 
 .menu-toggle.open {
   background: rgba(0, 136, 255, 0.3);
-  border-image: linear-gradient(135deg, rgba(0, 212, 255, 0.7), rgba(77, 0, 255, 0.6)) 1;
+  border-color: rgba(0, 212, 255, 0.7);
+  
+  &::after {
+    opacity: 0.8;
+  }
 }
 
 // ═══════════════════════════════════════════════

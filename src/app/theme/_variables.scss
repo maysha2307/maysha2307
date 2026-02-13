@@ -46,3 +46,8 @@ $menu-active: $primary-blue;
 $heart-color: #ff0080;
 $border-radius: 0.8rem;
 $box-shadow: $shadow-card;
+
+// ===== Additional Legacy Colors (for backwards compatibility) =====
+$primary-pink: $primary-blue;
+$primary-pink-light: $primary-blue-light;
+$primary-pink-dark: $primary-blue-dark;

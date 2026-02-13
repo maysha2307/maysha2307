@@ -1,0 +1,396 @@
+.sword-slice-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+// Dramatic flash effect
+.flash-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, 
+    rgba(255, 255, 255, 0.9) 0%, 
+    rgba(0, 212, 255, 0.6) 30%, 
+    rgba(77, 0, 255, 0.3) 60%, 
+    transparent 100%);
+  animation: flashEffect 0.8s ease-out forwards;
+  z-index: 1;
+}
+
+@keyframes flashEffect {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  10% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+// Slashes container
+.slashes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+// Individual slash animations
+.slash {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.8));
+}
+
+.slash-1 {
+  animation: slashAppear1 0.5s ease-out forwards;
+  animation-delay: 0s;
+}
+
+.slash-2 {
+  animation: slashAppear2 0.5s ease-out forwards;
+  animation-delay: 0.15s;
+}
+
+.slash-3 {
+  animation: slashAppear3 0.5s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+@keyframes slashAppear1 {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-5deg) translateX(-50%);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5) rotate(5deg) translateX(20%);
+  }
+}
+
+@keyframes slashAppear2 {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(5deg) translateX(50%);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5) rotate(-5deg) translateX(-20%);
+  }
+}
+
+@keyframes slashAppear3 {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(-50%);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.8) translateY(30%);
+  }
+}
+
+// Speed lines (manga-style)
+.speed-lines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.speed-line {
+  position: absolute;
+  top: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(to bottom, 
+    transparent 0%, 
+    rgba(0, 212, 255, 0.8) 20%, 
+    rgba(0, 136, 255, 0.9) 50%, 
+    rgba(77, 0, 255, 0.8) 80%, 
+    transparent 100%);
+  opacity: 0;
+  animation: speedLineSlide 0.4s ease-out forwards;
+  filter: blur(1px);
+}
+
+@keyframes speedLineSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%) scaleY(0.3);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100%) scaleY(1.5);
+  }
+}
+
+// Screen fragments
+.fragments {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+.fragment {
+  position: absolute;
+  background: linear-gradient(135deg, 
+    rgba(10, 6, 16, 0.95) 0%, 
+    rgba(18, 8, 24, 0.97) 50%, 
+    rgba(13, 6, 18, 0.95) 100%);
+  border: 2px solid rgba(0, 212, 255, 0.3);
+  box-shadow: 
+    0 0 30px rgba(0, 212, 255, 0.4),
+    inset 0 0 20px rgba(77, 0, 255, 0.2);
+  opacity: 1;
+}
+
+// Fragment positions and animations
+.fragment-1 {
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 35%;
+  clip-path: polygon(0 0, 100% 0, 80% 100%, 0 90%);
+  animation: fragmentFly1 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.fragment-2 {
+  top: 0;
+  right: 0;
+  width: 60%;
+  height: 40%;
+  clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 85%);
+  animation: fragmentFly2 1.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.fragment-3 {
+  top: 30%;
+  left: 0;
+  width: 35%;
+  height: 30%;
+  clip-path: polygon(0 10%, 100% 0, 90% 100%, 0 100%);
+  animation: fragmentFly3 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.fragment-4 {
+  top: 35%;
+  right: 0;
+  width: 40%;
+  height: 35%;
+  clip-path: polygon(10% 0, 100% 15%, 100% 100%, 0 90%);
+  animation: fragmentFly4 1.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.fragment-5 {
+  bottom: 0;
+  left: 0;
+  width: 45%;
+  height: 38%;
+  clip-path: polygon(0 0, 85% 10%, 100% 100%, 0 100%);
+  animation: fragmentFly5 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.fragment-6 {
+  bottom: 0;
+  right: 0;
+  width: 55%;
+  height: 32%;
+  clip-path: polygon(15% 5%, 100% 0, 100% 100%, 0 100%);
+  animation: fragmentFly6 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.fragment-7 {
+  top: 25%;
+  left: 30%;
+  width: 20%;
+  height: 25%;
+  clip-path: polygon(20% 0, 80% 10%, 90% 90%, 10% 100%);
+  animation: fragmentFly7 1.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.fragment-8 {
+  top: 40%;
+  right: 25%;
+  width: 25%;
+  height: 20%;
+  clip-path: polygon(10% 20%, 90% 0, 100% 80%, 0 100%);
+  animation: fragmentFly8 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+// Fragment animations
+@keyframes fragmentFly1 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-100vw, -100vh) rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fragmentFly2 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(120vw, -80vh) rotate(35deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fragmentFly3 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-90vw, 20vh) rotate(-60deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fragmentFly4 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(110vw, 30vh) rotate(50deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fragmentFly5 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-80vw, 120vh) rotate(-30deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fragmentFly6 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(100vw, 110vh) rotate(40deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fragmentFly7 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50vw, -50vh) rotate(-90deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes fragmentFly8 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(60vw, 40vh) rotate(80deg) scale(0.6);
+    opacity: 0;
+  }
+}
+
+// Energy particles (cursed energy effect from JJK)
+.energy-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+}
+
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, 
+    rgba(0, 212, 255, 1) 0%, 
+    rgba(77, 0, 255, 0.8) 50%, 
+    transparent 100%);
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleBurst 1s ease-out forwards;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.8);
+}
+
+@keyframes particleBurst {
+  0% {
+    opacity: 0;
+    transform: translate(50vw, 50vh) scale(0);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--particle-x), var(--particle-y)) scale(1.5);
+  }
+}
+
+// Generate random particle positions
+.particle:nth-child(1) { --particle-x: -80vw; --particle-y: -60vh; animation-delay: 0.3s; }
+.particle:nth-child(2) { --particle-x: 90vw; --particle-y: -70vh; animation-delay: 0.35s; }
+.particle:nth-child(3) { --particle-x: -70vw; --particle-y: 80vh; animation-delay: 0.4s; }
+.particle:nth-child(4) { --particle-x: 100vw; --particle-y: 90vh; animation-delay: 0.45s; }
+.particle:nth-child(5) { --particle-x: -60vw; --particle-y: -40vh; animation-delay: 0.5s; }
+.particle:nth-child(6) { --particle-x: 80vw; --particle-y: -50vh; animation-delay: 0.32s; }
+.particle:nth-child(7) { --particle-x: -90vw; --particle-y: 70vh; animation-delay: 0.38s; }
+.particle:nth-child(8) { --particle-x: 70vw; --particle-y: 60vh; animation-delay: 0.42s; }
+.particle:nth-child(9) { --particle-x: -50vw; --particle-y: -80vh; animation-delay: 0.36s; }
+.particle:nth-child(10) { --particle-x: 60vw; --particle-y: -90vh; animation-delay: 0.48s; }
+.particle:nth-child(11) { --particle-x: -100vw; --particle-y: 50vh; animation-delay: 0.33s; }
+.particle:nth-child(12) { --particle-x: 50vw; --particle-y: 100vh; animation-delay: 0.44s; }
+.particle:nth-child(13) { --particle-x: -40vw; --particle-y: -70vh; animation-delay: 0.37s; }
+.particle:nth-child(14) { --particle-x: 40vw; --particle-y: 80vh; animation-delay: 0.41s; }
+.particle:nth-child(15) { --particle-x: -30vw; --particle-y: 60vh; animation-delay: 0.46s; }

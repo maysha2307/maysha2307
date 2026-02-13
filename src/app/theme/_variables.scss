@@ -1,45 +1,48 @@
-// SCSS Variables for Mysha Love Theme - Premium Dark Edition
-// ===== Core Colors =====
-$primary-pink: #ff6b8a;
-$primary-pink-light: #ff9eb5;
-$primary-pink-dark: #e84a6f;
-$accent-purple: rgba(180, 100, 200, 0.15);
-$accent-gold: rgba(255, 200, 150, 0.1);
+// SCSS Variables for Mysha Love Theme - Anime/JJK Edition
+// ===== Core Colors (Anime-inspired) =====
+$primary-blue: #00d4ff;
+$primary-blue-light: #4de6ff;
+$primary-blue-dark: #0088ff;
+$primary-purple: #4d00ff;
+$primary-purple-light: #8040ff;
+$accent-pink: rgba(255, 0, 128, 0.15);
+$accent-cyan: rgba(0, 212, 255, 0.2);
 
 // ===== Backgrounds =====
 $bg-dark: #0a0a12;
 $bg-dark-gradient: linear-gradient(165deg, #08080f 0%, #0d0d18 50%, #0a0a12 100%);
-$bg-ambient-pink: radial-gradient(ellipse at 30% 0%, rgba(255, 150, 180, 0.18) 0%, transparent 55%);
-$bg-ambient-purple: radial-gradient(ellipse at 70% 100%, rgba(200, 150, 220, 0.08) 0%, transparent 50%);
+$bg-ambient-blue: radial-gradient(ellipse at 30% 0%, rgba(0, 136, 255, 0.18) 0%, transparent 55%);
+$bg-ambient-purple: radial-gradient(ellipse at 70% 100%, rgba(77, 0, 255, 0.15) 0%, transparent 50%);
 
 // ===== Text Colors =====
 $text-primary: #ffffff;
 $text-secondary: rgba(255, 255, 255, 0.7);
 $text-muted: rgba(255, 255, 255, 0.5);
-$text-accent: #ff9eb5;
+$text-accent: #00d4ff;
 
 // ===== Glassmorphism =====
-$glass-bg: rgba(255, 255, 255, 0.04);
-$glass-bg-hover: rgba(255, 255, 255, 0.08);
-$glass-border: rgba(255, 255, 255, 0.08);
-$glass-border-active: rgba(255, 107, 138, 0.4);
+$glass-bg: rgba(10, 20, 40, 0.6);
+$glass-bg-hover: rgba(20, 30, 50, 0.7);
+$glass-border: rgba(0, 212, 255, 0.2);
+$glass-border-active: rgba(0, 212, 255, 0.6);
 
 // ===== Navbar =====
-$navbar-bg: linear-gradient(90deg, rgba(15, 10, 18, 0.95), rgba(20, 12, 22, 0.98));
+$navbar-bg: linear-gradient(90deg, rgba(10, 10, 25, 0.95), rgba(15, 15, 30, 0.98));
 $navbar-height: 64px;
 
-// ===== Shadows & Effects =====
-$shadow-glow: 0 0 40px rgba(255, 107, 138, 0.15);
-$shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
-$text-glow: 0 0 20px rgba(255, 107, 138, 0.5);
+// ===== Shadows & Effects (Anime-style) =====
+$shadow-glow: 0 0 40px rgba(0, 212, 255, 0.3);
+$shadow-card: 0 4px 24px rgba(0, 0, 0, 0.5);
+$text-glow: 0 0 20px rgba(0, 212, 255, 0.8);
+$text-glow-purple: 0 0 20px rgba(77, 0, 255, 0.8);
 
 // ===== Legacy Support =====
-$primary-color: $primary-pink;
-$secondary-color: #1a0f1f;
-$accent-color: $primary-pink-light;
+$primary-color: $primary-blue;
+$secondary-color: #0a0f1f;
+$accent-color: $primary-blue-light;
 $text-color: $text-primary;
-$menu-bg: rgba(15, 10, 18, 0.98);
-$menu-active: $primary-pink;
-$heart-color: #ff3366;
-$border-radius: 1.2rem;
+$menu-bg: rgba(10, 10, 25, 0.98);
+$menu-active: $primary-blue;
+$heart-color: #ff0080;
+$border-radius: 0.8rem;
 $box-shadow: $shadow-card;

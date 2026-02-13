@@ -13,6 +13,8 @@ export class PasswordComponent implements AfterViewInit, OnDestroy {
   loading = false;
 
   // UI state
+  showSwordSlice = true;
+  swordSliceComplete = false;
   fadeOutIntro = false;
   showCard = false;
   fadeOutCard = false;
@@ -28,8 +30,17 @@ export class PasswordComponent implements AfterViewInit, OnDestroy {
   constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
-    // Preload animations and wait for them to be ready
-    this.loadIntroAnimations();
+    // Sword slice animation happens first, then load intro animations
+  }
+
+  onSwordSliceComplete() {
+    this.swordSliceComplete = true;
+    this.showSwordSlice = false;
+    this.cdr.detectChanges();
+    // After sword slice, load intro animations
+    setTimeout(() => {
+      this.loadIntroAnimations();
+    }, 100);
   }
 
   private loadIntroAnimations() {

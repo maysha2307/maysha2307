@@ -13,6 +13,8 @@ export class PasswordComponent implements AfterViewInit, OnDestroy {
   loading = false;
 
   // UI state
+  showSwordSlash = true; // New: show sword slash animation first
+  swordSlashComplete = false;
   fadeOutIntro = false;
   showCard = false;
   fadeOutCard = false;
@@ -28,8 +30,25 @@ export class PasswordComponent implements AfterViewInit, OnDestroy {
   constructor(private router: Router, private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
-    // Preload animations and wait for them to be ready
-    this.loadIntroAnimations();
+    // Start with sword slash animation, then load intro animations
+    this.startSwordSlashAnimation();
+  }
+
+  private startSwordSlashAnimation() {
+    // Sword slash animation lasts 2.5 seconds
+    setTimeout(() => {
+      this.swordSlashComplete = true;
+      this.cdr.detectChanges();
+      
+      // Fade out sword slash overlay
+      setTimeout(() => {
+        this.showSwordSlash = false;
+        this.cdr.detectChanges();
+        
+        // Now load the intro animations
+        this.loadIntroAnimations();
+      }, 500); // Wait for fade out
+    }, 2500); // Sword animation duration
   }
 
   private loadIntroAnimations() {
@@ -104,7 +123,7 @@ export class PasswordComponent implements AfterViewInit, OnDestroy {
   }
 
   private startIntroSequence() {
-    // Show intro for 4.5 seconds after animations are confirmed loaded
+    // Show intro for 3.5 seconds after animations are confirmed loaded (reduced from 4.5s)
     setTimeout(() => {
       this.fadeOutIntro = true;
       this.cdr.detectChanges();
@@ -114,7 +133,7 @@ export class PasswordComponent implements AfterViewInit, OnDestroy {
         this.showCard = true;
         this.cdr.detectChanges();
       }, 1500);
-    }, 4500);
+    }, 3500);
   }
 
   async unlock() {

@@ -1,45 +1,51 @@
-// SCSS Variables for Mysha Love Theme - Premium Dark Edition
-// ===== Core Colors =====
-$primary-pink: #ff6b8a;
-$primary-pink-light: #ff9eb5;
-$primary-pink-dark: #e84a6f;
-$accent-purple: rgba(180, 100, 200, 0.15);
-$accent-gold: rgba(255, 200, 150, 0.1);
+// SCSS Variables for Mysha Love Theme - JJK Anime Edition
+// ===== Core Colors - JJK Inspired =====
+$primary-jjk: #8b5cf6; // Deep purple (cursed energy)
+$primary-jjk-light: #a78bfa; // Light purple
+$primary-jjk-dark: #6d28d9; // Dark purple
+$accent-electric: rgba(139, 92, 246, 0.3); // Electric purple glow
+$accent-cyan: rgba(34, 211, 238, 0.25); // Cyan accent (Gojo's eyes)
+$accent-gold: rgba(251, 191, 36, 0.2); // Gold accent
 
 // ===== Backgrounds =====
 $bg-dark: #0a0a12;
-$bg-dark-gradient: linear-gradient(165deg, #08080f 0%, #0d0d18 50%, #0a0a12 100%);
-$bg-ambient-pink: radial-gradient(ellipse at 30% 0%, rgba(255, 150, 180, 0.18) 0%, transparent 55%);
-$bg-ambient-purple: radial-gradient(ellipse at 70% 100%, rgba(200, 150, 220, 0.08) 0%, transparent 50%);
+$bg-dark-gradient: linear-gradient(165deg, #0a0514 0%, #120820 50%, #0a0a12 100%);
+$bg-ambient-purple: radial-gradient(ellipse at 30% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 55%);
+$bg-ambient-cyan: radial-gradient(ellipse at 70% 100%, rgba(34, 211, 238, 0.08) 0%, transparent 50%);
 
 // ===== Text Colors =====
 $text-primary: #ffffff;
-$text-secondary: rgba(255, 255, 255, 0.7);
+$text-secondary: rgba(255, 255, 255, 0.8);
 $text-muted: rgba(255, 255, 255, 0.5);
-$text-accent: #ff9eb5;
+$text-accent: #a78bfa; // Light purple for accents
 
-// ===== Glassmorphism =====
-$glass-bg: rgba(255, 255, 255, 0.04);
-$glass-bg-hover: rgba(255, 255, 255, 0.08);
-$glass-border: rgba(255, 255, 255, 0.08);
-$glass-border-active: rgba(255, 107, 138, 0.4);
+// ===== Glassmorphism - Anime Style =====
+$glass-bg: rgba(139, 92, 246, 0.05);
+$glass-bg-hover: rgba(139, 92, 246, 0.1);
+$glass-border: rgba(139, 92, 246, 0.2);
+$glass-border-active: rgba(139, 92, 246, 0.5);
 
 // ===== Navbar =====
-$navbar-bg: linear-gradient(90deg, rgba(15, 10, 18, 0.95), rgba(20, 12, 22, 0.98));
+$navbar-bg: linear-gradient(90deg, rgba(10, 5, 20, 0.95), rgba(18, 8, 32, 0.98));
 $navbar-height: 64px;
 
 // ===== Shadows & Effects =====
-$shadow-glow: 0 0 40px rgba(255, 107, 138, 0.15);
-$shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
-$text-glow: 0 0 20px rgba(255, 107, 138, 0.5);
+$shadow-glow: 0 0 40px rgba(139, 92, 246, 0.3);
+$shadow-card: 0 4px 24px rgba(0, 0, 0, 0.5);
+$text-glow: 0 0 20px rgba(139, 92, 246, 0.6);
 
 // ===== Legacy Support =====
-$primary-color: $primary-pink;
+$primary-color: $primary-jjk;
 $secondary-color: #1a0f1f;
-$accent-color: $primary-pink-light;
+$accent-color: $primary-jjk-light;
 $text-color: $text-primary;
-$menu-bg: rgba(15, 10, 18, 0.98);
-$menu-active: $primary-pink;
-$heart-color: #ff3366;
+$menu-bg: rgba(10, 5, 20, 0.98);
+$menu-active: $primary-jjk;
+$heart-color: #a78bfa; // Change to purple
 $border-radius: 1.2rem;
 $box-shadow: $shadow-card;
+
+// Backward compatibility for old pink variables
+$primary-pink: $primary-jjk;
+$primary-pink-light: $primary-jjk-light;
+$primary-pink-dark: $primary-jjk-dark;

@@ -54,6 +54,7 @@
           [attr.target]="!link.url.startsWith('/') ? '_blank' : null" 
           [attr.rel]="!link.url.startsWith('/') ? 'noopener' : null" 
           class="special-link"
+          (click)="onLinkClick(link, $event)"
         >
           <span class="link-icon">{{ link.icon }}</span>
           <span class="link-name">{{ link.name }}</span>

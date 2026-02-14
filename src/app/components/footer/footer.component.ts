@@ -21,8 +21,8 @@ export class FooterComponent {
   // 🔗 Other Websites - Add your special occasion sites here!
   otherLinks = [
     { name: "Valentine's Day", url: 'https://maysha-valentines.netlify.app', icon: '💝' },
-    // changed to requested shy-combo emoji
-    { name: 'Anniversary', url: '/anniversary', icon: '😳👉👈' }
+    // Anniversary button shows ring emoji
+    { name: 'Anniversary', url: '/anniversary', icon: '💍' }
   ];
 
   // 💗 Footer message

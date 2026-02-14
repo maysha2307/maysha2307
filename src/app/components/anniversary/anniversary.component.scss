@@ -101,6 +101,25 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  .shy-emoji {
+    display: inline-block;
+    margin-left: 0.35rem;
+    transform: translateY(2px);
+    opacity: 0.98;
+    font-size: 1.08rem;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.45));
+
+    /* Ensure emoji is visible despite parent text-clip gradient */
+    color: #ffb6d5 !important;
+    -webkit-text-fill-color: #ffb6d5 !important;
+    background: none !important;
+    -webkit-background-clip: initial !important;
+
+    /* Bring to front in case of stacking/overflow issues */
+    position: relative;
+    z-index: 5;
+  }
 }
 
 @keyframes heartBounce {

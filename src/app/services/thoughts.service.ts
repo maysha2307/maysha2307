@@ -193,6 +193,38 @@ export class ThoughtsService {
     await this.persistOne(thought);
   }
 
+  /**
+   * Update the `liked` flag for a single thought and persist immediately.
+   * Using a dedicated method reduces the chance of race conditions when
+   * toggling hearts rapidly and ensures a single-row upsert is used.
+   */
+  async updateLike(id: number, liked: boolean) {
+    const thought = this.thoughts.find(t => t.id === id);
+    if (!thought) return;
+    thought.liked = liked;
+    this.thoughtsSubject.next([...this.thoughts]);
+    try {
+      await this.persistOne(thought);
+    } catch (err) {
+      console.warn('Failed to persist like change to Supabase, saved locally', err);
+    }
+  }
+
+  /**
+   * Update the `replyLiked` flag for a single thought and persist immediately.
+   */
+  async updateReplyLike(id: number, replyLiked: boolean) {
+    const thought = this.thoughts.find(t => t.id === id);
+    if (!thought) return;
+    thought.replyLiked = replyLiked;
+    this.thoughtsSubject.next([...this.thoughts]);
+    try {
+      await this.persistOne(thought);
+    } catch (err) {
+      console.warn('Failed to persist reply-liked change to Supabase, saved locally', err);
+    }
+  }
+
   async reorderNotes(dragId: number, targetId: number) {
     const notes = [...this.thoughts];
     const dragIndex = notes.findIndex(t => t.id === dragId);

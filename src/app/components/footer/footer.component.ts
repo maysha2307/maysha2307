@@ -17,8 +17,8 @@ export class FooterComponent {
 
   // 🔗 Other Websites - Add your special occasion sites here!
   otherLinks = [
-    { name: "Surprise Event", url: 'https://example.com/surprise', icon: '💝' },
-    { name: 'Anniversary', url: 'https://example.com/anniversary', icon: '💍' }
+    { name: "Valentine's Day", url: 'https://maysha-valentines.netlify.app', icon: '💝' },
+    { name: 'Anniversary', url: '/app/anniversary', icon: '💍' }
   ];
 
   // 💗 Footer message

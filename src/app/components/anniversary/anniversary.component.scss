@@ -1,0 +1,142 @@
+@import '../../theme/variables';
+
+:host {
+  display: block;
+  width: 100%;
+  background: linear-gradient(145deg, #0d0d0f 0%, #1a0a14 30%, #12080c 60%, #0a0612 100%);
+}
+
+.section-content {
+  scroll-margin-top: 48px;
+  padding-top: 0;
+}
+
+.anniversary-wrapper {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+
+  // Ambient Glow Orbs
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 15%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 105, 135, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: pulse-glow 6s ease-in-out infinite;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 15%;
+    right: 10%;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(180, 100, 200, 0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(50px);
+    animation: pulse-glow 8s ease-in-out infinite reverse;
+  }
+}
+
+/* ===== HEADER ===== */
+.anniversary-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  animation: slideDown 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .header-icon {
+    font-size: 2.4rem;
+    margin-bottom: 0.6rem;
+    display: inline-block;
+    animation: heartBounce 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 4px 12px rgba(255, 180, 100, 0.35));
+  }
+
+  h2 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.6rem;
+    color: #fff;
+    margin: 0 0 0.3rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 180, 200, 0.9) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+  }
+}
+
+/* ===== MESSAGE ===== */
+.anniversary-message {
+  text-align: center;
+  animation: fadeIn 1s ease-out 0.5s both;
+
+  p {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.2rem;
+    color: #fff;
+    margin: 0;
+    font-weight: 500;
+    background: linear-gradient(135deg, #fff 0%, rgba(255, 180, 200, 0.9) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+@keyframes heartBounce {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-6px); }
+  50% { transform: translateY(0); }
+  75% { transform: translateY(-3px); }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}

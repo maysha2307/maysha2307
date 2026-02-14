@@ -10,6 +10,7 @@ import { GalleryComponent } from './components/gallery/gallery.component';
 import { MemoryRecapComponent } from './components/memory-recap/memory-recap.component';
 import { GamesComponent } from './components/games/games.component';
 import { LoveCounterComponent } from './components/love-counter/love-counter.component';
+import { AnniversaryComponent } from './components/anniversary/anniversary.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
 import { AuthGuard } from './guards/auth.guard';
 
@@ -28,7 +29,8 @@ const routes: Routes = [
       { path: 'memory-recap', component: MemoryRecapComponent },
       { path: 'playlist', component: PlaylistComponent },
       { path: 'games', component: GamesComponent },
-      { path: 'love-counter', component: LoveCounterComponent }
+      { path: 'love-counter', component: LoveCounterComponent },
+      { path: 'anniversary', component: AnniversaryComponent }
     ]
   },
   { path: '**', redirectTo: '' }

@@ -17,6 +17,7 @@ import { LoveCounterComponent } from './components/love-counter/love-counter.com
 import { RootPageComponent } from './components/root-page/root-page.component';
 import { PlaylistComponent } from './components/playlist/playlist.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { AnniversaryComponent } from './components/anniversary/anniversary.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -39,7 +40,8 @@ import { HttpClientModule } from '@angular/common/http';
     LoveCounterComponent,
     RootPageComponent,
     PlaylistComponent,
-    FooterComponent
+    FooterComponent,
+    AnniversaryComponent
   ],
   imports: [
     BrowserModule,

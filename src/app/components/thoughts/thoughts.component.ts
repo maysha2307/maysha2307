@@ -12,19 +12,20 @@ import { DialogService } from '../../services/dialog.service';
 })
 export class ThoughtsComponent {
 
-  toggleHeart(note: any, event: Event) {
+  async toggleHeart(note: any, event: Event) {
     event.stopPropagation();
-    // Create a new object to trigger Angular change detection
+    // Toggle in UI immediately
     note.liked = !note.liked;
-    this.thoughtsService.forceUpdate();
+    // Persist single-field change to reduce chance of failure
+    await this.thoughtsService.updateLike(note.id!, note.liked);
   }
 
   // Toggle reply heart (like) for reply
-  toggleReplyHeart(note: any, event: Event) {
+  async toggleReplyHeart(note: any, event: Event) {
     event.stopPropagation();
     if (note.replyLiked === undefined) note.replyLiked = false;
     note.replyLiked = !note.replyLiked;
-    this.thoughtsService.forceUpdate();
+    await this.thoughtsService.updateReplyLike(note.id!, note.replyLiked);
   }
 
     activeNoteId: number | null = null;

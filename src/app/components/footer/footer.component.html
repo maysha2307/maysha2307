@@ -49,9 +49,10 @@
       <div class="links-grid">
         <a 
           *ngFor="let link of otherLinks" 
-          [href]="link.url" 
-          target="_blank" 
-          rel="noopener" 
+          [routerLink]="link.url.startsWith('/') ? link.url : null"
+          [href]="!link.url.startsWith('/') ? link.url : null" 
+          [attr.target]="!link.url.startsWith('/') ? '_blank' : null" 
+          [attr.rel]="!link.url.startsWith('/') ? 'noopener' : null" 
           class="special-link"
         >
           <span class="link-icon">{{ link.icon }}</span>

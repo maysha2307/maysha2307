@@ -16,6 +16,8 @@ import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', component: PasswordComponent },
+  // Public route: Anniversary (accessible without unlocking)
+  { path: 'anniversary', component: AnniversaryComponent },
   {
     path: 'app',
     component: RootPageComponent,

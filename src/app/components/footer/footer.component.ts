@@ -18,7 +18,7 @@ export class FooterComponent {
   // 🔗 Other Websites - Add your special occasion sites here!
   otherLinks = [
     { name: "Valentine's Day", url: 'https://maysha-valentines.netlify.app', icon: '💝' },
-    { name: 'Anniversary', url: '/app/anniversary', icon: '💍' }
+    { name: 'Anniversary', url: '/anniversary', icon: '💍' }
   ];
 
   // 💗 Footer message
